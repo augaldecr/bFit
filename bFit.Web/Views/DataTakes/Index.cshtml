@@ -1,0 +1,161 @@
+﻿@model IEnumerable<bFit.WEB.Data.Entities.PersonalData.DataTake>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Height)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Weight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MuscleEsquelethicalMassKG)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FatMassKG)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WaterMass)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MetabolicAge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ChestBack)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Waist)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Abdomen)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hip)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeftArm)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RightArm)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeftQuadriceps)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RightQuadriceps)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeftCalf)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RightCalf)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeftForearm)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RightForearm)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VisceralFatLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BasalMetabolicRate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RecommendedCaloricIntake)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Height)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MuscleEsquelethicalMassKG)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FatMassKG)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WaterMass)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MetabolicAge)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ChestBack)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Waist)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Abdomen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Hip)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeftArm)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RightArm)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeftQuadriceps)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RightQuadriceps)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeftCalf)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RightCalf)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeftForearm)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RightForearm)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VisceralFatLevel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BasalMetabolicRate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecommendedCaloricIntake)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

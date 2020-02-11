@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - bFit</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootswatch.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-dark bg-primary navbar-expand-sm navbar-toggleable-sm">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">bFit</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Generales</a>
+                            <div class="dropdown-menu" style="">
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="Countries" asp-action="Index">Países</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="States" asp-action="Index">Provincias</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="Counties" asp-action="Index">Cantones</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="Districts" asp-action="Index">Distritos</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="Towns" asp-action="Index">Ciudades</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="Genders" asp-action="Index">Géneros</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Perfiles</a>
+                            <div class="dropdown-menu" style="">
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="Franchises" asp-action="Index">Franquicias</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="LocalGyms" asp-action="Index">Gimnasios</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="Admin" asp-action="Index">Administrador</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="FranchiseAdmins" asp-action="Index">Admins de franquicia</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="GymAdmins" asp-action="Index">Admins de gimnasio</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="Trainers" asp-action="Index">Entrenadores</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="Athletes" asp-action="Index">Clientes</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - bFit
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
