@@ -1,5 +1,4 @@
 ﻿using bFit.WEB.Data.Entities.Profiles;
-using bFit.WEB.Data.Entities.Workouts;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

@@ -36,11 +36,33 @@
                                 <a class="dropdown-item nav-link" asp-area="" asp-controller="Franchises" asp-action="Index">Franquicias</a>
                                 <a class="dropdown-item nav-link" asp-area="" asp-controller="LocalGyms" asp-action="Index">Gimnasios</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item nav-link" asp-area="" asp-controller="Admin" asp-action="Index">Administrador</a>
-                                <a class="dropdown-item nav-link" asp-area="" asp-controller="FranchiseAdmins" asp-action="Index">Admins de franquicia</a>
-                                <a class="dropdown-item nav-link" asp-area="" asp-controller="GymAdmins" asp-action="Index">Admins de gimnasio</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="Admins" asp-action="Index">Administradores</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="FranchiseAdmins" asp-action="Index">Administradores de franquicia</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="GymAdmins" asp-action="Index">Administradores de gimnasio</a>
                                 <a class="dropdown-item nav-link" asp-area="" asp-controller="Trainers" asp-action="Index">Entrenadores</a>
                                 <a class="dropdown-item nav-link" asp-area="" asp-controller="Athletes" asp-action="Index">Clientes</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Rutinas</a>
+                            <div class="dropdown-menu" style="">
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="ExerciseTypes" asp-action="Index">Tipos de ejercicio</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="Exercises" asp-action="Index">Ejercicios</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="Goals" asp-action="Index">Metas</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="ObesityLevels" asp-action="Index">Niveles de obesidad</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="SetTypes" asp-action="Index">Tipos de sets</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="SubSets" asp-action="Index">SubSets</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="Sets" asp-action="Index">Sets</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="WorkoutRoutines" asp-action="Index">Rutinas de entrenamiento</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Historial</a>
+                            <div class="dropdown-menu" style="">
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="DataTakes" asp-action="Index">Listado</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="DataTakes" asp-action="Create">Nueva toma de datos</a>
                             </div>
                         </li>
                     </ul>
