@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using bFit.Web.Data;
 using bFit.WEB.Data.Entities;
 using Microsoft.AspNetCore.Identity;
+using bFit.Web.Helpers;
 
 namespace bFit.Web
 {
@@ -32,6 +33,8 @@ namespace bFit.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContext")));
 
+            services.AddTransient<DbSeeder>();
+
             services.AddIdentity<User, IdentityRole>(cfg =>
             {
                 cfg.User.RequireUniqueEmail = true;
@@ -42,6 +45,7 @@ namespace bFit.Web
                 cfg.Password.RequireUppercase = false;
             }).AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddScoped<IUserHelper, UserHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
