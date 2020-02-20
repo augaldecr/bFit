@@ -1,12 +1,11 @@
 ﻿using bFit.WEB.Data.Entities.Common;
-using bFit.WEB.Data.Entities.Workouts;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace bFit.WEB.Data.Entities.Profiles
 {
-    public class Athlete : IEntity
+    public class Customer : IEntity
     {
         [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }

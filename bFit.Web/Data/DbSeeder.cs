@@ -1,17 +1,23 @@
-﻿using bFit.WEB.Data.Entities.Common;
+﻿using bFit.Web.Helpers;
+using bFit.WEB.Data.Entities;
+using bFit.WEB.Data.Entities.Common;
+using bFit.WEB.Data.Entities.Profiles;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+#nullable enable
 
 namespace bFit.Web.Data
 {
     public class DbSeeder
     {
         private readonly ApplicationDbContext _applicationDbContext;
+        private readonly IUserHelper _userHelper;
 
-        public DbSeeder(ApplicationDbContext applicationDbContext)
+        public DbSeeder(ApplicationDbContext applicationDbContext, IUserHelper userHelper)
         {
             _applicationDbContext = applicationDbContext;
+            _userHelper = userHelper;
         }
 
         public async Task SeedAsync()
@@ -23,6 +29,88 @@ namespace bFit.Web.Data
             await CheckDistrictsAsync();
             await CheckTownsAsync();
             await CheckGendersAsync();
+            await CheckFranchisesAsync();
+
+            await CheckRoles();
+
+            var town = _applicationDbContext.Towns.FirstOrDefault(t => t.Name.Equals("Guápiles"));
+
+            var admin = await CheckUserAsync("701570777", "Alonso", "Ugalde", "Aguilar", 
+                "augaldecr@gmail.com", "85090266", "Coopevigua 2", town, "Admin");
+            var customer = await CheckUserAsync("701570777", "Alonso", "Ugalde", "Aguilar",
+                "augaldecr@hotmail.com", "85090266", "Coopevigua 2", town, "Customer");
+            await CheckAdminAsync(admin);
+            await CheckCustomerAsync(customer);
+        }
+
+        private async Task CheckFranchisesAsync()
+        {
+            if (!_applicationDbContext.Franchises.Any())
+            {
+                await _applicationDbContext.Franchises.AddAsync(new Franchise { LegalId = "1111", TradeName = "Iron Fit Training",
+                    RegisteredName = "Iron Traing", Email = "irontraining@gmail.com", PhoneNumber = "88888888"});
+                await _applicationDbContext.SaveChangesAsync();
+            }
+        }
+
+        private async Task CheckRoles()
+        {
+            await _userHelper.CheckRoleAsync("Admin");
+            await _userHelper.CheckRoleAsync("FranchiseAdmin");
+            await _userHelper.CheckRoleAsync("GymAdmin");
+            await _userHelper.CheckRoleAsync("Trainer");
+            await _userHelper.CheckRoleAsync("Customer");
+        }
+
+        private async Task<User> CheckUserAsync(string socialSecurityId, string firstName,
+            string lastName1, string lastName2, string email, string phone, string address,
+            Town town, string role)
+        {
+            var user = await _userHelper.GetUserByEmailAsync(email);
+
+            if (user == null)
+            {
+                user = new User
+                {
+                    SocialSecurityId = socialSecurityId,
+                    FirstName = firstName,
+                    LastName1 = lastName1,
+                    LastName2 = lastName2,
+                    Email = email,
+                    UserName = email,
+                    PhoneNumber = phone,
+                    Address = address,
+                    Town = town
+                };
+
+                await _userHelper.AddUserAsync(user, "123456");
+                await _userHelper.AddUserToRoleAsync(user, role);
+            }
+
+            return user;
+        }
+
+        private async Task CheckCustomerAsync(User user)
+        {
+            if (!_applicationDbContext.Customers.Any())
+            {
+                var masculino = _applicationDbContext.Genders.FirstOrDefault(t => t.Name.Equals("Masculino"));
+                var franchise = _applicationDbContext.Franchises.FirstOrDefault(t => t.LegalId.Equals("1111"));
+                var birthday = new DateTime(1984, 04, 01);
+
+                _applicationDbContext.Customers.Add(new Customer { User = user,
+                    Gender = masculino, Franchise = franchise, Birthday = birthday });
+                await _applicationDbContext.SaveChangesAsync();
+            }
+        }
+
+        private async Task CheckAdminAsync(User user)
+        {
+            if (!_applicationDbContext.Admins.Any())
+            {
+                _applicationDbContext.Admins.Add(new Admin { User = user });
+                await _applicationDbContext.SaveChangesAsync();
+            }
         }
 
         private async Task CheckGendersAsync()

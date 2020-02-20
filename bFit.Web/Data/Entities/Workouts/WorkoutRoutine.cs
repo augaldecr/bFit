@@ -13,7 +13,7 @@ namespace bFit.WEB.Data.Entities.Workouts
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Atleta")]
-        public Athlete Athlete { get; set; }
+        public Customer Athlete { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Fecha de inicio")]

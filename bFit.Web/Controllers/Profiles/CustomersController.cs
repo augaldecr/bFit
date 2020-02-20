@@ -10,22 +10,22 @@ using bFit.Web.Data;
 
 namespace bFit.Web.Controllers.Profiles
 {
-    public class AthletesController : Controller
+    public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public AthletesController(ApplicationDbContext context)
+        public CustomersController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Athletes
+        // GET: Customers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Athletes.ToListAsync());
+            return View(await _context.Customers.ToListAsync());
         }
 
-        // GET: Athletes/Details/5
+        // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var athlete = await _context.Athletes
+            var customer = await _context.Customers
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (athlete == null)
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            return View(athlete);
+            return View(customer);
         }
 
-        // GET: Athletes/Create
+        // GET: Customers/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Athletes/Create
+        // POST: Customers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Birthday")] Athlete athlete)
+        public async Task<IActionResult> Create([Bind("Id,Birthday")] Customer customer)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(athlete);
+                _context.Add(customer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(athlete);
+            return View(customer);
         }
 
-        // GET: Athletes/Edit/5
+        // GET: Customers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var athlete = await _context.Athletes.FindAsync(id);
-            if (athlete == null)
+            var customer = await _context.Customers.FindAsync(id);
+            if (customer == null)
             {
                 return NotFound();
             }
-            return View(athlete);
+            return View(customer);
         }
 
-        // POST: Athletes/Edit/5
+        // POST: Customers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Birthday")] Athlete athlete)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Birthday")] Customer customer)
         {
-            if (id != athlete.Id)
+            if (id != customer.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace bFit.Web.Controllers.Profiles
             {
                 try
                 {
-                    _context.Update(athlete);
+                    _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AthleteExists(athlete.Id))
+                    if (!CustomerExists(customer.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace bFit.Web.Controllers.Profiles
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(athlete);
+            return View(customer);
         }
 
-        // GET: Athletes/Delete/5
+        // GET: Customers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var athlete = await _context.Athletes
+            var customer = await _context.Customers
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (athlete == null)
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            return View(athlete);
+            return View(customer);
         }
 
-        // POST: Athletes/Delete/5
+        // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var athlete = await _context.Athletes.FindAsync(id);
-            _context.Athletes.Remove(athlete);
+            var customer = await _context.Customers.FindAsync(id);
+            _context.Customers.Remove(customer);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AthleteExists(int id)
+        private bool CustomerExists(int id)
         {
-            return _context.Athletes.Any(e => e.Id == id);
+            return _context.Customers.Any(e => e.Id == id);
         }
     }
 }

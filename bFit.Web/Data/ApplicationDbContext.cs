@@ -1,27 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using bFit.WEB.Data.Entities.Common;
+﻿using bFit.Web.Data.Entities.Profiles;
 using bFit.WEB.Data.Entities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using bFit.WEB.Data.Entities.Workouts;
+using bFit.WEB.Data.Entities.Common;
 using bFit.WEB.Data.Entities.PersonalData;
 using bFit.WEB.Data.Entities.Profiles;
-using bFit.Web.Data.Entities.Profiles;
+using bFit.WEB.Data.Entities.Workouts;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace bFit.Web.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {
-        public ApplicationDbContext (DbContextOptions<ApplicationDbContext> options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
 
         public DbSet<Admin> Admins { get; set; }
-        public DbSet<Athlete> Athletes { get; set; }
+        public DbSet<Customer> Customers { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<County> Counties { get; set; }
         public DbSet<District> Districts { get; set; }
