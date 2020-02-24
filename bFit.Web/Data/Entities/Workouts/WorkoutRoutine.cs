@@ -12,8 +12,8 @@ namespace bFit.WEB.Data.Entities.Workouts
         public int Id { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
-        [Display(Name = "Atleta")]
-        public Customer Athlete { get; set; }
+        [Display(Name = "Cliente")]
+        public Customer Customer { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Fecha de inicio")]
@@ -32,10 +32,10 @@ namespace bFit.WEB.Data.Entities.Workouts
         [MaxLength(50, ErrorMessage = "El campo {0} no puede exceder los {1} caracteres.")]
         public Goal Goal { get; set; }
 
-        public virtual ICollection<Set> Sets { get; set; }
-
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Trainer")]
         public Trainer Trainer { get; set; }
+
+        public virtual ICollection<Set> Sets { get; set; }
     }
 }

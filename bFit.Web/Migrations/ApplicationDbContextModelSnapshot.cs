@@ -300,9 +300,6 @@ namespace bFit.Web.Migrations
                     b.Property<double>("Hip")
                         .HasColumnType("float");
 
-                    b.Property<int?>("HistoryId")
-                        .HasColumnType("int");
-
                     b.Property<double>("LeftArm")
                         .HasColumnType("float");
 
@@ -356,35 +353,11 @@ namespace bFit.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HistoryId");
-
                     b.HasIndex("ObesityLevelId");
 
                     b.HasIndex("TrainerId");
 
                     b.ToTable("PersonalData");
-                });
-
-            modelBuilder.Entity("bFit.WEB.Data.Entities.PersonalData.History", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AthleteId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GymId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AthleteId");
-
-                    b.HasIndex("GymId");
-
-                    b.ToTable("Histories");
                 });
 
             modelBuilder.Entity("bFit.WEB.Data.Entities.PersonalData.ObesityLevel", b =>
@@ -422,7 +395,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("Admins");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Profiles.Athlete", b =>
+            modelBuilder.Entity("bFit.WEB.Data.Entities.Profiles.Customer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -455,7 +428,7 @@ namespace bFit.Web.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Athletes");
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("bFit.WEB.Data.Entities.Profiles.Franchise", b =>
@@ -736,10 +709,15 @@ namespace bFit.Web.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
                     b.Property<int>("SetTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("WorkoutRoutineId")
+                    b.Property<int>("WorkoutRoutineId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -778,11 +756,6 @@ namespace bFit.Web.Migrations
                     b.Property<int>("ExerciseId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
                     b.Property<int>("NegativeTime")
                         .HasColumnType("int");
 
@@ -792,10 +765,7 @@ namespace bFit.Web.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SetId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WorkoutRoutineId")
+                    b.Property<int>("SetId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -803,8 +773,6 @@ namespace bFit.Web.Migrations
                     b.HasIndex("ExerciseId");
 
                     b.HasIndex("SetId");
-
-                    b.HasIndex("WorkoutRoutineId");
 
                     b.ToTable("SubSets");
                 });
@@ -816,12 +784,12 @@ namespace bFit.Web.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AthleteId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Begins")
                         .HasColumnType("datetime2")
                         .HasMaxLength(50);
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Ends")
                         .HasColumnType("datetime2")
@@ -835,7 +803,7 @@ namespace bFit.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AthleteId");
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("GoalId");
 
@@ -956,10 +924,6 @@ namespace bFit.Web.Migrations
 
             modelBuilder.Entity("bFit.WEB.Data.Entities.PersonalData.DataTake", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.PersonalData.History", null)
-                        .WithMany("PersonalDataTakes")
-                        .HasForeignKey("HistoryId");
-
                     b.HasOne("bFit.WEB.Data.Entities.PersonalData.ObesityLevel", "ObesityLevel")
                         .WithMany()
                         .HasForeignKey("ObesityLevelId")
@@ -973,21 +937,6 @@ namespace bFit.Web.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.PersonalData.History", b =>
-                {
-                    b.HasOne("bFit.WEB.Data.Entities.Profiles.Athlete", "Athlete")
-                        .WithMany()
-                        .HasForeignKey("AthleteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("bFit.WEB.Data.Entities.Profiles.Franchise", "Gym")
-                        .WithMany()
-                        .HasForeignKey("GymId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("bFit.WEB.Data.Entities.Profiles.Admin", b =>
                 {
                     b.HasOne("bFit.WEB.Data.Entities.User", "User")
@@ -997,7 +946,7 @@ namespace bFit.Web.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Profiles.Athlete", b =>
+            modelBuilder.Entity("bFit.WEB.Data.Entities.Profiles.Customer", b =>
                 {
                     b.HasOne("bFit.WEB.Data.Entities.Profiles.Franchise", "Franchise")
                         .WithMany()
@@ -1012,7 +961,7 @@ namespace bFit.Web.Migrations
                         .IsRequired();
 
                     b.HasOne("bFit.WEB.Data.Entities.Profiles.LocalGym", null)
-                        .WithMany("Athletes")
+                        .WithMany("Customers")
                         .HasForeignKey("LocalGymId");
 
                     b.HasOne("bFit.WEB.Data.Entities.User", "User")
@@ -1093,9 +1042,11 @@ namespace bFit.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("bFit.WEB.Data.Entities.Workouts.WorkoutRoutine", null)
+                    b.HasOne("bFit.WEB.Data.Entities.Workouts.WorkoutRoutine", "WorkoutRoutine")
                         .WithMany("Sets")
-                        .HasForeignKey("WorkoutRoutineId");
+                        .HasForeignKey("WorkoutRoutineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("bFit.WEB.Data.Entities.Workouts.SubSet", b =>
@@ -1106,22 +1057,18 @@ namespace bFit.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("bFit.WEB.Data.Entities.Workouts.Set", null)
-                        .WithMany("SubSeries")
-                        .HasForeignKey("SetId");
-
-                    b.HasOne("bFit.WEB.Data.Entities.Workouts.WorkoutRoutine", "WorkoutRoutine")
-                        .WithMany()
-                        .HasForeignKey("WorkoutRoutineId")
+                    b.HasOne("bFit.WEB.Data.Entities.Workouts.Set", "Set")
+                        .WithMany("SubSets")
+                        .HasForeignKey("SetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("bFit.WEB.Data.Entities.Workouts.WorkoutRoutine", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.Profiles.Athlete", "Athlete")
+                    b.HasOne("bFit.WEB.Data.Entities.Profiles.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("AthleteId")
+                        .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -12,9 +12,7 @@ namespace bFit.Web.Data
     public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
+            : base(options) { }
 
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Customer> Customers { get; set; }
@@ -29,7 +27,6 @@ namespace bFit.Web.Data
         public DbSet<Goal> Goals { get; set; }
         public DbSet<GymAdmin> GymAdmins { get; set; }
         public DbSet<LocalGym> Gyms { get; set; }
-        public DbSet<History> Histories { get; set; }
         public DbSet<ObesityLevel> ObesityLevels { get; set; }
         public DbSet<DataTake> PersonalData { get; set; }
         public DbSet<Set> Sets { get; set; }

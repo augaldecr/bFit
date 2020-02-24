@@ -1,7 +1,9 @@
 ﻿using bFit.Web.Helpers;
 using bFit.WEB.Data.Entities;
 using bFit.WEB.Data.Entities.Common;
+using bFit.WEB.Data.Entities.PersonalData;
 using bFit.WEB.Data.Entities.Profiles;
+using bFit.WEB.Data.Entities.Workouts;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,32 +25,319 @@ namespace bFit.Web.Data
         public async Task SeedAsync()
         {
             await _applicationDbContext.Database.EnsureCreatedAsync();
+
             await CheckCountriesAsync();
             await CheckStatesAsync();
             await CheckCountiesAsync();
             await CheckDistrictsAsync();
             await CheckTownsAsync();
             await CheckGendersAsync();
+            await CheckObesityLevelAsync();
             await CheckFranchisesAsync();
+            await CheckGymsAsync();
+
+            await CheckExerciseTypesAsync();
+            await CheckExercisesAsync();
+            await CheckGoalsAsync();
 
             await CheckRoles();
 
-            var town = _applicationDbContext.Towns.FirstOrDefault(t => t.Name.Equals("Guápiles"));
-
-            var admin = await CheckUserAsync("701570777", "Alonso", "Ugalde", "Aguilar", 
-                "augaldecr@gmail.com", "85090266", "Coopevigua 2", town, "Admin");
+            var admin = await CheckUserAsync("701570777", "Alonso", "Ugalde", "Aguilar",
+                "augaldecr@gmail.com", "85090266", "Coopevigua 2", "Admin");
             var customer = await CheckUserAsync("701570777", "Alonso", "Ugalde", "Aguilar",
-                "augaldecr@hotmail.com", "85090266", "Coopevigua 2", town, "Customer");
+                "augaldecr@hotmail.com", "85090266", "Coopevigua 2", "Customer");
+            var trainer = await CheckUserAsync("701570888", "Alonso", "Ugalde", "Aguilar",
+                "alonsougaldecr@gmail.com", "85090266", "Coopevigua 2", "Trainer");
+
             await CheckAdminAsync(admin);
             await CheckCustomerAsync(customer);
+            await CheckTrainerAsync(trainer);
+
+            await CheckSetTypesAsync();
+            await CheckWorkoutsAsync();
+            await CheckSubSetsAsync();
+
+            await CheckDataTakeAsync();
+        }
+
+        private async Task CheckWorkoutsAsync()
+        {
+            if (!_applicationDbContext.WorkoutRoutines.Any())
+            {
+                var customer = _applicationDbContext.Customers.FirstOrDefault();
+                var goal = _applicationDbContext.Goals.FirstOrDefault();
+                var trainer = _applicationDbContext.Trainers.FirstOrDefault();
+
+                await _applicationDbContext.WorkoutRoutines.AddAsync(
+                    new WorkoutRoutine
+                    {
+                        Customer = customer,
+                        Begins = new DateTime(2020, 03, 1),
+                        Ends = new DateTime(2020, 03, 31),
+                        Goal = goal,
+                        Trainer = trainer
+                    });
+                await _applicationDbContext.SaveChangesAsync();
+            }
+        }
+
+        private async Task CheckSubSetsAsync()
+        {
+            if (!_applicationDbContext.SubSets.Any())
+            {
+                var setType = _applicationDbContext.SetTypes.FirstOrDefault();
+                var workOutRoutine = _applicationDbContext.WorkoutRoutines.FirstOrDefault();
+                var customerId = workOutRoutine.Customer.Id;
+
+                var set1 = await CheckSetsAsync($"{customerId}{DateTime.Now}",
+                    setType, workOutRoutine);
+                var set2 = await CheckSetsAsync($"{customerId}{DateTime.Now}",
+                    setType, workOutRoutine);
+                var set3 = await CheckSetsAsync($"{customerId}{DateTime.Now}",
+                    setType, workOutRoutine);
+
+                var exercise1 = _applicationDbContext.Exercises.FirstOrDefault(
+                    e => e.Name == "Sentadilla libre");
+                var exercise2 = _applicationDbContext.Exercises.FirstOrDefault(
+                    e => e.Name.Equals("Sentadilla máquina"));
+                var exercise3 = _applicationDbContext.Exercises.FirstOrDefault(
+                    e => e.Name.Equals("Desplante"));
+                var exercise4 = _applicationDbContext.Exercises.FirstOrDefault(
+                    e => e.Name.Equals("Press banca"));
+                var exercise5 = _applicationDbContext.Exercises.FirstOrDefault(
+                    e => e.Name.Equals("Press mancuerna"));
+                var exercise6 = _applicationDbContext.Exercises.FirstOrDefault(
+                    e => e.Name.Equals("Curl barra"));
+
+                await _applicationDbContext.SubSets.AddAsync(
+                    new SubSet
+                    {
+                        Exercise = exercise1,
+                        PositiveTime = 1,
+                        NegativeTime = 3,
+                        Quantity = 8,
+                        Set = set1
+                    });
+                await _applicationDbContext.SubSets.AddAsync(
+                    new SubSet
+                    {
+                        Exercise = exercise2,
+                        PositiveTime = 1,
+                        NegativeTime = 3,
+                        Quantity = 10,
+                        Set = set1
+                    });
+                await _applicationDbContext.SubSets.AddAsync(
+                    new SubSet
+                    {
+                        Exercise = exercise3,
+                        PositiveTime = 1,
+                        NegativeTime = 3,
+                        Quantity = 12,
+                        Set = set2
+                    });
+                await _applicationDbContext.SubSets.AddAsync(
+                    new SubSet
+                    {
+                        Exercise = exercise4,
+                        PositiveTime = 1,
+                        NegativeTime = 3,
+                        Quantity = 12,
+                        Set = set2
+                    });
+                await _applicationDbContext.SubSets.AddAsync(
+                    new SubSet
+                    {
+                        Exercise = exercise5,
+                        PositiveTime = 1,
+                        NegativeTime = 3,
+                        Quantity = 12,
+                        Set = set3
+                    });
+                await _applicationDbContext.SubSets.AddAsync(
+                    new SubSet
+                    {
+                        Exercise = exercise6,
+                        PositiveTime = 1,
+                        NegativeTime = 3,
+                        Quantity = 12,
+                        Set = set3
+                    });
+                await _applicationDbContext.SaveChangesAsync();
+            }
+        }
+
+        private async Task<Set> CheckSetsAsync(string name, SetType setType, WorkoutRoutine workoutRoutine)
+        {
+            var set = _applicationDbContext.Sets.FirstOrDefault(s => s.Name.Equals(name));
+
+            if (set == null)
+            {
+                set = new Set
+                {
+                    Name = name,
+                    SetType = setType,
+                    WorkoutRoutine = workoutRoutine
+                };
+
+                await _applicationDbContext.Sets.AddAsync(set);
+                await _applicationDbContext.SaveChangesAsync();
+                return _applicationDbContext.Sets.FirstOrDefault(s => s.Name.Equals(name));
+            }
+
+            return set;
+        }
+
+        private async Task CheckSetTypesAsync()
+        {
+            if (!_applicationDbContext.SetTypes.Any())
+            {
+                await _applicationDbContext.SetTypes.AddAsync(new SetType { Name = "Escalera" });
+                await _applicationDbContext.SetTypes.AddAsync(new SetType { Name = "Escalera invertida" });
+                await _applicationDbContext.SaveChangesAsync();
+            }
+        }
+
+        private async Task CheckGoalsAsync()
+        {
+            if (!_applicationDbContext.Goals.Any())
+            {
+                await _applicationDbContext.Goals.AddAsync(new Goal { Name = "Condición física" });
+                await _applicationDbContext.Goals.AddAsync(new Goal { Name = "Hipertrofia" });
+                await _applicationDbContext.Goals.AddAsync(new Goal { Name = "Quema de grasa" });
+                await _applicationDbContext.SaveChangesAsync();
+            }
+        }
+
+        private async Task CheckExercisesAsync()
+        {
+            if (!_applicationDbContext.Exercises.Any())
+            {
+                var exerciseType = _applicationDbContext.ExerciseTypes.FirstOrDefault();
+
+                await _applicationDbContext.Exercises.AddAsync(
+                    new Exercise { Name = "Sentadilla libre", ExerciseType = exerciseType });
+                await _applicationDbContext.Exercises.AddAsync(
+                    new Exercise { Name = "Sentadilla máquina", ExerciseType = exerciseType });
+                await _applicationDbContext.Exercises.AddAsync(
+                    new Exercise { Name = "Desplante", ExerciseType = exerciseType });
+                await _applicationDbContext.Exercises.AddAsync(
+                    new Exercise { Name = "Press banca", ExerciseType = exerciseType });
+                await _applicationDbContext.Exercises.AddAsync(
+                    new Exercise { Name = "Press mancuerna", ExerciseType = exerciseType });
+                await _applicationDbContext.Exercises.AddAsync(
+                    new Exercise { Name = "Curl barra", ExerciseType = exerciseType });
+                await _applicationDbContext.SaveChangesAsync();
+            }
+        }
+
+        private async Task CheckExerciseTypesAsync()
+        {
+            if (!_applicationDbContext.ExerciseTypes.Any())
+            {
+                await _applicationDbContext.ExerciseTypes.AddAsync(new ExerciseType { Name = "Aeróbico" });
+                await _applicationDbContext.ExerciseTypes.AddAsync(new ExerciseType { Name = "Anaeróbico" });
+                await _applicationDbContext.ExerciseTypes.AddAsync(new ExerciseType { Name = "Flexibilidad" });
+                await _applicationDbContext.SaveChangesAsync();
+            }
+        }
+
+        private async Task CheckObesityLevelAsync()
+        {
+            if (!_applicationDbContext.ObesityLevels.Any())
+            {
+                await _applicationDbContext.ObesityLevels.AddAsync(new ObesityLevel { Name = "Normal" });
+                await _applicationDbContext.ObesityLevels.AddAsync(new ObesityLevel { Name = "Sobrepeso" });
+                await _applicationDbContext.ObesityLevels.AddAsync(new ObesityLevel { Name = "Obesidad 1" });
+                await _applicationDbContext.ObesityLevels.AddAsync(new ObesityLevel { Name = "Obesidad 2" });
+                await _applicationDbContext.SaveChangesAsync();
+            }
+        }
+
+        private async Task CheckGymsAsync()
+        {
+            if (!_applicationDbContext.Gyms.Any())
+            {
+                var franchise = _applicationDbContext.Franchises.FirstOrDefault(f => f.LegalId.Equals("1111"));
+                var town = _applicationDbContext.Towns.FirstOrDefault(t => t.Name.Equals("Guápiles"));
+
+                await _applicationDbContext.Gyms.AddAsync(new LocalGym
+                {
+                    Email = "contacto@irontraining.com",
+                    PhoneNumber = "22222222",
+                    Address = "Guápiles centro",
+                    Franchise = franchise,
+                    Town = town
+                });
+                await _applicationDbContext.SaveChangesAsync();
+            }
+        }
+
+        private async Task CheckTrainerAsync(User user)
+        {
+            if (!_applicationDbContext.Trainers.Any())
+            {
+                var gym = _applicationDbContext.Gyms.FirstOrDefault(t => t.Email.Equals("contacto@irontraining.com"));
+
+                await _applicationDbContext.Trainers.AddAsync(new Trainer
+                {
+                    User = user,
+                    Gym = gym
+                });
+                await _applicationDbContext.SaveChangesAsync();
+            }
+        }
+
+        private async Task CheckDataTakeAsync()
+        {
+            if (!_applicationDbContext.PersonalData.Any())
+            {
+                var trainer = _applicationDbContext.Trainers.FirstOrDefault();
+                var obesityLevel = _applicationDbContext.ObesityLevels.FirstOrDefault();
+
+                await _applicationDbContext.PersonalData.AddAsync(new DataTake
+                {
+                    Trainer = trainer,
+                    Date = new DateTime(2020, 03, 01),
+                    Height = 1.85,
+                    Weight = 95,
+                    MuscleEsquelethicalMassKG = 50,
+                    FatMassKG = 15,
+                    WaterMass = 30,
+                    MetabolicAge = 65,
+                    ChestBack = 100,
+                    Waist = 100,
+                    Abdomen = 90,
+                    Hip = 90,
+                    LeftArm = 35,
+                    RightArm = 35,
+                    LeftQuadriceps = 35,
+                    RightQuadriceps = 35,
+                    LeftCalf = 35,
+                    RightCalf = 35,
+                    LeftForearm = 35,
+                    RightForearm = 35,
+                    VisceralFatLevel = 5,
+                    BasalMetabolicRate = 1500,
+                    RecommendedCaloricIntake = 1450,
+                    ObesityLevel = obesityLevel
+                });
+                await _applicationDbContext.SaveChangesAsync();
+            }
         }
 
         private async Task CheckFranchisesAsync()
         {
             if (!_applicationDbContext.Franchises.Any())
             {
-                await _applicationDbContext.Franchises.AddAsync(new Franchise { LegalId = "1111", TradeName = "Iron Fit Training",
-                    RegisteredName = "Iron Traing", Email = "irontraining@gmail.com", PhoneNumber = "88888888"});
+                await _applicationDbContext.Franchises.AddAsync(new Franchise
+                {
+                    LegalId = "1111",
+                    TradeName = "Iron Fit Training",
+                    RegisteredName = "Iron Traing",
+                    Email = "irontraining@gmail.com",
+                    PhoneNumber = "88888888"
+                });
                 await _applicationDbContext.SaveChangesAsync();
             }
         }
@@ -63,13 +352,14 @@ namespace bFit.Web.Data
         }
 
         private async Task<User> CheckUserAsync(string socialSecurityId, string firstName,
-            string lastName1, string lastName2, string email, string phone, string address,
-            Town town, string role)
+            string lastName1, string lastName2, string email, string phone, string address, string role)
         {
             var user = await _userHelper.GetUserByEmailAsync(email);
 
             if (user == null)
             {
+                var town = _applicationDbContext.Towns.FirstOrDefault(t => t.Name.Equals("Guápiles"));
+
                 user = new User
                 {
                     SocialSecurityId = socialSecurityId,
@@ -98,8 +388,13 @@ namespace bFit.Web.Data
                 var franchise = _applicationDbContext.Franchises.FirstOrDefault(t => t.LegalId.Equals("1111"));
                 var birthday = new DateTime(1984, 04, 01);
 
-                _applicationDbContext.Customers.Add(new Customer { User = user,
-                    Gender = masculino, Franchise = franchise, Birthday = birthday });
+                await _applicationDbContext.Customers.AddAsync(new Customer
+                {
+                    User = user,
+                    Gender = masculino,
+                    Franchise = franchise,
+                    Birthday = birthday
+                });
                 await _applicationDbContext.SaveChangesAsync();
             }
         }
@@ -250,7 +545,7 @@ namespace bFit.Web.Data
             await _applicationDbContext.Counties.AddAsync(new County { Name = "Jiménez", State = state });
             await _applicationDbContext.Counties.AddAsync(new County { Name = "Turrialba", State = state });
             await _applicationDbContext.Counties.AddAsync(new County { Name = "Alvarado", State = state });
-            await _applicationDbContext.Counties.AddAsync(new County { Name = "Oreamuno", State = state });            await _applicationDbContext.Counties.AddAsync(new County { Name = "San Carlos", State = state });
+            await _applicationDbContext.Counties.AddAsync(new County { Name = "Oreamuno", State = state }); await _applicationDbContext.Counties.AddAsync(new County { Name = "San Carlos", State = state });
             await _applicationDbContext.Counties.AddAsync(new County { Name = "El Guarco", State = state });
             await _applicationDbContext.SaveChangesAsync();
         }

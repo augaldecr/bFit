@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using bFit.Web.Data;
+using bFit.WEB.Data.Entities.Workouts;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using bFit.WEB.Data.Entities.Workouts;
-using bFit.Web.Data;
 
 namespace bFit.Web.Controllers.Workouts
 {
@@ -54,7 +51,7 @@ namespace bFit.Web.Controllers.Workouts
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id")] Set @set)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Set @set)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +83,7 @@ namespace bFit.Web.Controllers.Workouts
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] Set @set)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Set @set)
         {
             if (id != @set.Id)
             {

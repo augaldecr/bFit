@@ -17,6 +17,12 @@
     <Compile Remove="Migrations\20200112050803_Entities.Designer.cs" />
     <Compile Remove="Migrations\20200112051111_Entities.cs" />
     <Compile Remove="Migrations\20200112051111_Entities.Designer.cs" />
+    <Compile Remove="Migrations\20200112051357_Entities.cs" />
+    <Compile Remove="Migrations\20200112051357_Entities.Designer.cs" />
+    <Compile Remove="Migrations\20200215233614_20200215.cs" />
+    <Compile Remove="Migrations\20200215233614_20200215.Designer.cs" />
+    <Compile Remove="Migrations\20200220043147_InitialDB.cs" />
+    <Compile Remove="Migrations\20200220043147_InitialDB.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +36,10 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 

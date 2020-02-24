@@ -39,8 +39,8 @@ namespace bFit.WEB.Data.Entities.Profiles
         [Display(Name = "Entrenadores")]
         public virtual ICollection<Trainer> Trainers { get; set; }
 
-        [Display(Name = "Atletas")]
-        public virtual ICollection<Customer> Athletes { get; set; }
+        [Display(Name = "Clientes")]
+        public virtual ICollection<Customer> Customers { get; set; }
 
         [Display(Name = "Administradores de gimnasio")]
         public virtual ICollection<GymAdmin> GymAdmins { get; set; }
