@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using bFit.Web.Data;
+using bFit.Web.Data.Entities.Profiles;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using bFit.Web.Data;
-using bFit.Web.Data.Entities.Profiles;
 
 namespace bFit.Web.Controllers.Profiles
 {
+    [Authorize(Roles = "Admin")]
     public class FranchiseAdminsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -33,7 +32,7 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var franchiseAdmin = await _context.FranchiseAdmins
+            FranchiseAdmin franchiseAdmin = await _context.FranchiseAdmins
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (franchiseAdmin == null)
             {
@@ -73,7 +72,7 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var franchiseAdmin = await _context.FranchiseAdmins.FindAsync(id);
+            FranchiseAdmin franchiseAdmin = await _context.FranchiseAdmins.FindAsync(id);
             if (franchiseAdmin == null)
             {
                 return NotFound();
@@ -124,7 +123,7 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var franchiseAdmin = await _context.FranchiseAdmins
+            FranchiseAdmin franchiseAdmin = await _context.FranchiseAdmins
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (franchiseAdmin == null)
             {
@@ -139,7 +138,7 @@ namespace bFit.Web.Controllers.Profiles
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var franchiseAdmin = await _context.FranchiseAdmins.FindAsync(id);
+            FranchiseAdmin franchiseAdmin = await _context.FranchiseAdmins.FindAsync(id);
             _context.FranchiseAdmins.Remove(franchiseAdmin);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

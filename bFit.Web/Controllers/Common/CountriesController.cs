@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using bFit.Web.Data;
+using bFit.WEB.Data.Entities.Common;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using bFit.WEB.Data.Entities.Common;
-using bFit.Web.Data;
 
 namespace bFit.Web.Controllers.Common
 {
+    [Authorize(Roles = "Admin")]
     public class CountriesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -33,7 +32,7 @@ namespace bFit.Web.Controllers.Common
                 return NotFound();
             }
 
-            var country = await _context.Countries
+            Country country = await _context.Countries
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (country == null)
             {
@@ -73,7 +72,7 @@ namespace bFit.Web.Controllers.Common
                 return NotFound();
             }
 
-            var country = await _context.Countries.FindAsync(id);
+            Country country = await _context.Countries.FindAsync(id);
             if (country == null)
             {
                 return NotFound();
@@ -124,7 +123,7 @@ namespace bFit.Web.Controllers.Common
                 return NotFound();
             }
 
-            var country = await _context.Countries
+            Country country = await _context.Countries
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (country == null)
             {
@@ -139,7 +138,7 @@ namespace bFit.Web.Controllers.Common
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var country = await _context.Countries.FindAsync(id);
+            Country country = await _context.Countries.FindAsync(id);
             _context.Countries.Remove(country);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

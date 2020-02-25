@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using bFit.Web.Data;
+using bFit.WEB.Data.Entities.Profiles;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using bFit.WEB.Data.Entities.Profiles;
-using bFit.Web.Data;
 
 namespace bFit.Web.Controllers.Profiles
 {
+    [Authorize(Roles = "Admin")]
     public class FranchisesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -33,7 +32,7 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var franchise = await _context.Franchises
+            Franchise franchise = await _context.Franchises
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (franchise == null)
             {
@@ -73,7 +72,7 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var franchise = await _context.Franchises.FindAsync(id);
+            Franchise franchise = await _context.Franchises.FindAsync(id);
             if (franchise == null)
             {
                 return NotFound();
@@ -124,7 +123,7 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var franchise = await _context.Franchises
+            Franchise franchise = await _context.Franchises
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (franchise == null)
             {
@@ -139,7 +138,7 @@ namespace bFit.Web.Controllers.Profiles
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var franchise = await _context.Franchises.FindAsync(id);
+            Franchise franchise = await _context.Franchises.FindAsync(id);
             _context.Franchises.Remove(franchise);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

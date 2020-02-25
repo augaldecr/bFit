@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using bFit.Web.Data;
+using bFit.WEB.Data.Entities.Common;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using bFit.WEB.Data.Entities.Common;
-using bFit.Web.Data;
 
 namespace bFit.Web.Controllers.Common
 {
+    [Authorize(Roles = "Admin")]
     public class GendersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -33,7 +32,7 @@ namespace bFit.Web.Controllers.Common
                 return NotFound();
             }
 
-            var gender = await _context.Genders
+            Gender gender = await _context.Genders
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (gender == null)
             {
@@ -73,7 +72,7 @@ namespace bFit.Web.Controllers.Common
                 return NotFound();
             }
 
-            var gender = await _context.Genders.FindAsync(id);
+            Gender gender = await _context.Genders.FindAsync(id);
             if (gender == null)
             {
                 return NotFound();
@@ -124,7 +123,7 @@ namespace bFit.Web.Controllers.Common
                 return NotFound();
             }
 
-            var gender = await _context.Genders
+            Gender gender = await _context.Genders
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (gender == null)
             {
@@ -139,7 +138,7 @@ namespace bFit.Web.Controllers.Common
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var gender = await _context.Genders.FindAsync(id);
+            Gender gender = await _context.Genders.FindAsync(id);
             _context.Genders.Remove(gender);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

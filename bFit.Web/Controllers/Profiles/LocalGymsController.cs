@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using bFit.Web.Data;
+using bFit.WEB.Data.Entities.Profiles;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using bFit.WEB.Data.Entities.Profiles;
-using bFit.Web.Data;
 
 namespace bFit.Web.Controllers.Profiles
 {
+    [Authorize(Roles = "Admin")]
     public class LocalGymsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -33,7 +32,7 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var localGym = await _context.Gyms
+            LocalGym localGym = await _context.Gyms
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (localGym == null)
             {
@@ -73,7 +72,7 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var localGym = await _context.Gyms.FindAsync(id);
+            LocalGym localGym = await _context.Gyms.FindAsync(id);
             if (localGym == null)
             {
                 return NotFound();
@@ -124,7 +123,7 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var localGym = await _context.Gyms
+            LocalGym localGym = await _context.Gyms
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (localGym == null)
             {
@@ -139,7 +138,7 @@ namespace bFit.Web.Controllers.Profiles
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var localGym = await _context.Gyms.FindAsync(id);
+            LocalGym localGym = await _context.Gyms.FindAsync(id);
             _context.Gyms.Remove(localGym);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

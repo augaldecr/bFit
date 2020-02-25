@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using bFit.WEB.Data.Entities.Common;
 using bFit.Web.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace bFit.Web.Controllers.Common
 {
+    [Authorize(Roles = "Admin")]
     public class CountiesController : Controller
     {
         private readonly ApplicationDbContext _context;

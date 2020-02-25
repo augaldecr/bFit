@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using bFit.Web.Data;
+using bFit.WEB.Data.Entities.Profiles;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using bFit.WEB.Data.Entities.Profiles;
-using bFit.Web.Data;
 
 namespace bFit.Web.Controllers.Profiles
 {
+    [Authorize(Roles = "Admin")]
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -33,7 +32,7 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var customer = await _context.Customers
+            Customer customer = await _context.Customers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
@@ -73,7 +72,7 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var customer = await _context.Customers.FindAsync(id);
+            Customer customer = await _context.Customers.FindAsync(id);
             if (customer == null)
             {
                 return NotFound();
@@ -124,7 +123,7 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var customer = await _context.Customers
+            Customer customer = await _context.Customers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
@@ -139,7 +138,7 @@ namespace bFit.Web.Controllers.Profiles
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
+            Customer customer = await _context.Customers.FindAsync(id);
             _context.Customers.Remove(customer);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

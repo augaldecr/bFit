@@ -1,4 +1,5 @@
-﻿using bFit.WEB.Data.Entities;
+﻿using bFit.Web.Models;
+using bFit.WEB.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
@@ -15,5 +16,9 @@ namespace bFit.Web.Helpers
         Task AddUserToRoleAsync(User user, string roleName);
 
         Task<bool> IsUserInRoleAsync(User user, string roleName);
+
+        Task<SignInResult> LoginAsync(LoginViewModel model);
+
+        Task LogoutAsync();
     }
 }

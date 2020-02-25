@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using bFit.Web.Data;
+using bFit.WEB.Data.Entities.Common;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using bFit.WEB.Data.Entities.Common;
-using bFit.Web.Data;
 
 namespace bFit.Web.Controllers.Common
 {
+    [Authorize(Roles = "Admin")]
     public class StatesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -33,7 +32,7 @@ namespace bFit.Web.Controllers.Common
                 return NotFound();
             }
 
-            var state = await _context.States
+            State state = await _context.States
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (state == null)
             {
@@ -73,7 +72,7 @@ namespace bFit.Web.Controllers.Common
                 return NotFound();
             }
 
-            var state = await _context.States.FindAsync(id);
+            State state = await _context.States.FindAsync(id);
             if (state == null)
             {
                 return NotFound();
@@ -124,7 +123,7 @@ namespace bFit.Web.Controllers.Common
                 return NotFound();
             }
 
-            var state = await _context.States
+            State state = await _context.States
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (state == null)
             {
@@ -139,7 +138,7 @@ namespace bFit.Web.Controllers.Common
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var state = await _context.States.FindAsync(id);
+            State state = await _context.States.FindAsync(id);
             _context.States.Remove(state);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
