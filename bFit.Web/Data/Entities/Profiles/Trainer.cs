@@ -1,10 +1,10 @@
-﻿using bFit.WEB.Data.Entities.Workouts;
+﻿using bFit.Web.Data.Entities.Profiles;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace bFit.WEB.Data.Entities.Profiles
 {
-    public class Trainer : IEntity, IGymEmployee
+    public class Trainer : IEntity, IFranchiseEmployee
     {
         [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }
@@ -15,6 +15,6 @@ namespace bFit.WEB.Data.Entities.Profiles
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Gimnasio")]
-        public LocalGym Gym { get; set; }
+        public Franchise Franchise { get; set; }
     }
 }

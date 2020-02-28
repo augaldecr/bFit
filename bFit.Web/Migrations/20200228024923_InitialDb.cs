@@ -445,18 +445,11 @@ namespace bFit.Web.Migrations
                     Birthday = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<string>(nullable: false),
                     GenderId = table.Column<int>(nullable: false),
-                    FranchiseId = table.Column<int>(nullable: false),
-                    LocalGymId = table.Column<int>(nullable: true)
+                    GymId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Customers_Franchises_FranchiseId",
-                        column: x => x.FranchiseId,
-                        principalTable: "Franchises",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Customers_Genders_GenderId",
                         column: x => x.GenderId,
@@ -464,17 +457,17 @@ namespace bFit.Web.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Customers_Gyms_LocalGymId",
-                        column: x => x.LocalGymId,
+                        name: "FK_Customers_Gyms_GymId",
+                        column: x => x.GymId,
                         principalTable: "Gyms",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Customers_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -484,23 +477,30 @@ namespace bFit.Web.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(nullable: false),
-                    GymId = table.Column<int>(nullable: false)
+                    FranchiseId = table.Column<int>(nullable: false),
+                    LocalGymId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GymAdmins", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GymAdmins_Gyms_GymId",
-                        column: x => x.GymId,
-                        principalTable: "Gyms",
+                        name: "FK_GymAdmins_Franchises_FranchiseId",
+                        column: x => x.FranchiseId,
+                        principalTable: "Franchises",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GymAdmins_Gyms_LocalGymId",
+                        column: x => x.LocalGymId,
+                        principalTable: "Gyms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_GymAdmins_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -510,23 +510,30 @@ namespace bFit.Web.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(nullable: false),
-                    GymId = table.Column<int>(nullable: false)
+                    FranchiseId = table.Column<int>(nullable: false),
+                    LocalGymId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Trainers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Trainers_Gyms_GymId",
-                        column: x => x.GymId,
-                        principalTable: "Gyms",
+                        name: "FK_Trainers_Franchises_FranchiseId",
+                        column: x => x.FranchiseId,
+                        principalTable: "Franchises",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Trainers_Gyms_LocalGymId",
+                        column: x => x.LocalGymId,
+                        principalTable: "Gyms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Trainers_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -723,19 +730,14 @@ namespace bFit.Web.Migrations
                 column: "StateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customers_FranchiseId",
-                table: "Customers",
-                column: "FranchiseId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Customers_GenderId",
                 table: "Customers",
                 column: "GenderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customers_LocalGymId",
+                name: "IX_Customers_GymId",
                 table: "Customers",
-                column: "LocalGymId");
+                column: "GymId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customers_UserId",
@@ -763,9 +765,14 @@ namespace bFit.Web.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GymAdmins_GymId",
+                name: "IX_GymAdmins_FranchiseId",
                 table: "GymAdmins",
-                column: "GymId");
+                column: "FranchiseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GymAdmins_LocalGymId",
+                table: "GymAdmins",
+                column: "LocalGymId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GymAdmins_UserId",
@@ -823,9 +830,14 @@ namespace bFit.Web.Migrations
                 column: "DistrictId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Trainers_GymId",
+                name: "IX_Trainers_FranchiseId",
                 table: "Trainers",
-                column: "GymId");
+                column: "FranchiseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Trainers_LocalGymId",
+                table: "Trainers",
+                column: "LocalGymId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trainers_UserId",

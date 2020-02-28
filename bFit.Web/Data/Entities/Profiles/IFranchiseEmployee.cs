@@ -3,7 +3,7 @@ using bFit.WEB.Data.Entities.Profiles;
 
 namespace bFit.Web.Data.Entities.Profiles
 {
-    interface IFranchiseEmployee
+    public interface IFranchiseEmployee
     {
         public int Id { get; set; }
         public User User { get; set; }

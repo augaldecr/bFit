@@ -277,12 +277,14 @@ namespace bFit.Web.Data
         {
             if (!_applicationDbContext.Trainers.Any())
             {
-                var gym = _applicationDbContext.Gyms.FirstOrDefault(t => t.Email.Equals("contacto@irontraining.com"));
+                //var gym = _applicationDbContext.Gyms.FirstOrDefault(t => t.Email.Equals("contacto@irontraining.com"));
+                var franchise = _applicationDbContext.Franchises.FirstOrDefault(
+                    t => t.Email.Equals("irontraining@gmail.com"));
 
                 await _applicationDbContext.Trainers.AddAsync(new Trainer
                 {
                     User = user,
-                    Gym = gym
+                    Franchise = franchise
                 });
                 await _applicationDbContext.SaveChangesAsync();
             }
@@ -385,14 +387,14 @@ namespace bFit.Web.Data
             if (!_applicationDbContext.Customers.Any())
             {
                 var masculino = _applicationDbContext.Genders.FirstOrDefault(t => t.Name.Equals("Masculino"));
-                var franchise = _applicationDbContext.Franchises.FirstOrDefault(t => t.LegalId.Equals("1111"));
+                var gym = _applicationDbContext.Gyms.FirstOrDefault();
                 var birthday = new DateTime(1984, 04, 01);
 
                 await _applicationDbContext.Customers.AddAsync(new Customer
                 {
                     User = user,
                     Gender = masculino,
-                    Franchise = franchise,
+                    Gym = gym,
                     Birthday = birthday
                 });
                 await _applicationDbContext.SaveChangesAsync();

@@ -25,6 +25,6 @@ namespace bFit.WEB.Data.Entities.Profiles
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Gimnasio")]
-        public Franchise Franchise { get; set; }
+        public LocalGym Gym { get; set; }
     }
 }

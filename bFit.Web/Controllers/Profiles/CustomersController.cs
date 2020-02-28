@@ -1,8 +1,12 @@
 ﻿using bFit.Web.Data;
+using bFit.Web.Data.Entities.Profiles;
+using bFit.Web.Helpers;
+using bFit.Web.Models;
 using bFit.WEB.Data.Entities.Profiles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,16 +16,48 @@ namespace bFit.Web.Controllers.Profiles
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IUserHelper _userHelper;
+        private readonly IEmployeeHelper _employeeHelper;
 
-        public CustomersController(ApplicationDbContext context)
+        public CustomersController(ApplicationDbContext context, 
+            IUserHelper userHelper,
+            IEmployeeHelper employeeHelper)
         {
             _context = context;
+            _userHelper = userHelper;
+            _employeeHelper = employeeHelper;
         }
 
-        // GET: Customers
+        // GET: Customers  alonsougaldecr@gmail.com
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Customers.ToListAsync());
+            var emp = _employeeHelper.EmployeeAsync("alonsougaldecr@gmail.com");
+
+            IList<Customer> customers = new List<Customer>();
+
+            if (emp.GetType() == typeof(FranchiseAdmin))
+            {
+                var franAdmin = await _context.FranchiseAdmins.FirstOrDefaultAsync(
+                    f => f.User.Email == "alonsougaldecr@gmail.com");
+                var franchise = await _context.Franchises.FirstOrDefaultAsync(
+                    f => f == franAdmin.Franchise);
+                customers = await _context.Customers.Where(
+                    c => c.Gym.Franchise == franchise).ToListAsync();
+            }
+
+            if (emp.GetType() == typeof(GymAdmin))
+            {
+                var gymAdmin = _context.GymAdmins.FirstOrDefaultAsync(
+                    g => g.User.Email == "alonsougaldecr@gmail.com");
+            }
+
+            if (emp.GetType() == typeof(Trainer))
+            {
+                var trainer = _context.Trainers.FirstOrDefaultAsync(
+                    t => t.User.Email == "alonsougaldecr@gmail.com");
+            }
+
+            return View( await _context.Customers.ToListAsync());
         }
 
         // GET: Customers/Details/5
@@ -42,26 +78,22 @@ namespace bFit.Web.Controllers.Profiles
             return View(customer);
         }
 
-        // GET: Customers/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Customers/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Birthday")] Customer customer)
+        public async Task<IActionResult> Create(CustomerViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customer);
+                _context.Add(model);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(customer);
+            return View(model);
         }
 
         // GET: Customers/Edit/5

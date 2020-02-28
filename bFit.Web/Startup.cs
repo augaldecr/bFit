@@ -46,6 +46,7 @@ namespace bFit.Web
             }).AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<IUserHelper, UserHelper>();
+            services.AddScoped<IEmployeeHelper, EmployeeHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

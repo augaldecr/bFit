@@ -23,6 +23,8 @@
     <Compile Remove="Migrations\20200215233614_20200215.Designer.cs" />
     <Compile Remove="Migrations\20200220043147_InitialDB.cs" />
     <Compile Remove="Migrations\20200220043147_InitialDB.Designer.cs" />
+    <Compile Remove="Migrations\20200222192638_InitialDb.cs" />
+    <Compile Remove="Migrations\20200222192638_InitialDb.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,10 +39,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 

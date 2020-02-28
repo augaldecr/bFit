@@ -4,20 +4,7 @@
     ViewData["Title"] = "Cantones";
 }
 
-<div class="row">
-    <div class="col-md-12">
-
-        <div class="card">
-            <div class="card-header">
-
-                <ul class="list-group list-group-horizontal">
-                    <li class="list-group-item"><h3 class="card-title">Cantones</h3></li>
-                    <partial name="Controls/_BtnNew" />
-                </ul>
-
-            </div>
-            <div class="card-body">
-                <table class="table table-striped table-bordered table-hover" id="data_table">
+<partial name="IndexList/_Header" />
                     <thead>
                         <tr>
                             <th>
@@ -34,18 +21,11 @@
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </td>
                                 <td>
-                                    <partial name="Controls/_BtnEdit" model="item" />
-                                    <partial name="Controls/_BtnDetails" model="item" />
-                                    <partial name="Controls/_BtnDelete" model="item" />
+                                    <partial name="IndexList/_BtnEdit" model="item" />
+                                    <partial name="IndexList/_BtnDetails" model="item" />
+                                    <partial name="IndexList/_BtnDelete" model="item" />
                                 </td>
                             </tr>
                         }
                     </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
+<partial name="IndexList/_Footer" />
