@@ -259,7 +259,7 @@ namespace bFit.Web.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    SocialSecurityId = table.Column<string>(nullable: false),
+                    SocialSecurity = table.Column<string>(nullable: false),
                     FirstName = table.Column<string>(nullable: false),
                     LastName1 = table.Column<string>(nullable: false),
                     LastName2 = table.Column<string>(nullable: true),
@@ -322,7 +322,7 @@ namespace bFit.Web.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -433,7 +433,7 @@ namespace bFit.Web.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -533,7 +533,7 @@ namespace bFit.Web.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -723,6 +723,13 @@ namespace bFit.Web.Migrations
                 name: "IX_AspNetUsers_TownId",
                 table: "AspNetUsers",
                 column: "TownId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_SocialSecurity_Email",
+                table: "AspNetUsers",
+                columns: new[] { "SocialSecurity", "Email" },
+                unique: true,
+                filter: "[Email] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Counties_StateId",

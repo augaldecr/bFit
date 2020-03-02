@@ -1,17 +1,19 @@
-﻿using bFit.WEB.Data.Entities.Common;
+﻿using bFit.WEB.Data.Entities;
+using bFit.WEB.Data.Entities.Common;
+using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace bFit.Web.Models
 {
-    public class CustomerViewModel
+    public class CustomerViewModel : IEntity
     {
+        [HiddenInput(DisplayValue = false)]
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Cédula")]
-        public string SocialSecurityId { get; set; }
+        public string SocialSecurity { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Nombre")]
@@ -23,6 +25,15 @@ namespace bFit.Web.Models
 
         [Display(Name = "Segundo apellido")]
         public string LastName2 { get; set; }
+
+        [Required(ErrorMessage = "El campo {0} es requerido.")]
+        [Display(Name = "Correo electrónico")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "El campo {0} es requerido.")]
+        [Display(Name = "Teléfono celular")]
+        [Phone]
+        public string CellPhone { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Localidad")]
@@ -39,5 +50,11 @@ namespace bFit.Web.Models
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Género")]
         public Gender Gender { get; set; }
+
+        [Display(Name = "Nombre completo")]
+        public string FullName => $"{LastName1} {LastName2} {FirstName}";
+
+        [Display(Name = "Dirección completa")]
+        public string FullAddress => $"{Town.Name}, {Address}";
     }
 }

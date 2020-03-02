@@ -36,5 +36,14 @@ namespace bFit.Web.Data
         public DbSet<Town> Towns { get; set; }
         public DbSet<Trainer> Trainers { get; set; }
         public DbSet<WorkoutRoutine> WorkoutRoutines { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<User>()
+                .HasIndex(u => new { u.SocialSecurity, u.Email })
+                .IsUnique();
+
+            base.OnModelCreating(builder);
+        }
     }
 }

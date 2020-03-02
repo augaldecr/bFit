@@ -278,8 +278,7 @@ namespace bFit.Web.Data
             if (!_applicationDbContext.Trainers.Any())
             {
                 //var gym = _applicationDbContext.Gyms.FirstOrDefault(t => t.Email.Equals("contacto@irontraining.com"));
-                var franchise = _applicationDbContext.Franchises.FirstOrDefault(
-                    t => t.Email.Equals("irontraining@gmail.com"));
+                var franchise = _applicationDbContext.Franchises.FirstOrDefault();
 
                 await _applicationDbContext.Trainers.AddAsync(new Trainer
                 {
@@ -364,7 +363,7 @@ namespace bFit.Web.Data
 
                 user = new User
                 {
-                    SocialSecurityId = socialSecurityId,
+                    SocialSecurity = socialSecurityId,
                     FirstName = firstName,
                     LastName1 = lastName1,
                     LastName2 = lastName2,

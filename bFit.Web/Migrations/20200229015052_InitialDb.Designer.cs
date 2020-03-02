@@ -10,7 +10,7 @@ using bFit.Web.Data;
 namespace bFit.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200228024923_InitialDb")]
+    [Migration("20200229015052_InitialDb")]
     partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -615,9 +615,9 @@ namespace bFit.Web.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SocialSecurityId")
+                    b.Property<string>("SocialSecurity")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("TownId")
                         .HasColumnType("int");
@@ -640,6 +640,10 @@ namespace bFit.Web.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.HasIndex("TownId");
+
+                    b.HasIndex("SocialSecurity", "Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
                 });

@@ -1,19 +1,25 @@
-﻿@model IEnumerable<bFit.WEB.Data.Entities.Profiles.Customer>
+﻿@model IEnumerable<bFit.Web.Models.CustomerViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Clientes";
 }
-
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<partial name="IndexList/_Header" />
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.SocialSecurity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Birthday)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Town)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
             </th>
             <th></th>
         </tr>
@@ -22,14 +28,26 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.SocialSecurity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Birthday)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.Town.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                <partial name="IndexList/_BtnEdit" model="item" />
+                <partial name="IndexList/_BtnDetails" model="item" />
+                <partial name="IndexList/_BtnDelete" model="item" />
             </td>
         </tr>
 }
     </tbody>
-</table>
+<partial name="IndexList/_Footer" />

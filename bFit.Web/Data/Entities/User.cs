@@ -1,5 +1,6 @@
 ﻿using bFit.WEB.Data.Entities.Common;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace bFit.WEB.Data.Entities
@@ -9,7 +10,7 @@ namespace bFit.WEB.Data.Entities
         //Cédula
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Cédula")]
-        public string SocialSecurityId { get; set; }
+        public string SocialSecurity { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Nombre")]

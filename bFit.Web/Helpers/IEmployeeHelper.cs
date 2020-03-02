@@ -1,9 +1,9 @@
-﻿using bFit.WEB.Data.Entities;
+﻿using bFit.Web.Data.Entities.Profiles;
 
 namespace bFit.Web.Helpers
 {
     public interface IEmployeeHelper
     {
-        IEntity EmployeeAsync(string email);
+        IFranchiseEmployee EmployeeAsync(string email);
     }
 }
