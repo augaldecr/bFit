@@ -1,6 +1,8 @@
 ﻿using bFit.WEB.Data.Entities.Common;
+using bFit.WEB.Data.Entities.Workouts;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace bFit.WEB.Data.Entities.Profiles
@@ -26,5 +28,13 @@ namespace bFit.WEB.Data.Entities.Profiles
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Gimnasio")]
         public LocalGym Gym { get; set; }
+
+        public ICollection<WorkoutRoutine> WorkOutRoutines { get; set; }
+
+        [Display(Name = "Nombre completo")]
+        public string FullName => $"{User.LastName1} {User.LastName2} {User.FirstName}";
+
+        [Display(Name = "Dirección completa")]
+        public string FullAddress => $"{User.Town.Name}, {User.Address}";
     }
 }

@@ -51,6 +51,8 @@ namespace bFit.Web.Models
         [Display(Name = "Género")]
         public Gender Gender { get; set; }
 
+
+
         [Display(Name = "Nombre completo")]
         public string FullName => $"{LastName1} {LastName2} {FirstName}";
 

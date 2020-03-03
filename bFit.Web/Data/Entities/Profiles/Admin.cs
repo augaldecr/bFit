@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace bFit.WEB.Data.Entities.Profiles
 {
-    public class Admin
+    public class Admin : IEntity
     {
         [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }

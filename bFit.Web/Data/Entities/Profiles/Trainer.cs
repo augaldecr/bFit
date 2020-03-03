@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace bFit.WEB.Data.Entities.Profiles
 {
-    public class Trainer : IEntity, IFranchiseEmployee
+    public class Trainer : IFranchiseEmployee
     {
         [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }

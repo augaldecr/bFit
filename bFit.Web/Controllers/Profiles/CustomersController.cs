@@ -36,10 +36,11 @@ namespace bFit.Web.Controllers.Profiles
         public async Task<IActionResult> Index()
         {
             var emp = _employeeHelper.EmployeeAsync("alonsougaldecr@gmail.com");
+            var userType = _userHelper.TypeOfUser(emp);
 
             IList<Customer> customers = new List<Customer>();
 
-            if (emp.GetType() == typeof(FranchiseAdmin))
+            if (userType == UserType.FranchiseAdmin)
             {
                 var franAdmin = await _context.FranchiseAdmins.FirstOrDefaultAsync(
                     f => f.User.Email == "alonsougaldecr@gmail.com");
@@ -49,7 +50,7 @@ namespace bFit.Web.Controllers.Profiles
                     c => c.Gym.Franchise == franchise).ToListAsync();
             }
 
-            if (emp.GetType() == typeof(GymAdmin))
+            if (userType == UserType.GymAdmin)
             {
                 var gymAdmin = await _context.GymAdmins.FirstOrDefaultAsync(
                     g => g.User.Email == "alonsougaldecr@gmail.com");
@@ -59,7 +60,7 @@ namespace bFit.Web.Controllers.Profiles
                     c => c.Gym.Franchise == franchise).ToListAsync();
             }
 
-            if (emp.GetType() == typeof(Trainer))
+            if (userType == UserType.Trainer)
             {
                 var trainer = _context.Trainers
                     .Include(t => t.Franchise)
@@ -97,15 +98,22 @@ namespace bFit.Web.Controllers.Profiles
                 .Include(c => c.User)
                 .Include(c => c.Gender)
                 .Include(c => c.Gym)
+                .Include(c => c.WorkOutRoutines)
+                    .ThenInclude(w => w.Sets)
+                        .ThenInclude(s => s.SubSets)
+                            .ThenInclude(x => x.Exercise)
+                                .ThenInclude(e => e.ExerciseType)
+                .Include(c => c.WorkOutRoutines)
+                    .ThenInclude(w => w.Trainer)
+                .Include(c => c.WorkOutRoutines)
+                    .ThenInclude(w => w.Goal)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
                 return NotFound();
             }
 
-            var customerVWM = _converterHelper.ToCustomerViewModel(customer);
-
-            return View(customerVWM);
+            return View(customer);
         }
 
         public IActionResult Create()

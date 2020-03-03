@@ -1,4 +1,4 @@
-﻿@model bFit.Web.Models.CustomerViewModel
+﻿@model bFit.WEB.Data.Entities.Profiles.Customer
 
 @{
     ViewData["Title"] = Model.FullName;
@@ -10,11 +10,11 @@
     <div class="input-group mb-3 col-md-4">
         <div class="input-group-prepend">
             <span class="input-group-text" id="socialsecurity">
-                @Html.DisplayNameFor(model => model.SocialSecurity):
+                @Html.DisplayNameFor(model => model.User.SocialSecurity):
             </span>
         </div>
         <input type="text" class="form-control" aria-label="socialsecurity" disabled
-               aria-describedby="socialsecurity" value="@Html.DisplayFor(model => model.SocialSecurity)">
+               aria-describedby="socialsecurity" value="@Html.DisplayFor(model => model.User.SocialSecurity)">
     </div>
 
     <div class="input-group mb-3 col-md-4">
@@ -42,21 +42,21 @@
     <div class="input-group mb-3 col-md-4">
         <div class="input-group-prepend">
             <span class="input-group-text" id="email">
-                @Html.DisplayNameFor(model => model.Email):
+                @Html.DisplayNameFor(model => model.User.Email):
             </span>
         </div>
         <input type="email" class="form-control" aria-label="email" disabled
-               aria-describedby="email" value="@Html.DisplayFor(model => model.Email)">
+               aria-describedby="email" value="@Html.DisplayFor(model => model.User.Email)">
     </div>
 
     <div class="input-group mb-3 col-md-4">
         <div class="input-group-prepend">
             <span class="input-group-text" id="cellphone">
-                @Html.DisplayNameFor(model => model.CellPhone):
+                @Html.DisplayNameFor(model => model.User.PhoneNumber):
             </span>
         </div>
         <input type="tel" class="form-control" aria-label="cellphone" disabled
-               aria-describedby="cellphone" value="@Html.DisplayFor(model => model.CellPhone)">
+               aria-describedby="cellphone" value="@Html.DisplayFor(model => model.User.PhoneNumber)">
     </div>
 
     <div class="input-group mb-3 col-md-4">
@@ -70,73 +70,16 @@
     </div>
 </div>
 
-
-<!--dl class="row">
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.SocialSecurity)
-    </dt>
-    <dd class="col-sm-3">
-        @Html.DisplayFor(model => model.SocialSecurity)
-    </dd>
-</!--dl>
-<dl class="row">
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.LastName1)
-    </dt>
-    <dd class="col-sm-3">
-        @Html.DisplayFor(model => model.LastName1)
-    </dd>
-</dl>
-<dl class="row">
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.LastName2)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.LastName2)
-    </dd>
-</dl>
-<dl class="row">
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.FirstName)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.FirstName)
-    </dd>
-</dl>
-<dl class="row">
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Town)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Town.Name)
-    </dd>
-</dl>
-<dl class="row">
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Address)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Address)
-    </dd>
-</dl>
-<dl class="row">
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Birthday)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Birthday)
-    </dd>
-</dl>
-<dl class="row">
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Gender)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Gender.Name)
-    </dd>
-</dl-->
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index" class="btn btn-primary">Back to List</a>
+    <partial name="Details/_BtnEdit" model="@Model" />
+    <partial name="Details/_BtnBack" />
 </div>
 <partial name="Details/_Footer" />
+
+@if (Model.WorkOutRoutines == null)
+{
+    <h4>Sin rutinas</h4>
+} else
+{
+    <h4>Tiene rutinas</h4>
+}

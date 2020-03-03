@@ -1,4 +1,5 @@
-﻿using bFit.Web.Models;
+﻿using bFit.Web.Data.Entities.Profiles;
+using bFit.Web.Models;
 using bFit.WEB.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
@@ -20,5 +21,7 @@ namespace bFit.Web.Helpers
         Task<SignInResult> LoginAsync(LoginViewModel model);
 
         Task LogoutAsync();
+
+        UserType TypeOfUser(IEntity user);
     }
 }

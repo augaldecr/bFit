@@ -1,5 +1,7 @@
-﻿using bFit.Web.Models;
+﻿using bFit.Web.Data.Entities.Profiles;
+using bFit.Web.Models;
 using bFit.WEB.Data.Entities;
+using bFit.WEB.Data.Entities.Profiles;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
@@ -66,6 +68,30 @@ namespace bFit.Web.Helpers
         public async Task LogoutAsync()
         {
             await _signInManager.SignOutAsync();
+        }
+
+        public UserType TypeOfUser(IEntity user)
+        {
+            if (user.GetType() == typeof(Admin))
+            {
+                return UserType.Admin;
+            }
+            else if (user.GetType() == typeof(FranchiseAdmin))
+            {
+                return UserType.FranchiseAdmin;
+            }
+            else if (user.GetType() == typeof(GymAdmin))
+            {
+                return UserType.GymAdmin;
+            }
+            else if (user.GetType() == typeof(Trainer))
+            {
+                return UserType.Trainer;
+            }
+            else
+            {
+                return UserType.Customer;
+            }
         }
     }
 }
