@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace bFit.WEB.Data.Entities.Common
+namespace bFit.Web.Data.Entities.Common
 {
     //País
     public class Country : BasicEntity, IEntity

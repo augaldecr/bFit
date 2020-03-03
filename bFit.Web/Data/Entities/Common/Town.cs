@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace bFit.WEB.Data.Entities.Common
+namespace bFit.Web.Data.Entities.Common
 {
     //Ciudad, pueblo, villa, etc..
     public class Town : BasicEntity, IEntity

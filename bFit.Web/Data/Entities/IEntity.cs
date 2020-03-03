@@ -1,4 +1,4 @@
-﻿namespace bFit.WEB.Data.Entities
+﻿namespace bFit.Web.Data.Entities
 {
     public interface IEntity
     {

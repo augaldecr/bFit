@@ -1,8 +1,7 @@
-﻿using bFit.Web.Data.Entities.Profiles;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace bFit.WEB.Data.Entities.Profiles
+namespace bFit.Web.Data.Entities.Profiles
 {
     public class Trainer : IFranchiseEmployee
     {

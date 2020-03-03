@@ -1,5 +1,5 @@
 ﻿using bFit.Web.Data;
-using bFit.WEB.Data.Entities.Workouts;
+using bFit.Web.Data.Entities.Workouts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;

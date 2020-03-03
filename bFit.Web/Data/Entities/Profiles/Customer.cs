@@ -1,11 +1,11 @@
-﻿using bFit.WEB.Data.Entities.Common;
-using bFit.WEB.Data.Entities.Workouts;
+﻿using bFit.Web.Data.Entities.Common;
+using bFit.Web.Data.Entities.Workouts;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace bFit.WEB.Data.Entities.Profiles
+namespace bFit.Web.Data.Entities.Profiles
 {
     public class Customer : IEntity
     {

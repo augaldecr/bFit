@@ -1,5 +1,5 @@
-﻿using bFit.WEB.Data.Entities;
-using bFit.WEB.Data.Entities.Common;
+﻿using bFit.Web.Data.Entities;
+using bFit.Web.Data.Entities.Common;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;

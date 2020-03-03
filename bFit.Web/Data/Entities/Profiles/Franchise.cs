@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace bFit.WEB.Data.Entities.Profiles
+namespace bFit.Web.Data.Entities.Profiles
 {
     public class Franchise : IEntity
     {

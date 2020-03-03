@@ -2,7 +2,6 @@
 using bFit.Web.Data.Entities.Profiles;
 using bFit.Web.Helpers;
 using bFit.Web.Models;
-using bFit.WEB.Data.Entities.Profiles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +20,7 @@ namespace bFit.Web.Controllers.Profiles
         private readonly IEmployeeHelper _employeeHelper;
         private readonly IConverterHelper _converterHelper;
 
-        public CustomersController(ApplicationDbContext context, 
+        public CustomersController(ApplicationDbContext context,
             IUserHelper userHelper,
             IEmployeeHelper employeeHelper,
             IConverterHelper converterHelper)
@@ -42,9 +41,9 @@ namespace bFit.Web.Controllers.Profiles
 
             if (userType == UserType.FranchiseAdmin)
             {
-                var franAdmin = await _context.FranchiseAdmins.FirstOrDefaultAsync(
+                FranchiseAdmin franAdmin = await _context.FranchiseAdmins.FirstOrDefaultAsync(
                     f => f.User.Email == "alonsougaldecr@gmail.com");
-                var franchise = await _context.Franchises.FirstOrDefaultAsync(
+                Franchise franchise = await _context.Franchises.FirstOrDefaultAsync(
                     f => f == franAdmin.Franchise);
                 customers = await _context.Customers.Where(
                     c => c.Gym.Franchise == franchise).ToListAsync();
@@ -52,9 +51,9 @@ namespace bFit.Web.Controllers.Profiles
 
             if (userType == UserType.GymAdmin)
             {
-                var gymAdmin = await _context.GymAdmins.FirstOrDefaultAsync(
+                GymAdmin gymAdmin = await _context.GymAdmins.FirstOrDefaultAsync(
                     g => g.User.Email == "alonsougaldecr@gmail.com");
-                var franchise = await _context.Franchises.FirstOrDefaultAsync(
+                Franchise franchise = await _context.Franchises.FirstOrDefaultAsync(
                     f => f == gymAdmin.Franchise);
                 customers = await _context.Customers.Where(
                     c => c.Gym.Franchise == franchise).ToListAsync();
@@ -62,10 +61,10 @@ namespace bFit.Web.Controllers.Profiles
 
             if (userType == UserType.Trainer)
             {
-                var trainer = _context.Trainers
+                Trainer trainer = _context.Trainers
                     .Include(t => t.Franchise)
                     .FirstOrDefault();
-                var franchise = _context.Franchises.FirstOrDefault(
+                Franchise franchise = _context.Franchises.FirstOrDefault(
                     f => f.Id == trainer.Franchise.Id);
                 customers = await _context.Customers
                     .Include(c => c.Gender)
@@ -77,9 +76,9 @@ namespace bFit.Web.Controllers.Profiles
                     c => c.Gym.Franchise.Id == franchise.Id).ToListAsync();
             }
 
-            var customVWMs = new List<CustomerViewModel>();
+            List<CustomerViewModel> customVWMs = new List<CustomerViewModel>();
 
-            foreach (var customer in customers)
+            foreach (Customer customer in customers)
             {
                 customVWMs.Add(_converterHelper.ToCustomerViewModel(customer));
             }
@@ -218,5 +217,32 @@ namespace bFit.Web.Controllers.Profiles
         {
             return _context.Customers.Any(e => e.Id == id);
         }
+
+
+        public async Task<IActionResult> EditWorkout(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var workout = await _context.WorkoutRoutines
+                .Include(w => w.Goal)
+                .Include(w => w.Sets)
+                    .ThenInclude(s => s.SetType)
+                .Include(w => w.Sets)
+                    .ThenInclude(s => s.SubSets)
+                        .ThenInclude(x => x.Exercise)
+                            .ThenInclude(e => e.ExerciseType)
+                .FirstOrDefaultAsync(w => w.Id == id);
+
+            if (workout == null)
+            {
+                return NotFound();
+            }
+
+            return View(workout);
+        }
+
     }
 }

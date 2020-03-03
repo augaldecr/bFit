@@ -1,7 +1,6 @@
-﻿using bFit.Web.Data.Entities.Profiles;
+﻿using bFit.Web.Data.Entities;
+using bFit.Web.Data.Entities.Profiles;
 using bFit.Web.Models;
-using bFit.WEB.Data.Entities;
-using bFit.WEB.Data.Entities.Profiles;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 

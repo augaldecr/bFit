@@ -152,7 +152,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Common.Country", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Common.Country", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -169,7 +169,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("Countries");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Common.County", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Common.County", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -191,7 +191,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("Counties");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Common.District", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Common.District", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -213,7 +213,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("Districts");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Common.Gender", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Common.Gender", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -230,7 +230,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("Genders");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Common.State", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Common.State", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -252,7 +252,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("States");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Common.Town", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Common.Town", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -274,7 +274,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("Towns");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.PersonalData.DataTake", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.PersonalData.DataTake", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -362,7 +362,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("PersonalData");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.PersonalData.ObesityLevel", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.PersonalData.ObesityLevel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -379,7 +379,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("ObesityLevels");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Profiles.Admin", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Profiles.Admin", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -397,7 +397,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("Admins");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Profiles.Customer", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Profiles.Customer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -428,7 +428,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Profiles.Franchise", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Profiles.Franchise", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -465,7 +465,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("Franchises");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Profiles.GymAdmin", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Profiles.GymAdmin", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -493,7 +493,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("GymAdmins");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Profiles.LocalGym", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Profiles.LocalGym", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -528,7 +528,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("Gyms");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Profiles.Trainer", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Profiles.Trainer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -556,7 +556,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("Trainers");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.User", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -648,7 +648,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Workouts.Exercise", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Workouts.Exercise", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -679,7 +679,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("Exercises");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Workouts.ExerciseType", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Workouts.ExerciseType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -696,7 +696,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("ExerciseTypes");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Workouts.Goal", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Workouts.Goal", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -713,7 +713,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("Goals");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Workouts.Set", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Workouts.Set", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -740,7 +740,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("Sets");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Workouts.SetType", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Workouts.SetType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -757,7 +757,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("SetTypes");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Workouts.SubSet", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Workouts.SubSet", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -788,7 +788,7 @@ namespace bFit.Web.Migrations
                     b.ToTable("SubSets");
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Workouts.WorkoutRoutine", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Workouts.WorkoutRoutine", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -857,7 +857,7 @@ namespace bFit.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.User", null)
+                    b.HasOne("bFit.Web.Data.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -866,7 +866,7 @@ namespace bFit.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.User", null)
+                    b.HasOne("bFit.Web.Data.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -881,7 +881,7 @@ namespace bFit.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("bFit.WEB.Data.Entities.User", null)
+                    b.HasOne("bFit.Web.Data.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -890,210 +890,210 @@ namespace bFit.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.User", null)
+                    b.HasOne("bFit.Web.Data.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Common.County", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Common.County", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.Common.State", "State")
+                    b.HasOne("bFit.Web.Data.Entities.Common.State", "State")
                         .WithMany("Counties")
                         .HasForeignKey("StateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Common.District", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Common.District", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.Common.County", "County")
+                    b.HasOne("bFit.Web.Data.Entities.Common.County", "County")
                         .WithMany("Districts")
                         .HasForeignKey("CountyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Common.State", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Common.State", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.Common.Country", "Country")
+                    b.HasOne("bFit.Web.Data.Entities.Common.Country", "Country")
                         .WithMany("States")
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Common.Town", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Common.Town", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.Common.District", "District")
+                    b.HasOne("bFit.Web.Data.Entities.Common.District", "District")
                         .WithMany("Towns")
                         .HasForeignKey("DistrictId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.PersonalData.DataTake", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.PersonalData.DataTake", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.PersonalData.ObesityLevel", "ObesityLevel")
+                    b.HasOne("bFit.Web.Data.Entities.PersonalData.ObesityLevel", "ObesityLevel")
                         .WithMany()
                         .HasForeignKey("ObesityLevelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("bFit.WEB.Data.Entities.Profiles.Trainer", "Trainer")
+                    b.HasOne("bFit.Web.Data.Entities.Profiles.Trainer", "Trainer")
                         .WithMany()
                         .HasForeignKey("TrainerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Profiles.Admin", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Profiles.Admin", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.User", "User")
+                    b.HasOne("bFit.Web.Data.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Profiles.Customer", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Profiles.Customer", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.Common.Gender", "Gender")
+                    b.HasOne("bFit.Web.Data.Entities.Common.Gender", "Gender")
                         .WithMany()
                         .HasForeignKey("GenderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("bFit.WEB.Data.Entities.Profiles.LocalGym", "Gym")
+                    b.HasOne("bFit.Web.Data.Entities.Profiles.LocalGym", "Gym")
                         .WithMany("Customers")
                         .HasForeignKey("GymId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("bFit.WEB.Data.Entities.User", "User")
+                    b.HasOne("bFit.Web.Data.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Profiles.GymAdmin", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Profiles.GymAdmin", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.Profiles.Franchise", "Franchise")
+                    b.HasOne("bFit.Web.Data.Entities.Profiles.Franchise", "Franchise")
                         .WithMany()
                         .HasForeignKey("FranchiseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("bFit.WEB.Data.Entities.Profiles.LocalGym", null)
+                    b.HasOne("bFit.Web.Data.Entities.Profiles.LocalGym", null)
                         .WithMany("GymAdmins")
                         .HasForeignKey("LocalGymId");
 
-                    b.HasOne("bFit.WEB.Data.Entities.User", "User")
+                    b.HasOne("bFit.Web.Data.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Profiles.LocalGym", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Profiles.LocalGym", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.Profiles.Franchise", "Franchise")
+                    b.HasOne("bFit.Web.Data.Entities.Profiles.Franchise", "Franchise")
                         .WithMany("Locals")
                         .HasForeignKey("FranchiseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("bFit.WEB.Data.Entities.Common.Town", "Town")
+                    b.HasOne("bFit.Web.Data.Entities.Common.Town", "Town")
                         .WithMany()
                         .HasForeignKey("TownId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Profiles.Trainer", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Profiles.Trainer", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.Profiles.Franchise", "Franchise")
+                    b.HasOne("bFit.Web.Data.Entities.Profiles.Franchise", "Franchise")
                         .WithMany()
                         .HasForeignKey("FranchiseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("bFit.WEB.Data.Entities.Profiles.LocalGym", null)
+                    b.HasOne("bFit.Web.Data.Entities.Profiles.LocalGym", null)
                         .WithMany("Trainers")
                         .HasForeignKey("LocalGymId");
 
-                    b.HasOne("bFit.WEB.Data.Entities.User", "User")
+                    b.HasOne("bFit.Web.Data.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.User", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.User", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.Common.Town", "Town")
+                    b.HasOne("bFit.Web.Data.Entities.Common.Town", "Town")
                         .WithMany()
                         .HasForeignKey("TownId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Workouts.Exercise", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Workouts.Exercise", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.Workouts.ExerciseType", "ExerciseType")
+                    b.HasOne("bFit.Web.Data.Entities.Workouts.ExerciseType", "ExerciseType")
                         .WithMany()
                         .HasForeignKey("ExerciseTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Workouts.Set", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Workouts.Set", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.Workouts.SetType", "SetType")
+                    b.HasOne("bFit.Web.Data.Entities.Workouts.SetType", "SetType")
                         .WithMany()
                         .HasForeignKey("SetTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("bFit.WEB.Data.Entities.Workouts.WorkoutRoutine", "WorkoutRoutine")
+                    b.HasOne("bFit.Web.Data.Entities.Workouts.WorkoutRoutine", "WorkoutRoutine")
                         .WithMany("Sets")
                         .HasForeignKey("WorkoutRoutineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Workouts.SubSet", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Workouts.SubSet", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.Workouts.Exercise", "Exercise")
+                    b.HasOne("bFit.Web.Data.Entities.Workouts.Exercise", "Exercise")
                         .WithMany()
                         .HasForeignKey("ExerciseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("bFit.WEB.Data.Entities.Workouts.Set", "Set")
+                    b.HasOne("bFit.Web.Data.Entities.Workouts.Set", "Set")
                         .WithMany("SubSets")
                         .HasForeignKey("SetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("bFit.WEB.Data.Entities.Workouts.WorkoutRoutine", b =>
+            modelBuilder.Entity("bFit.Web.Data.Entities.Workouts.WorkoutRoutine", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.Profiles.Customer", "Customer")
+                    b.HasOne("bFit.Web.Data.Entities.Profiles.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("bFit.WEB.Data.Entities.Workouts.Goal", "Goal")
+                    b.HasOne("bFit.Web.Data.Entities.Workouts.Goal", "Goal")
                         .WithMany()
                         .HasForeignKey("GoalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("bFit.WEB.Data.Entities.Profiles.Trainer", "Trainer")
+                    b.HasOne("bFit.Web.Data.Entities.Profiles.Trainer", "Trainer")
                         .WithMany()
                         .HasForeignKey("TrainerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1102,13 +1102,13 @@ namespace bFit.Web.Migrations
 
             modelBuilder.Entity("bFit.Web.Data.Entities.Profiles.FranchiseAdmin", b =>
                 {
-                    b.HasOne("bFit.WEB.Data.Entities.Profiles.Franchise", "Franchise")
+                    b.HasOne("bFit.Web.Data.Entities.Profiles.Franchise", "Franchise")
                         .WithMany()
                         .HasForeignKey("FranchiseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("bFit.WEB.Data.Entities.User", "User")
+                    b.HasOne("bFit.Web.Data.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

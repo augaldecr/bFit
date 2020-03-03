@@ -1,9 +1,8 @@
-﻿using bFit.WEB.Data.Entities.Common;
+﻿using bFit.Web.Data.Entities.Common;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace bFit.WEB.Data.Entities
+namespace bFit.Web.Data.Entities
 {
     public class User : IdentityUser
     {

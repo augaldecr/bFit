@@ -1,6 +1,4 @@
-﻿using bFit.WEB.Data.Entities;
-using bFit.WEB.Data.Entities.Profiles;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace bFit.Web.Data.Entities.Profiles

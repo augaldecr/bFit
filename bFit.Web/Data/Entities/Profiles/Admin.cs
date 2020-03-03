@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace bFit.WEB.Data.Entities.Profiles
+namespace bFit.Web.Data.Entities.Profiles
 {
     public class Admin : IEntity
     {

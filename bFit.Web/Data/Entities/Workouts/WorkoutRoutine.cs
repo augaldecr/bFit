@@ -1,10 +1,10 @@
-﻿using bFit.WEB.Data.Entities.Profiles;
+﻿using bFit.Web.Data.Entities.Profiles;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace bFit.WEB.Data.Entities.Workouts
+namespace bFit.Web.Data.Entities.Workouts
 {
     public class WorkoutRoutine
     {

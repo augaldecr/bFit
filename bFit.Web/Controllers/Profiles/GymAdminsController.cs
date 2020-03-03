@@ -1,5 +1,5 @@
 ﻿using bFit.Web.Data;
-using bFit.WEB.Data.Entities.Profiles;
+using bFit.Web.Data.Entities.Profiles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

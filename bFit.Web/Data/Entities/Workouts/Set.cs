@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace bFit.WEB.Data.Entities.Workouts
+namespace bFit.Web.Data.Entities.Workouts
 {
     public class Set : BasicEntity
     {

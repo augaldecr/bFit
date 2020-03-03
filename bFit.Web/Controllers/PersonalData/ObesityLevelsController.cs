@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using bFit.WEB.Data.Entities.PersonalData;
+using bFit.Web.Data.Entities.PersonalData;
 using bFit.Web.Data;
 
 namespace bFit.Web.Controllers.PersonalData

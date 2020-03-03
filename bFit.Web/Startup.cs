@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using bFit.Web.Data;
-using bFit.WEB.Data.Entities;
+using bFit.Web.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using bFit.Web.Helpers;
 

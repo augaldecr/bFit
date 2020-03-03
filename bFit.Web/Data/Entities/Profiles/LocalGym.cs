@@ -1,9 +1,9 @@
-﻿using bFit.WEB.Data.Entities.Common;
+﻿using bFit.Web.Data.Entities.Common;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace bFit.WEB.Data.Entities.Profiles
+namespace bFit.Web.Data.Entities.Profiles
 {
     public class LocalGym : IEntity
     {

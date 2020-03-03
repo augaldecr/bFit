@@ -1,5 +1,5 @@
-﻿using bFit.Web.Models;
-using bFit.WEB.Data.Entities.Profiles;
+﻿using bFit.Web.Data.Entities.Profiles;
+using bFit.Web.Models;
 
 namespace bFit.Web.Helpers
 {

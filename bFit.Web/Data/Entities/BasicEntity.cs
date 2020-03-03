@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace bFit.WEB.Data.Entities
+namespace bFit.Web.Data.Entities
 {
     public abstract class BasicEntity
     {

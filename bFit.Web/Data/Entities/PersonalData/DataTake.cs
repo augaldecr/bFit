@@ -1,9 +1,9 @@
-﻿using bFit.WEB.Data.Entities.Profiles;
+﻿using bFit.Web.Data.Entities.Profiles;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace bFit.WEB.Data.Entities.PersonalData
+namespace bFit.Web.Data.Entities.PersonalData
 {
     public class DataTake : IEntity
     {

@@ -1,9 +1,9 @@
 ﻿using bFit.Web.Data.Entities.Profiles;
-using bFit.WEB.Data.Entities;
-using bFit.WEB.Data.Entities.Common;
-using bFit.WEB.Data.Entities.PersonalData;
-using bFit.WEB.Data.Entities.Profiles;
-using bFit.WEB.Data.Entities.Workouts;
+using bFit.Web.Data.Entities;
+using bFit.Web.Data.Entities.Common;
+using bFit.Web.Data.Entities.PersonalData;
+using bFit.Web.Data.Entities.Profiles;
+using bFit.Web.Data.Entities.Workouts;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

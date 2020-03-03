@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using bFit.WEB.Data.Entities.Common;
+using bFit.Web.Data.Entities.Common;
 using bFit.Web.Data;
 using Microsoft.AspNetCore.Authorization;
 
