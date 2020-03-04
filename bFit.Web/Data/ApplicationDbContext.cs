@@ -1,5 +1,4 @@
-﻿using bFit.Web.Data.Entities.Profiles;
-using bFit.Web.Data.Entities;
+﻿using bFit.Web.Data.Entities;
 using bFit.Web.Data.Entities.Common;
 using bFit.Web.Data.Entities.PersonalData;
 using bFit.Web.Data.Entities.Profiles;
@@ -30,7 +29,7 @@ namespace bFit.Web.Data
         public DbSet<ObesityLevel> ObesityLevels { get; set; }
         public DbSet<DataTake> PersonalData { get; set; }
         public DbSet<Set> Sets { get; set; }
-        public DbSet<SetType> SetTypes { get; set; }
+        public DbSet<SubSetType> SubSetTypes { get; set; }
         public DbSet<State> States { get; set; }
         public DbSet<SubSet> SubSets { get; set; }
         public DbSet<Town> Towns { get; set; }

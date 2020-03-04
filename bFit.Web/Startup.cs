@@ -48,6 +48,7 @@ namespace bFit.Web
             services.AddScoped<IUserHelper, UserHelper>();
             services.AddScoped<IEmployeeHelper, EmployeeHelper>();
             services.AddScoped<IConverterHelper, ConverterHelper>();
+            services.AddScoped<ICombosHelper, CombosHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

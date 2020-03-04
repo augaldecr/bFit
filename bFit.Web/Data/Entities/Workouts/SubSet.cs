@@ -23,6 +23,13 @@ namespace bFit.Web.Data.Entities.Workouts
         public int NegativeTime { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
+        [Display(Name = "Tipo de ejercicio")]
+        public SubSetType SubSetType { get; set; }
+
+        [Display(Name = "Observaciones")]
+        public string Remarks { get; set; }
+
+        [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Serie")]
         public Set Set { get; set; }
     }

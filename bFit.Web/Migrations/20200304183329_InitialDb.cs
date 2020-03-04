@@ -104,7 +104,7 @@ namespace bFit.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SetTypes",
+                name: "SubSetTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -113,7 +113,7 @@ namespace bFit.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SetTypes", x => x.Id);
+                    table.PrimaryKey("PK_SubSetTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -322,7 +322,7 @@ namespace bFit.Web.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -433,7 +433,7 @@ namespace bFit.Web.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -533,7 +533,7 @@ namespace bFit.Web.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -626,18 +626,11 @@ namespace bFit.Web.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
-                    SetTypeId = table.Column<int>(nullable: false),
                     WorkoutRoutineId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Sets", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Sets_SetTypes_SetTypeId",
-                        column: x => x.SetTypeId,
-                        principalTable: "SetTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Sets_WorkoutRoutines_WorkoutRoutineId",
                         column: x => x.WorkoutRoutineId,
@@ -656,6 +649,8 @@ namespace bFit.Web.Migrations
                     Quantity = table.Column<int>(nullable: false),
                     PositiveTime = table.Column<int>(nullable: false),
                     NegativeTime = table.Column<int>(nullable: false),
+                    SubSetTypeId = table.Column<int>(nullable: false),
+                    Remarks = table.Column<string>(nullable: true),
                     SetId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -671,6 +666,12 @@ namespace bFit.Web.Migrations
                         name: "FK_SubSets_Sets_SetId",
                         column: x => x.SetId,
                         principalTable: "Sets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SubSets_SubSetTypes_SubSetTypeId",
+                        column: x => x.SubSetTypeId,
+                        principalTable: "SubSetTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -807,11 +808,6 @@ namespace bFit.Web.Migrations
                 column: "TrainerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sets_SetTypeId",
-                table: "Sets",
-                column: "SetTypeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Sets_WorkoutRoutineId",
                 table: "Sets",
                 column: "WorkoutRoutineId");
@@ -830,6 +826,11 @@ namespace bFit.Web.Migrations
                 name: "IX_SubSets_SetId",
                 table: "SubSets",
                 column: "SetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubSets_SubSetTypeId",
+                table: "SubSets",
+                column: "SubSetTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Towns_DistrictId",
@@ -912,10 +913,10 @@ namespace bFit.Web.Migrations
                 name: "Sets");
 
             migrationBuilder.DropTable(
-                name: "ExerciseTypes");
+                name: "SubSetTypes");
 
             migrationBuilder.DropTable(
-                name: "SetTypes");
+                name: "ExerciseTypes");
 
             migrationBuilder.DropTable(
                 name: "WorkoutRoutines");

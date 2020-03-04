@@ -229,11 +229,14 @@ namespace bFit.Web.Controllers.Profiles
             var workout = await _context.WorkoutRoutines
                 .Include(w => w.Goal)
                 .Include(w => w.Sets)
-                    .ThenInclude(s => s.SetType)
+                    .ThenInclude(s => s.SubSets)
+                        .ThenInclude(x => x.SubSetType)
                 .Include(w => w.Sets)
                     .ThenInclude(s => s.SubSets)
                         .ThenInclude(x => x.Exercise)
                             .ThenInclude(e => e.ExerciseType)
+                .Include(w => w.Customer)
+                .Include(w => w.Trainer)
                 .FirstOrDefaultAsync(w => w.Id == id);
 
             if (workout == null)
@@ -241,7 +244,32 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            return View(workout);
+            var workoutVwm = _converterHelper.ToEditWorkoutViewModel(workout);
+
+            return View(workoutVwm);
+        }
+
+        public async Task<IActionResult> EditSubSet(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var subSet = await _context.SubSets
+                .Include(s => s.Exercise)
+                    .ThenInclude(e => e.ExerciseType)
+                .Include(s => s.SubSetType)
+                .FirstOrDefaultAsync(w => w.Id == id);
+
+            if (subSet == null)
+            {
+                return NotFound();
+            }
+
+            var subSetVwm = _converterHelper.ToEditWorkoutViewModel(subSet);
+
+            return View(subSetVwm);
         }
 
     }

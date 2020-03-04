@@ -22,4 +22,13 @@
             }
         }
     });
+
+    // Delete item
+    var subset_to_edit;
+    $('.deleteItem').click((e) => {
+        subset_to_edit = e.currentTarget.dataset.id;
+    });
+    $("#btnYesDelete").click(function () {
+        window.location.href = '/Owners/DeletePet/' + item_to_delete;
+    });
 });

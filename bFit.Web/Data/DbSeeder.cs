@@ -53,7 +53,7 @@ namespace bFit.Web.Data
             await CheckCustomerAsync(customer);
             await CheckTrainerAsync(trainer);
 
-            await CheckSetTypesAsync();
+            await CheckSubSetTypesAsync();
             await CheckWorkoutsAsync();
             await CheckSubSetsAsync();
 
@@ -85,16 +85,16 @@ namespace bFit.Web.Data
         {
             if (!_applicationDbContext.SubSets.Any())
             {
-                var setType = _applicationDbContext.SetTypes.FirstOrDefault();
+                var subSetType = _applicationDbContext.SubSetTypes.FirstOrDefault();
                 var workOutRoutine = _applicationDbContext.WorkoutRoutines.FirstOrDefault();
                 var customerId = workOutRoutine.Customer.Id;
 
-                var set1 = await CheckSetsAsync($"{customerId}{DateTime.Now}",
-                    setType, workOutRoutine);
-                var set2 = await CheckSetsAsync($"{customerId}{DateTime.Now}",
-                    setType, workOutRoutine);
-                var set3 = await CheckSetsAsync($"{customerId}{DateTime.Now}",
-                    setType, workOutRoutine);
+                var set1 = await CheckSetsAsync($"{customerId}1{DateTime.Now}",
+                    workOutRoutine);
+                var set2 = await CheckSetsAsync($"{customerId}2{DateTime.Now}",
+                    workOutRoutine);
+                var set3 = await CheckSetsAsync($"{customerId}3{DateTime.Now}",
+                    workOutRoutine);
 
                 var exercise1 = _applicationDbContext.Exercises.FirstOrDefault(
                     e => e.Name == "Sentadilla libre");
@@ -113,6 +113,7 @@ namespace bFit.Web.Data
                     new SubSet
                     {
                         Exercise = exercise1,
+                        SubSetType = subSetType,
                         PositiveTime = 1,
                         NegativeTime = 3,
                         Quantity = 8,
@@ -122,6 +123,7 @@ namespace bFit.Web.Data
                     new SubSet
                     {
                         Exercise = exercise2,
+                        SubSetType = subSetType,
                         PositiveTime = 1,
                         NegativeTime = 3,
                         Quantity = 10,
@@ -131,6 +133,7 @@ namespace bFit.Web.Data
                     new SubSet
                     {
                         Exercise = exercise3,
+                        SubSetType = subSetType,
                         PositiveTime = 1,
                         NegativeTime = 3,
                         Quantity = 12,
@@ -140,6 +143,7 @@ namespace bFit.Web.Data
                     new SubSet
                     {
                         Exercise = exercise4,
+                        SubSetType = subSetType,
                         PositiveTime = 1,
                         NegativeTime = 3,
                         Quantity = 12,
@@ -149,6 +153,7 @@ namespace bFit.Web.Data
                     new SubSet
                     {
                         Exercise = exercise5,
+                        SubSetType = subSetType,
                         PositiveTime = 1,
                         NegativeTime = 3,
                         Quantity = 12,
@@ -158,6 +163,7 @@ namespace bFit.Web.Data
                     new SubSet
                     {
                         Exercise = exercise6,
+                        SubSetType = subSetType,
                         PositiveTime = 1,
                         NegativeTime = 3,
                         Quantity = 12,
@@ -167,7 +173,7 @@ namespace bFit.Web.Data
             }
         }
 
-        private async Task<Set> CheckSetsAsync(string name, SetType setType, WorkoutRoutine workoutRoutine)
+        private async Task<Set> CheckSetsAsync(string name, WorkoutRoutine workoutRoutine)
         {
             var set = _applicationDbContext.Sets.FirstOrDefault(s => s.Name.Equals(name));
 
@@ -176,7 +182,6 @@ namespace bFit.Web.Data
                 set = new Set
                 {
                     Name = name,
-                    SetType = setType,
                     WorkoutRoutine = workoutRoutine
                 };
 
@@ -188,12 +193,12 @@ namespace bFit.Web.Data
             return set;
         }
 
-        private async Task CheckSetTypesAsync()
+        private async Task CheckSubSetTypesAsync()
         {
-            if (!_applicationDbContext.SetTypes.Any())
+            if (!_applicationDbContext.SubSetTypes.Any())
             {
-                await _applicationDbContext.SetTypes.AddAsync(new SetType { Name = "Escalera" });
-                await _applicationDbContext.SetTypes.AddAsync(new SetType { Name = "Escalera invertida" });
+                await _applicationDbContext.SubSetTypes.AddAsync(new SubSetType { Name = "Escalera" });
+                await _applicationDbContext.SubSetTypes.AddAsync(new SubSetType { Name = "Escalera invertida" });
                 await _applicationDbContext.SaveChangesAsync();
             }
         }
