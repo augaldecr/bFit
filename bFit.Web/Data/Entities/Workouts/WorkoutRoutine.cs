@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace bFit.Web.Data.Entities.Workouts
 {
-    public class WorkoutRoutine
+    public class WorkoutRoutine : IEntity
     {
         [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }

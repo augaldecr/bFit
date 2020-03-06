@@ -8,5 +8,7 @@ namespace bFit.Web.Helpers
         IEnumerable<SelectListItem> GetComboGoals();
         IEnumerable<SelectListItem> GetComboExercises();
         IEnumerable<SelectListItem> GetComboSubSetTypes();
+        IEnumerable<SelectListItem> GetComboGenders();
+        IEnumerable<SelectListItem> GetComboTowns();
     }
 }

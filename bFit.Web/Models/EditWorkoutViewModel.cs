@@ -1,4 +1,5 @@
-﻿using bFit.Web.Data.Entities.Workouts;
+﻿using bFit.Web.Data.Entities;
+using bFit.Web.Data.Entities.Workouts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -7,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace bFit.Web.Models
 {
-    public class EditWorkoutViewModel
+    public class EditWorkoutViewModel : IEntity
     {
         [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }

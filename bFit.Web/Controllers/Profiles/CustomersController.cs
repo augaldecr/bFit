@@ -19,16 +19,19 @@ namespace bFit.Web.Controllers.Profiles
         private readonly IUserHelper _userHelper;
         private readonly IEmployeeHelper _employeeHelper;
         private readonly IConverterHelper _converterHelper;
+        private readonly ICombosHelper _combosHelper;
 
         public CustomersController(ApplicationDbContext context,
             IUserHelper userHelper,
             IEmployeeHelper employeeHelper,
-            IConverterHelper converterHelper)
+            IConverterHelper converterHelper,
+            ICombosHelper combosHelper)
         {
             _context = context;
             _userHelper = userHelper;
             _employeeHelper = employeeHelper;
             _converterHelper = converterHelper;
+            _combosHelper = combosHelper;
         }
 
         // GET: Customers  alonsougaldecr@gmail.com
@@ -76,14 +79,7 @@ namespace bFit.Web.Controllers.Profiles
                     c => c.Gym.Franchise.Id == franchise.Id).ToListAsync();
             }
 
-            List<CustomerViewModel> customVWMs = new List<CustomerViewModel>();
-
-            foreach (Customer customer in customers)
-            {
-                customVWMs.Add(_converterHelper.ToCustomerViewModel(customer));
-            }
-
-            return View(customVWMs);
+            return View(customers);
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -117,7 +113,11 @@ namespace bFit.Web.Controllers.Profiles
 
         public IActionResult Create()
         {
-            return View();
+            var customerVwm = new CustomerViewModel();
+            customerVwm.Genders = _combosHelper.GetComboGenders();
+            customerVwm.Towns = _combosHelper.GetComboTowns();
+
+            return View(customerVwm);
         }
 
         [HttpPost]
@@ -149,9 +149,6 @@ namespace bFit.Web.Controllers.Profiles
             return View(customer);
         }
 
-        // POST: Customers/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Birthday")] Customer customer)
@@ -260,6 +257,8 @@ namespace bFit.Web.Controllers.Profiles
                 .Include(s => s.Exercise)
                     .ThenInclude(e => e.ExerciseType)
                 .Include(s => s.SubSetType)
+                .Include(s => s.Set)
+                    .ThenInclude(t => t.WorkoutRoutine)
                 .FirstOrDefaultAsync(w => w.Id == id);
 
             if (subSet == null)
@@ -267,9 +266,44 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var subSetVwm = _converterHelper.ToEditWorkoutViewModel(subSet);
+            var subSetVwm = _converterHelper.ToEditSubSetViewModel(subSet);
 
             return View(subSetVwm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditSubSet(int id, EditSubSetViewModel editSubSetVwm)
+        {
+            if (id != editSubSetVwm.Id)
+            {
+                return NotFound();
+            }
+
+            var subSet = await _converterHelper.ToSubSetAsync(editSubSetVwm);
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(subSet);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CustomerExists(subSet.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return RedirectToAction("EditWorkout",new { @id = editSubSetVwm.WorkoutId });
+            }
+            return View(subSet);
         }
 
     }

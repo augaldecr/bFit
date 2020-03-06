@@ -70,5 +70,43 @@ namespace bFit.Web.Helpers
 
             return list;
         }
+
+        public IEnumerable<SelectListItem> GetComboGenders()
+        {
+            List<SelectListItem> list = _context.Genders.Select(g => new SelectListItem
+            {
+                Text = g.Name,
+                Value = $"{g.Id}"
+            })
+                .OrderBy(g => g.Text)
+                .ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[Seleccione un género]",
+                Value = "0"
+            });
+
+            return list;
+        }
+
+        public IEnumerable<SelectListItem> GetComboTowns()
+        {
+            List<SelectListItem> list = _context.Towns.Select(g => new SelectListItem
+            {
+                Text = g.Name,
+                Value = $"{g.Id}"
+            })
+                .OrderBy(g => g.Text)
+                .ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[Seleccione una localidad]",
+                Value = "0"
+            });
+
+            return list;
+        }
     }
 }

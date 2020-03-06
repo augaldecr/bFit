@@ -2,42 +2,43 @@
 
 @{
     ViewData["Title"] = "Rutina de entrenamiento";
+    ViewData["BackAction"] = "Details";
+    ViewData["EditAction"] = "EditSubSet";
+    ViewData["DetailAction"] = "DetailsWorkout";
 }
 
-<h4>Rutina de entrenamiento</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+    <partial name="Controls/_Header" />
         <form asp-action="EditWorkout">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="CustomerId" />
             <input type="hidden" asp-for="TrainerId" />
 
-            <div class="form-group">
-                <label asp-for="Begins" class="control-label"></label>
-                <input asp-for="Begins" class="form-control" />
-                <span asp-validation-for="Begins" class="text-danger"></span>
-            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label asp-for="Begins" class="control-label"></label>
+                    <input asp-for="Begins" class="form-control" />
+                    <span asp-validation-for="Begins" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="Ends" class="control-label"></label>
-                <input asp-for="Ends" class="form-control" />
-                <span asp-validation-for="Ends" class="text-danger"></span>
-            </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Ends" class="control-label"></label>
+                    <input asp-for="Ends" class="form-control" />
+                    <span asp-validation-for="Ends" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="GoalId" class="control-label"></label>
-                <select asp-for="GoalId" asp-items="Model.Goals" class="form-control"></select>
-                <span asp-validation-for="GoalId" class="text-danger"></span>
+                <div class="form-group col-md-4">
+                    <label asp-for="GoalId" class="control-label"></label>
+                    <select asp-for="GoalId" asp-items="Model.Goals" class="form-control"></select>
+                    <span asp-validation-for="GoalId" class="text-danger"></span>
+                </div>
             </div>
-
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <partial name="Controls/_BtnSubmit" />
+                <partial name="Controls/_BtnBackWithID" view-data="ViewData" model="@Model"/>
             </div>
         </form>
-    </div>
-</div>
+        <partial name="Controls/_Footer" />
 
 <div class="row">
     <div class="col-md-12">
@@ -54,7 +55,7 @@
                         <h6 class="card-title">Serie @(item.i + 1)</h6>
                     </div>
                     <div class="card-body">
-                            <table class="table table-responsive table-striped table-bordered table-hover">
+                            <table class="table table-responsive-sm table-striped table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th class="font-weight-bolder">
@@ -75,7 +76,7 @@
                                         <th  class="font-weight-bolder">
                                             @Html.DisplayNameFor(modelItem => item.value.SubSets.FirstOrDefault().Remarks)
                                         </th>
-                                        <th></th>
+                                        <th>Editar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -102,30 +103,18 @@
                                                 @Html.DisplayFor(modelItem => item2.Remarks)
                                             </td>
                                             <td>
-                                                <a class="btn btn-warning" asp-action="EditSubSet" asp-route-id="@item2.Id">
-                                                    Editar
-                                                    <svg class="bi bi-pencil" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fill-rule="evenodd" d="M13.293 3.293a1 1 0 011.414 0l2 2a1 1 0 010 1.414l-9 9a1 1 0 01-.39.242l-3 1a1 1 0 01-1.266-1.265l1-3a1 1 0 01.242-.391l9-9zM14 4l2 2-9 9-3 1 1-3 9-9z" clip-rule="evenodd"></path>
-                                                        <path fill-rule="evenodd" d="M14.146 8.354l-2.5-2.5.708-.708 2.5 2.5-.708.708zM5 12v.5a.5.5 0 00.5.5H6v.5a.5.5 0 00.5.5H7v.5a.5.5 0 00.5.5H8v-1.5a.5.5 0 00-.5-.5H7v-.5a.5.5 0 00-.5-.5H5z" clip-rule="evenodd"></path>
-                                                    </svg>
-                                                </a>
+                                                <partial name="Controls/_BtnEditNoText" view-data="ViewData" model="@item2" />
                                             </td>
                                         </tr>
-
                                     }
                                 </tbody>
                             </table>
                     </div>
-
                 </div>
                     }
-                </div>
+            </div>
         </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

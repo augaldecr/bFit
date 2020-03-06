@@ -2,7 +2,7 @@
 
 namespace bFit.Web.Data.Entities.Workouts
 {
-    public class SubSet
+    public class SubSet : IEntity
     {
         public int Id { get; set; }
 

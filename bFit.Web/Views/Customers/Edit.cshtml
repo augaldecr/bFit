@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit";
+    ViewData["BackAction"] = "Details";
 }
 
 <h1>Edit</h1>
@@ -19,14 +20,11 @@
                 <span asp-validation-for="Birthday" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <partial name="Controls/_BtnSubmit" />
+                <partial name="Controls/_BtnBackWithID" model="@Model" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

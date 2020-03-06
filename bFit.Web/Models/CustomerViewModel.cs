@@ -1,7 +1,8 @@
 ﻿using bFit.Web.Data.Entities;
-using bFit.Web.Data.Entities.Common;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace bFit.Web.Models
@@ -37,7 +38,10 @@ namespace bFit.Web.Models
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Localidad")]
-        public Town Town { get; set; }
+        [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar un tipo de ejecución")]
+        public int TownId { get; set; }
+
+        public IEnumerable<SelectListItem> Towns { get; set; }
 
         [Display(Name = "Dirección")]
         public string Address { get; set; }
@@ -49,14 +53,12 @@ namespace bFit.Web.Models
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Género")]
-        public Gender Gender { get; set; }
+        [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar un tipo de ejecución")]
+        public int GenderId { get; set; }
 
-
+        public IEnumerable<SelectListItem> Genders { get; set; }
 
         [Display(Name = "Nombre completo")]
         public string FullName => $"{LastName1} {LastName2} {FirstName}";
-
-        [Display(Name = "Dirección completa")]
-        public string FullAddress => $"{Town.Name}, {Address}";
     }
 }

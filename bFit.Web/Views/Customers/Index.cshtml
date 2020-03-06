@@ -1,25 +1,25 @@
-﻿@model IEnumerable<bFit.Web.Models.CustomerViewModel>
+﻿@model IEnumerable<bFit.Web.Data.Entities.Profiles.Customer>
 
 @{
     ViewData["Title"] = "Clientes";
 }
-<partial name="IndexList/_Header" />
+<partial name="Controls/_HeaderTable" />
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.SocialSecurity)
+                @Html.DisplayNameFor(model => model.User.SocialSecurity)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FullName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Birthday)
+                @Html.DisplayNameFor(model => model.User.Email)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Town)
+                @Html.DisplayNameFor(model => model.User.PhoneNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Address)
+                @Html.DisplayNameFor(model => model.User.Town)
             </th>
             <th></th>
         </tr>
@@ -28,26 +28,26 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.SocialSecurity)
+                @Html.DisplayFor(modelItem => item.User.SocialSecurity)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FullName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Birthday)
+                @Html.DisplayFor(modelItem => item.User.Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Town.Name)
+                @Html.DisplayFor(modelItem => item.User.PhoneNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Address)
+                @Html.DisplayFor(modelItem => item.User.Town.Name)
             </td>
             <td>
-                <partial name="IndexList/_BtnEdit" model="item" />
-                <partial name="IndexList/_BtnDetails" model="item" />
-                <partial name="IndexList/_BtnDelete" model="item" />
+                <partial name="Controls/_BtnEditNoText" model="item" />
+                <partial name="Controls/_BtnDetails" model="item" />
+                <partial name="Controls/_BtnDelete" model="item" />
             </td>
         </tr>
 }
     </tbody>
-<partial name="IndexList/_Footer" />
+<partial name="Controls/_FooterTable" />

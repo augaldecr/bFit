@@ -4,7 +4,7 @@
     ViewData["Title"] = "Cantones";
 }
 
-<partial name="IndexList/_Header" />
+<partial name="Controls/_HeaderTable" />
                     <thead>
                         <tr>
                             <th>
@@ -21,11 +21,11 @@
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </td>
                                 <td>
-                                    <partial name="IndexList/_BtnEdit" model="item" />
-                                    <partial name="IndexList/_BtnDetails" model="item" />
-                                    <partial name="IndexList/_BtnDelete" model="item" />
+                                    <partial name="Controls/_BtnEditNoText" model="item" />
+                                    <partial name="Controls/_BtnDetails" model="item" />
+                                    <partial name="Controls/_BtnDelete" model="item" />
                                 </td>
                             </tr>
                         }
                     </tbody>
-<partial name="IndexList/_Footer" />
+<partial name="Controls/_FooterTable" />
