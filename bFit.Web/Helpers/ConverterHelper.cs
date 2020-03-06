@@ -1,4 +1,5 @@
 ﻿using bFit.Web.Data;
+using bFit.Web.Data.Entities;
 using bFit.Web.Data.Entities.Profiles;
 using bFit.Web.Data.Entities.Workouts;
 using bFit.Web.Models;
@@ -23,7 +24,6 @@ namespace bFit.Web.Helpers
             return new CustomerViewModel
             {
                 Id = customer.Id,
-                SocialSecurity = customer.User.SocialSecurity,
                 FirstName = customer.User.FirstName,
                 LastName1 = customer.User.LastName1,
                 LastName2 = customer.User.LastName2,
@@ -38,13 +38,23 @@ namespace bFit.Web.Helpers
             };
         }
 
-        public Customer ToCustomer(CustomerViewModel model)
+        public async Task<Customer> ToCustomerAsync(CustomerViewModel model)
         {
             return new Customer
             {
                 Id = model.Id,
+                Gender =await  _context.Genders.FirstOrDefaultAsync(g => g.Id == model.GenderId),
                 Birthday = model.Birthday,
-                //Gender = model.Gender,
+                User = new User {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName1 = model.LastName1,
+                    LastName2 = model.LastName2,
+                    PhoneNumber = model.CellPhone,
+                    Town = await _context.Towns.FirstOrDefaultAsync(t => t.Id == model.TownId),
+                    Address = model.Address,
+                }
             };
         }
 

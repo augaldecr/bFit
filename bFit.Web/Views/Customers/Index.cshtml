@@ -2,13 +2,11 @@
 
 @{
     ViewData["Title"] = "Clientes";
+    ViewData["EditAction"] = "Edit";
 }
 <partial name="Controls/_HeaderTable" />
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.User.SocialSecurity)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.FullName)
             </th>
@@ -28,9 +26,6 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.User.SocialSecurity)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.FullName)
             </td>
             <td>
@@ -43,7 +38,7 @@
                 @Html.DisplayFor(modelItem => item.User.Town.Name)
             </td>
             <td>
-                <partial name="Controls/_BtnEditNoText" model="item" />
+                <partial name="Controls/_BtnEditNoText" view-data="ViewData" model="item" />
                 <partial name="Controls/_BtnDetails" model="item" />
                 <partial name="Controls/_BtnDelete" model="item" />
             </td>

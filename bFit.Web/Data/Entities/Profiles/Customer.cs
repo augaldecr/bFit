@@ -17,6 +17,7 @@ namespace bFit.Web.Data.Entities.Profiles
         [DataType(DataType.Date)]
         public DateTime Birthday { get; set; }
 
+        [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Usuario")]
         public User User { get; set; }
 
@@ -24,7 +25,6 @@ namespace bFit.Web.Data.Entities.Profiles
         [Display(Name = "Género")]
         public Gender Gender { get; set; }
 
-        [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Gimnasio")]
         public LocalGym Gym { get; set; }
 

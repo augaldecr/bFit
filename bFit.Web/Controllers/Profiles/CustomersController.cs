@@ -126,9 +126,20 @@ namespace bFit.Web.Controllers.Profiles
         {
             if (ModelState.IsValid)
             {
-                _context.Add(model);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var custom = await _userHelper.GetUserByEmailAsync(model.Email);
+
+                if (custom == null)
+                {
+                    var customer = _converterHelper.ToCustomer(model);
+                    _context.Add(model);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                } 
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Ya existe un usuario registrado con ése correo electrónico");
+                    return RedirectToAction($"{nameof(Create)}");
+                }
             }
             return View(model);
         }

@@ -42,11 +42,11 @@ namespace bFit.Web.Data
 
             await CheckRoles();
 
-            var admin = await CheckUserAsync("701570777", "Alonso", "Ugalde", "Aguilar",
+            var admin = await CheckUserAsync("Alonso", "Ugalde", "Aguilar",
                 "augaldecr@gmail.com", "85090266", "Coopevigua 2", "Admin");
-            var customer = await CheckUserAsync("701570777", "Alonso", "Ugalde", "Aguilar",
+            var customer = await CheckUserAsync("Alonso", "Ugalde", "Aguilar",
                 "augaldecr@hotmail.com", "85090266", "Coopevigua 2", "Customer");
-            var trainer = await CheckUserAsync("701570888", "Alonso", "Ugalde", "Aguilar",
+            var trainer = await CheckUserAsync("Alonso", "Ugalde", "Aguilar",
                 "alonsougaldecr@gmail.com", "85090266", "Coopevigua 2", "Trainer");
 
             await CheckAdminAsync(admin);
@@ -357,8 +357,8 @@ namespace bFit.Web.Data
             await _userHelper.CheckRoleAsync("Customer");
         }
 
-        private async Task<User> CheckUserAsync(string socialSecurityId, string firstName,
-            string lastName1, string lastName2, string email, string phone, string address, string role)
+        private async Task<User> CheckUserAsync(string firstName, string lastName1, string lastName2,
+            string email, string phone, string address, string role)
         {
             var user = await _userHelper.GetUserByEmailAsync(email);
 
@@ -368,7 +368,6 @@ namespace bFit.Web.Data
 
                 user = new User
                 {
-                    SocialSecurity = socialSecurityId,
                     FirstName = firstName,
                     LastName1 = lastName1,
                     LastName2 = lastName2,

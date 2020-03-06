@@ -10,17 +10,7 @@
 <partial name="Controls/_Header" />
 
 <div class="row">
-    <div class="input-group mb-3 col-md-4">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="socialsecurity">
-                @Html.DisplayNameFor(model => model.User.SocialSecurity):
-            </span>
-        </div>
-        <input type="text" class="form-control" aria-label="socialsecurity" disabled
-               aria-describedby="socialsecurity" value="@Html.DisplayFor(model => model.User.SocialSecurity)">
-    </div>
-
-    <div class="input-group mb-3 col-md-4">
+    <div class="input-group mb-3 col-md-6">
         <div class="input-group-prepend">
             <span class="input-group-text" id="fullname">
                 @Html.DisplayNameFor(model => model.FullName):
@@ -30,7 +20,7 @@
                aria-describedby="fullname" value="@Html.DisplayFor(model => model.FullName)">
     </div>
 
-    <div class="input-group mb-3 col-md-4">
+    <div class="input-group mb-3 col-md-6">
         <div class="input-group-prepend">
             <span class="input-group-text" id="birthday">
                 @Html.DisplayNameFor(model => model.Birthday):

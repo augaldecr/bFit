@@ -6,11 +6,6 @@ namespace bFit.Web.Data.Entities
 {
     public class User : IdentityUser
     {
-        //Cédula
-        [Required(ErrorMessage = "El campo {0} es requerido.")]
-        [Display(Name = "Cédula")]
-        public string SocialSecurity { get; set; }
-
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Nombre")]
         public string FirstName { get; set; }

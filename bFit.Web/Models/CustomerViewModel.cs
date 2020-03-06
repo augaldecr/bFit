@@ -13,10 +13,6 @@ namespace bFit.Web.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
-        [Display(Name = "Cédula")]
-        public string SocialSecurity { get; set; }
-
-        [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Nombre")]
         public string FirstName { get; set; }
 

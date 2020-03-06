@@ -636,10 +636,6 @@ namespace bFit.Web.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SocialSecurity")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("TownId")
                         .HasColumnType("int");
 
@@ -661,10 +657,6 @@ namespace bFit.Web.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.HasIndex("TownId");
-
-                    b.HasIndex("SocialSecurity", "Email")
-                        .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -1077,7 +1069,7 @@ namespace bFit.Web.Migrations
             modelBuilder.Entity("bFit.Web.Data.Entities.Workouts.SubSet", b =>
                 {
                     b.HasOne("bFit.Web.Data.Entities.Workouts.Exercise", "Exercise")
-                        .WithMany()
+                        .WithMany("SubSets")
                         .HasForeignKey("ExerciseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
