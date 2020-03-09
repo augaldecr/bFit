@@ -19,8 +19,14 @@ namespace bFit.Web.Helpers
             _combosHelper = combosHelper;
         }
 
-        public CustomerViewModel ToCustomerViewModel(Customer customer)
+        public async Task<CustomerViewModel> ToCustomerViewModelAsync(Customer customer)
         {
+            if (customer.Gym.Id == 0)
+            {
+                var gym = await _context.Gyms.FirstOrDefaultAsync(g => g.Franchise.LegalId == "0000");
+                customer.Gym.Id = gym.Id;
+            }
+
             return new CustomerViewModel
             {
                 Id = customer.Id,
@@ -33,18 +39,27 @@ namespace bFit.Web.Helpers
                 GenderId = customer.Gender.Id,
                 TownId = customer.User.Town.Id,
                 Genders = _combosHelper.GetComboGenders(),
-                Towns = _combosHelper.GetComboGenders(),
+                Towns = _combosHelper.GetComboTowns(),
                 Address = customer.User.Address,
+                GymId = customer.Gym.Id,
+                Gyms = _combosHelper.GetComboGyms(customer.Gym.Id),
             };
         }
 
         public async Task<Customer> ToCustomerAsync(CustomerViewModel model)
         {
+            if (model.GymId == 0)
+            {
+                var gym = await _context.Gyms.FirstOrDefaultAsync(g => g.Franchise.LegalId == "0000");
+                model.GymId = gym.Id;
+            }
             return new Customer
             {
                 Id = model.Id,
                 Gender =await  _context.Genders.FirstOrDefaultAsync(g => g.Id == model.GenderId),
                 Birthday = model.Birthday,
+                
+                Gym = await _context.Gyms.FirstOrDefaultAsync(g => g.Id == model.GymId),
                 User = new User {
                     UserName = model.Email,
                     Email = model.Email,
@@ -58,9 +73,9 @@ namespace bFit.Web.Helpers
             };
         }
 
-        public EditWorkoutViewModel ToEditWorkoutViewModel(WorkoutRoutine workout)
+        public WorkoutViewModel ToWorkoutViewModel(WorkoutRoutine workout)
         {
-            return new EditWorkoutViewModel
+            return new WorkoutViewModel
             {
                 Id = workout.Id,
                 Begins = workout.Begins,

@@ -29,11 +29,5 @@ namespace bFit.Web.Data.Entities.Profiles
         public LocalGym Gym { get; set; }
 
         public ICollection<WorkoutRoutine> WorkOutRoutines { get; set; }
-
-        [Display(Name = "Nombre completo")]
-        public string FullName => $"{User.LastName1} {User.LastName2} {User.FirstName}";
-
-        [Display(Name = "Dirección completa")]
-        public string FullAddress => $"{User.Town.Name}, {User.Address}";
     }
 }

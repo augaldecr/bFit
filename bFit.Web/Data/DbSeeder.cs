@@ -263,15 +263,23 @@ namespace bFit.Web.Data
         {
             if (!_applicationDbContext.Gyms.Any())
             {
-                var franchise = _applicationDbContext.Franchises.FirstOrDefault(f => f.LegalId.Equals("1111"));
                 var town = _applicationDbContext.Towns.FirstOrDefault(t => t.Name.Equals("Guápiles"));
+
+                await _applicationDbContext.Gyms.AddAsync(new LocalGym
+                {
+                    Email = "Individual",
+                    PhoneNumber = "Individual",
+                    Address = "Individual",
+                    Franchise = _applicationDbContext.Franchises.FirstOrDefault(f => f.LegalId.Equals("0000")),
+                    Town = town,
+                });
 
                 await _applicationDbContext.Gyms.AddAsync(new LocalGym
                 {
                     Email = "contacto@irontraining.com",
                     PhoneNumber = "22222222",
                     Address = "Guápiles centro",
-                    Franchise = franchise,
+                    Franchise = _applicationDbContext.Franchises.FirstOrDefault(f => f.LegalId.Equals("1111")),
                     Town = town
                 });
                 await _applicationDbContext.SaveChangesAsync();
@@ -336,6 +344,14 @@ namespace bFit.Web.Data
         {
             if (!_applicationDbContext.Franchises.Any())
             {
+                await _applicationDbContext.Franchises.AddAsync(new Franchise
+                {
+                    LegalId = "0000",
+                    TradeName = "Individual",
+                    RegisteredName = "Individual",
+                    Email = "Individual",
+                    PhoneNumber = ""
+                });
                 await _applicationDbContext.Franchises.AddAsync(new Franchise
                 {
                     LegalId = "1111",

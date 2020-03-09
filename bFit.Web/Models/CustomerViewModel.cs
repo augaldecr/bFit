@@ -54,6 +54,13 @@ namespace bFit.Web.Models
 
         public IEnumerable<SelectListItem> Genders { get; set; }
 
+        [Required(ErrorMessage = "El campo {0} es requerido.")]
+        [Display(Name = "Gimnasio")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar un gimnasio")]
+        public int GymId { get; set; }
+
+        public IEnumerable<SelectListItem> Gyms { get; set; }
+
         [Display(Name = "Nombre completo")]
         public string FullName => $"{LastName1} {LastName2} {FirstName}";
     }

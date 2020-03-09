@@ -1,4 +1,5 @@
 ﻿using bFit.Web.Data.Entities;
+using bFit.Web.Data.Entities.Profiles;
 using bFit.Web.Data.Entities.Workouts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace bFit.Web.Models
 {
-    public class EditWorkoutViewModel : IEntity
+    public class WorkoutViewModel : IEntity
     {
         [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }
@@ -18,6 +19,8 @@ namespace bFit.Web.Models
 
         [HiddenInput(DisplayValue = false)]
         public int TrainerId { get; set; }
+
+        public Customer Customer { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Fecha de inicio")]
@@ -37,6 +40,8 @@ namespace bFit.Web.Models
         public int GoalId { get; set; }
 
         public IEnumerable<SelectListItem> Goals { get; set; }
+
+        public IEnumerable<SelectListItem> Trainers { get; set; }
 
         public virtual ICollection<Set> Sets { get; set; }
     }

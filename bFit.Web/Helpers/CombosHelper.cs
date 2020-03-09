@@ -1,5 +1,7 @@
 ﻿using bFit.Web.Data;
+using bFit.Web.Data.Entities.Profiles;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -90,6 +92,64 @@ namespace bFit.Web.Helpers
             return list;
         }
 
+        public IEnumerable<SelectListItem> GetComboGyms(int? id)
+        {
+            List<SelectListItem> list;
+
+            if (id==null)
+            {
+                var gyms = _context.Gyms
+                    .Include(g => g.Franchise)
+                    .Include(g => g.Town)
+                    .ToList();
+
+                list = new List<SelectListItem>();
+
+                foreach (var gym in gyms)
+                {
+                    list.Add(new SelectListItem
+                    {
+                        Text = $"{gym.Name}",
+                        Value = $"{gym.Id}",
+                    });
+                }
+                list = list.OrderBy(g => g.Text).ToList();
+            } else
+            {
+                var gyms = _context.Gyms
+                    .Include(g => g.Franchise)
+                    .Include(g => g.Town)
+                    .Where(g => g.Franchise.Id == id);
+                /*list = gyms.Select(g =>  new SelectListItem
+                {
+                    Text = $"{g.Name}",
+                    Value = $"{g.Id}"
+                })
+              .OrderBy(g => g.Text)
+              .ToList(); */
+
+                list = new List<SelectListItem>();
+
+                foreach (var gym in gyms)
+                {
+                    list.Add(new SelectListItem
+                    {
+                        Text = $"{gym.Name}",
+                        Value = $"{gym.Id}",
+                    });
+                }
+                list = list.OrderBy(g => g.Text).ToList();
+            }
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[Seleccione un gimnasio]",
+                Value = "0"
+            });
+
+            return list;
+        }
+
         public IEnumerable<SelectListItem> GetComboTowns()
         {
             List<SelectListItem> list = _context.Towns.Select(g => new SelectListItem
@@ -106,6 +166,55 @@ namespace bFit.Web.Helpers
                 Value = "0"
             });
 
+            return list;
+        }
+
+        public IEnumerable<SelectListItem> GetComboTrainers(int? franchiseId)
+        {
+            List<SelectListItem> list;
+
+            if (franchiseId == null)
+            {
+                var trainers = _context.Trainers
+                    .Include(t => t.User)
+                    .ToList();
+
+                list = new List<SelectListItem>();
+
+                foreach (var trainer in trainers)
+                {
+                    list.Add(new SelectListItem
+                    {
+                        Text = $"{trainer.User.FullName}",
+                        Value = $"{trainer.Id}",
+                    });
+                }
+                list = list.OrderBy(g => g.Text).ToList();
+            } else
+            {
+                var trainers = _context.Trainers
+                    .Include(t => t.User)
+                    .Where(t => t.Franchise.Id == franchiseId);
+                /*list = gyms.Select(g =>  new SelectListItem
+                {
+                    Text = $"{g.Name}",
+                    Value = $"{g.Id}"
+                })
+              .OrderBy(g => g.Text)
+              .ToList(); */
+
+                list = new List<SelectListItem>();
+
+                foreach (var trainer in trainers)
+                {
+                    list.Add(new SelectListItem
+                    {
+                        Text = $"{trainer.User.FullName}",
+                        Value = $"{trainer.Id}",
+                    });
+                }
+                list = list.OrderBy(g => g.Text).ToList();
+            }
             return list;
         }
     }

@@ -1,4 +1,4 @@
-﻿@model bFit.Web.Models.EditWorkoutViewModel;
+﻿@model bFit.Web.Models.WorkoutViewModel;
 
 @{
     ViewData["Title"] = "Rutina de entrenamiento";
@@ -10,29 +10,9 @@
     <partial name="Controls/_Header" />
         <form asp-action="EditWorkout">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="CustomerId" />
-            <input type="hidden" asp-for="TrainerId" />
 
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label asp-for="Begins" class="control-label"></label>
-                    <input asp-for="Begins" class="form-control" />
-                    <span asp-validation-for="Begins" class="text-danger"></span>
-                </div>
+            <partial name="_Workout" />
 
-                <div class="form-group col-md-4">
-                    <label asp-for="Ends" class="control-label"></label>
-                    <input asp-for="Ends" class="form-control" />
-                    <span asp-validation-for="Ends" class="text-danger"></span>
-                </div>
-
-                <div class="form-group col-md-4">
-                    <label asp-for="GoalId" class="control-label"></label>
-                    <select asp-for="GoalId" asp-items="Model.Goals" class="form-control"></select>
-                    <span asp-validation-for="GoalId" class="text-danger"></span>
-                </div>
-            </div>
             <div class="form-group">
                 <partial name="Controls/_BtnSubmit" />
                 <partial name="Controls/_BtnBackWithID" view-data="ViewData" model="@Model"/>

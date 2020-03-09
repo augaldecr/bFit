@@ -7,9 +7,9 @@ namespace bFit.Web.Helpers
 {
     public interface IConverterHelper
     {
-        Customer ToCustomer(CustomerViewModel model);
-        CustomerViewModel ToCustomerViewModel(Customer customer);
-        EditWorkoutViewModel ToEditWorkoutViewModel(WorkoutRoutine workout);
+        Task<Customer> ToCustomerAsync(CustomerViewModel model);
+        Task<CustomerViewModel> ToCustomerViewModelAsync(Customer customer);
+        WorkoutViewModel ToWorkoutViewModel(WorkoutRoutine workout);
         EditSubSetViewModel ToEditSubSetViewModel(SubSet subSet);
         Task<SubSet> ToSubSetAsync(EditSubSetViewModel editSubSetVwm);
     }

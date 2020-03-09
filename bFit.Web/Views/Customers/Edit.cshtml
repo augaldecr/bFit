@@ -1,7 +1,7 @@
 ﻿@model bFit.Web.Models.CustomerViewModel;
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar cliente";
     ViewData["BackAction"] = "Details";
 }
 
@@ -11,11 +11,69 @@
         <input type="hidden" asp-for="Id" />
 
         <div class="form-row">
-
-            <div class="form-group">
-                <partial name="Controls/_BtnSubmit" />
-                <partial name="Controls/_BtnBackWithID" model="@Model" />
+            <div class="form-group col-md-4">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
+            <div class="form-group col-md-4">
+                <label asp-for="LastName1" class="control-label"></label>
+                <input asp-for="LastName1" class="form-control" />
+                <span asp-validation-for="LastName1" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-4">
+                <label asp-for="LastName2" class="control-label"></label>
+                <input asp-for="LastName2" class="form-control" />
+                <span asp-validation-for="LastName2" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label asp-for="Birthday" class="control-label"></label>
+                <input asp-for="Birthday" class="form-control" />
+                <span asp-validation-for="Birthday" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label asp-for="GenderId" class="control-label"></label>
+                <select asp-for="GenderId" asp-items="@Model.Genders" class="form-control"></select>
+                <span asp-validation-for="GenderId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label asp-for="CellPhone" class="control-label"></label>
+                <input asp-for="CellPhone" class="form-control" />
+                <span asp-validation-for="CellPhone" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label asp-for="TownId" class="control-label"></label>
+                <select asp-for="TownId" asp-items="@Model.Towns" class="form-control"></select>
+                <span asp-validation-for="TownId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            @if (!User.IsInRole("Customer"))
+            {
+                <div class="form-group col-md-4">
+                    <label asp-for="GymId" class="control-label"></label>
+                    <select asp-for="GymId" asp-items="@Model.Gyms" class="form-control"></select>
+                    <span asp-validation-for="GymId" class="text-danger"></span>
+                </div>
+            }
+        </div>
+
+        <div class="form-group">
+            <partial name="Controls/_BtnSubmit" />
+            <partial name="Controls/_BtnBackWithID" model="@Model" />
+        </div>
     </form>
     <partial name="Controls/_Footer" />
 

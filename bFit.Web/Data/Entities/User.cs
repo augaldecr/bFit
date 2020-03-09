@@ -24,5 +24,11 @@ namespace bFit.Web.Data.Entities
 
         [Display(Name = "Dirección")]
         public string Address { get; set; }
+
+        [Display(Name = "Nombre completo")]
+        public string FullName => $"{LastName1} {LastName2} {FirstName}";
+
+        [Display(Name = "Dirección completa")]
+        public string FullAddress => $"{Town.Name}, {Address}";
     }
 }

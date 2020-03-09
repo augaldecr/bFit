@@ -9,6 +9,8 @@ namespace bFit.Web.Helpers
         IEnumerable<SelectListItem> GetComboExercises();
         IEnumerable<SelectListItem> GetComboSubSetTypes();
         IEnumerable<SelectListItem> GetComboGenders();
-        IEnumerable<SelectListItem> GetComboTowns();
+        IEnumerable<SelectListItem> GetComboTowns(); 
+        IEnumerable<SelectListItem> GetComboGyms(int? id);
+        IEnumerable<SelectListItem> GetComboTrainers(int? franchiseId);
     }
 }
