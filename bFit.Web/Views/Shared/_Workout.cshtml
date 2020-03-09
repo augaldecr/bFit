@@ -3,12 +3,10 @@
 <input type="hidden" asp-for="Id" />
 <input type="hidden" asp-for="CustomerId" />
 
-@if (User.IsInRole("Trainer"))
+@if (User.IsInRole("Trainer") || User.IsInRole("Customer"))
 {
     <input type="hidden" asp-for="TrainerId" />
 }
-
-<input type="hidden" asp-for="TrainerId" />
 
 <div class="form-row">
     <div class="form-group col-md-4">
@@ -29,10 +27,13 @@
         <span asp-validation-for="GoalId" class="text-danger"></span>
     </div>
 </div>
+@if (!User.IsInRole("Trainer") || !User.IsInRole("Customer"))
+	{
 <div class="form-row">
     <div class="form-group col-md-4">
         <label asp-for="TrainerId" class="control-label"></label>
-        <select asp-for="TrainerId" asp-items="Model.Goals" class="form-control"></select>
+        <select asp-for="TrainerId" asp-items="Model.Trainers" class="form-control"></select>
         <span asp-validation-for="TrainerId" class="text-danger"></span>
     </div>
-</div>
+</div> 
+	}

@@ -12,5 +12,6 @@ namespace bFit.Web.Helpers
         WorkoutViewModel ToWorkoutViewModel(WorkoutRoutine workout);
         EditSubSetViewModel ToEditSubSetViewModel(SubSet subSet);
         Task<SubSet> ToSubSetAsync(EditSubSetViewModel editSubSetVwm);
+        Task<WorkoutRoutine> ToWorkoutAsync(WorkoutViewModel workoutView);
     }
 }

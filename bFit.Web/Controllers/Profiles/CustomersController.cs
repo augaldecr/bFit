@@ -413,11 +413,34 @@ namespace bFit.Web.Controllers.Profiles
                 Goals = _combosHelper.GetComboGoals(),
                 Sets = null
             };
-            /*customerVwm.Genders = _combosHelper.GetComboGenders();
-            customerVwm.Towns = _combosHelper.GetComboTowns();
-            customerVwm.Gyms = _combosHelper.GetComboGyms(franchise); */
 
             return View(workoutVwm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateWorkout(WorkoutViewModel workoutView)
+        {
+            if (ModelState.IsValid)
+            {
+                var workout = await _context.WorkoutRoutines.FirstOrDefaultAsync(w => w.Id == workoutView.Id);
+
+                if (workout == null)
+                {
+                    var workoutRoutine = await _converterHelper.ToWorkoutAsync(workoutView);
+
+                    _context.Add(workoutRoutine);
+                    
+                    var w = await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "No puede registrar una rutina de entrenamiento que ya existe");
+                    return RedirectToAction("CreateWorkout", new { @id = workoutView.Id });
+                }
+            }
+            return View(workoutView);
         }
 
         private async Task<WorkoutRoutine> getWorkoutComplete(int? id)

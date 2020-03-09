@@ -17,6 +17,7 @@ namespace bFit.Web.Models
         [HiddenInput(DisplayValue = false)]
         public int CustomerId { get; set; }
 
+        [Display(Name = "Entrenador")]
         [HiddenInput(DisplayValue = false)]
         public int TrainerId { get; set; }
 
@@ -24,13 +25,11 @@ namespace bFit.Web.Models
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Fecha de inicio")]
-        [MaxLength(50, ErrorMessage = "El campo {0} no puede exceder los {1} caracteres.")]
         [DataType(DataType.Date)]
         public DateTime Begins { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Fecha de fin")]
-        [MaxLength(50, ErrorMessage = "El campo {0} no puede exceder los {1} caracteres.")]
         [DataType(DataType.Date)]
         public DateTime Ends { get; set; }
 

@@ -83,6 +83,7 @@ namespace bFit.Web.Helpers
                 Sets = workout.Sets,
                 CustomerId = workout.Customer.Id,
                 TrainerId = workout.Trainer.Id,
+                Trainers = _combosHelper.GetComboTrainers(null),
                 GoalId = workout.Goal.Id,
                 Goals = _combosHelper.GetComboGoals(),
             };
@@ -118,6 +119,18 @@ namespace bFit.Web.Helpers
                 Remarks = editSubSetVwm.Remarks,
                 Set = await _context.Sets.FirstOrDefaultAsync(s => s.Id == editSubSetVwm.SetId),
                 SubSetType = await _context.SubSetTypes.FirstOrDefaultAsync(s => s.Id == editSubSetVwm.SubSetTypeId),
+            };
+        }
+
+        public async Task<WorkoutRoutine> ToWorkoutAsync(WorkoutViewModel workoutView)
+        {
+            return new WorkoutRoutine
+            {
+                Begins = workoutView.Begins,
+                Ends = workoutView.Ends,
+                Goal = await _context.Goals.FirstOrDefaultAsync(g => g.Id == workoutView.GoalId),
+                Customer = await _context.Customers.FirstOrDefaultAsync(c => c.Id == workoutView.CustomerId),
+                Trainer = await _context.Trainers.FirstOrDefaultAsync(t => t.Id == workoutView.TrainerId),
             };
         }
     }
