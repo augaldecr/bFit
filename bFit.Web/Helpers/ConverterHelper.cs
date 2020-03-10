@@ -89,6 +89,25 @@ namespace bFit.Web.Helpers
             };
         }
 
+        public EditWorkoutViewModel ToEditWorkoutViewModel(WorkoutRoutine workout)
+        {
+            return new EditWorkoutViewModel
+            {
+                Id = workout.Id,
+                Begins = workout.Begins,
+                Ends = workout.Ends,
+                Sets = workout.Sets,
+                CustomerId = workout.Customer.Id,
+                TrainerId = workout.Trainer.Id,
+                Trainers = _combosHelper.GetComboTrainers(null),
+                GoalId = workout.Goal.Id,
+                Goals = _combosHelper.GetComboGoals(),
+                Exercises = _combosHelper.GetComboExercises(),
+                SubSetTypes = _combosHelper.GetComboSubSetTypes(),
+                WorkoutId = workout.Id, 
+            };
+        }
+
         public EditSubSetViewModel ToEditSubSetViewModel(SubSet subSet)
         {
             return new EditSubSetViewModel

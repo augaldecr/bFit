@@ -297,9 +297,9 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var workoutVwm = _converterHelper.ToWorkoutViewModel(workout);
+            var editWorkoutVwm = _converterHelper.ToEditWorkoutViewModel(workout);
 
-            return View(workoutVwm);
+            return View(editWorkoutVwm);
         }
 
         public async Task<IActionResult> EditSubSet(int? id)
@@ -362,10 +362,10 @@ namespace bFit.Web.Controllers.Profiles
             return View(subSet);
         }
 
-        public async Task<IActionResult> CreateWorkout(int id)
+        public async Task<IActionResult> CreateWorkout(int customerId)
         {
             var user = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
-            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Id == id);
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Id == customerId);
             Franchise franchise;
             IEnumerable<SelectListItem> comboTrainers = new List<SelectListItem>();
             IFranchiseEmployee employee = null;
@@ -407,11 +407,11 @@ namespace bFit.Web.Controllers.Profiles
                 Begins = DateTime.Now,
                 Ends = DateTime.Now.AddMonths(1),
                 Customer = customer,
-                CustomerId = customer.Id,
+                CustomerId = customerId,
                 TrainerId = employee.Id,
                 Trainers = comboTrainers,
                 Goals = _combosHelper.GetComboGoals(),
-                Sets = null
+                Sets = null,
             };
 
             return View(workoutVwm);
@@ -431,13 +431,16 @@ namespace bFit.Web.Controllers.Profiles
 
                     _context.Add(workoutRoutine);
                     
-                    var w = await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    await _context.SaveChangesAsync();
+
+                    var editWorkout = _converterHelper.ToEditWorkoutViewModel(workoutRoutine);
+
+                    return RedirectToAction("EditWorkout", new { @id = editWorkout.Id });
                 }
                 else
                 {
                     ModelState.AddModelError(string.Empty, "No puede registrar una rutina de entrenamiento que ya existe");
-                    return RedirectToAction("CreateWorkout", new { @id = workoutView.Id });
+                    return RedirectToAction("EditWorkout", new { @id = workoutView.Id });
                 }
             }
             return View(workoutView);
