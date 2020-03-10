@@ -423,16 +423,21 @@ namespace bFit.Web.Controllers.Profiles
         {
             if (ModelState.IsValid)
             {
-                var workout = await _context.WorkoutRoutines.FirstOrDefaultAsync(w => w.Id == workoutView.Id);
+                var workout = await _context.WorkoutRoutines.FirstOrDefaultAsync(w => w.Id == workoutView.);
 
                 if (workout == null)
                 {
                     var workoutRoutine = await _converterHelper.ToWorkoutAsync(workoutView);
 
-                    _context.Add(workoutRoutine);
-                    
-                    var w = await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    _context.Add(workoutRoutine);     
+                    await _context.SaveChangesAsync();
+
+                   /* var workSaved = await _context.WorkoutRoutines.FirstOrDefaultAsync(
+                        w => w.Begins == workoutRoutine.Begins
+                        && w.Begins == workoutRoutine.Begins
+                        && w.Goal == workoutRoutine.Goal); */
+
+                    return RedirectToAction("CreateWorkout", new { @id = workoutRoutine.Id });
                 }
                 else
                 {
