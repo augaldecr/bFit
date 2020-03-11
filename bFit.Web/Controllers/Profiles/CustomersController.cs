@@ -116,15 +116,15 @@ namespace bFit.Web.Controllers.Profiles
 
         public async Task<IActionResult> Create()
         {
-            var user = await  _userHelper.GetUserByEmailAsync(User.Identity.Name);
+            var user = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
             int? franchise;
             if (await _userHelper.IsUserInRoleAsync(user, "Admin"))
             {
                 franchise = null;
-            } 
+            }
             else if (await _userHelper.IsUserInRoleAsync(user, "FranchiseAdmin"))
             {
-                var employee =  await _context.FranchiseAdmins.FirstOrDefaultAsync(
+                var employee = await _context.FranchiseAdmins.FirstOrDefaultAsync(
                     a => a.User.Email == user.Email);
                 franchise = employee.Franchise.Id;
             }
@@ -163,12 +163,6 @@ namespace bFit.Web.Controllers.Profiles
 
                 if (custom == null)
                 {
-                    if (model.GymId == 0)
-                    {
-                        
-                    }
-                    
-
                     var customer = await _converterHelper.ToCustomerAsync(model);
 
                     var trainer = await _context.Trainers.FirstOrDefaultAsync(
@@ -177,7 +171,7 @@ namespace bFit.Web.Controllers.Profiles
                     _context.Add(customer);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
-                } 
+                }
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Ya existe un usuario registrado con ése correo electrónico");
@@ -322,14 +316,14 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var subSetVwm = _converterHelper.ToEditSubSetViewModel(subSet);
+            var subSetVwm = _converterHelper.ToSubSetViewModel(subSet);
 
             return View(subSetVwm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditSubSet(int id, EditSubSetViewModel editSubSetVwm)
+        public async Task<IActionResult> EditSubSet(int id, SubSetViewModel editSubSetVwm)
         {
             if (id != editSubSetVwm.Id)
             {
@@ -357,64 +351,73 @@ namespace bFit.Web.Controllers.Profiles
                     }
                 }
 
-                return RedirectToAction("EditWorkout",new { @id = editSubSetVwm.WorkoutId });
+                return RedirectToAction("EditWorkout", new { @id = editSubSetVwm.WorkoutId });
             }
             return View(subSet);
         }
 
         public async Task<IActionResult> CreateWorkout(int customerId)
         {
-            var user = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
-            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Id == customerId);
-            Franchise franchise;
-            IEnumerable<SelectListItem> comboTrainers = new List<SelectListItem>();
-            IFranchiseEmployee employee = null;
-
-            if (await _userHelper.IsUserInRoleAsync(user, "Admin"))
+            if (customerId == null)
             {
-                franchise = null;
-                employee = await _context.Trainers.FirstOrDefaultAsync();
-                comboTrainers = _combosHelper.GetComboTrainers(null);
-            }
-            else if (await _userHelper.IsUserInRoleAsync(user, "FranchiseAdmin"))
-            {
-                employee = await _context.FranchiseAdmins.FirstOrDefaultAsync(
-                    a => a.User.Email == user.Email);
-                franchise = employee.Franchise;
-                comboTrainers = _combosHelper.GetComboTrainers(franchise.Id);
-            }
-            else if (await _userHelper.IsUserInRoleAsync(user, "GymAdmin"))
-            {
-                employee = await _context.GymAdmins.FirstOrDefaultAsync(
-                    a => a.User.Email == user.Email);
-                franchise = employee.Franchise;
-                comboTrainers = _combosHelper.GetComboTrainers(franchise.Id);
-            }
-            else if (await _userHelper.IsUserInRoleAsync(user, "Trainer"))
-            {
-                employee = await _context.Trainers.FirstOrDefaultAsync(
-                   a => a.User.Email == user.Email);
-                franchise = employee.Franchise;
-                comboTrainers = _combosHelper.GetComboTrainers(franchise.Id);
-            }
-            else
-            {
-                franchise = null;
+                return NotFound();
             }
 
-            var workoutVwm = new WorkoutViewModel
+            if (_context.Customers.Any(c => c.Id == customerId))
             {
-                Begins = DateTime.Now,
-                Ends = DateTime.Now.AddMonths(1),
-                Customer = customer,
-                CustomerId = customerId,
-                TrainerId = employee.Id,
-                Trainers = comboTrainers,
-                Goals = _combosHelper.GetComboGoals(),
-                Sets = null,
-            };
+                var user = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
+                var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Id == customerId);
+                Franchise franchise;
+                IEnumerable<SelectListItem> comboTrainers = new List<SelectListItem>();
+                IFranchiseEmployee employee = null;
 
-            return View(workoutVwm);
+                if (await _userHelper.IsUserInRoleAsync(user, "Admin"))
+                {
+                    franchise = null;
+                    employee = await _context.Trainers.FirstOrDefaultAsync();
+                    comboTrainers = _combosHelper.GetComboTrainers(null);
+                }
+                else if (await _userHelper.IsUserInRoleAsync(user, "FranchiseAdmin"))
+                {
+                    employee = await _context.FranchiseAdmins.FirstOrDefaultAsync(
+                        a => a.User.Email == user.Email);
+                    franchise = employee.Franchise;
+                    comboTrainers = _combosHelper.GetComboTrainers(franchise.Id);
+                }
+                else if (await _userHelper.IsUserInRoleAsync(user, "GymAdmin"))
+                {
+                    employee = await _context.GymAdmins.FirstOrDefaultAsync(
+                        a => a.User.Email == user.Email);
+                    franchise = employee.Franchise;
+                    comboTrainers = _combosHelper.GetComboTrainers(franchise.Id);
+                }
+                else if (await _userHelper.IsUserInRoleAsync(user, "Trainer"))
+                {
+                    employee = await _context.Trainers.FirstOrDefaultAsync(
+                       a => a.User.Email == user.Email);
+                    franchise = employee.Franchise;
+                    comboTrainers = _combosHelper.GetComboTrainers(franchise.Id);
+                }
+                else
+                {
+                    franchise = null;
+                }
+
+                var workoutVwm = new WorkoutViewModel
+                {
+                    Begins = DateTime.Now,
+                    Ends = DateTime.Now.AddMonths(1),
+                    Customer = customer,
+                    CustomerId = customerId,
+                    TrainerId = employee.Id,
+                    Trainers = comboTrainers,
+                    Goals = _combosHelper.GetComboGoals(),
+                    Sets = null,
+                };
+
+                return View(workoutVwm);
+            }
+            return NotFound();
         }
 
         [HttpPost]
@@ -430,7 +433,7 @@ namespace bFit.Web.Controllers.Profiles
                     var workoutRoutine = await _converterHelper.ToWorkoutAsync(workoutView);
 
                     _context.Add(workoutRoutine);
-                    
+
                     await _context.SaveChangesAsync();
 
                     var editWorkout = _converterHelper.ToEditWorkoutViewModel(workoutRoutine);
@@ -446,20 +449,95 @@ namespace bFit.Web.Controllers.Profiles
             return View(workoutView);
         }
 
+        public IActionResult CreateSet(int? workoutId)
+        {
+            SubSetViewModel subSetView;
+            if (workoutId == null)
+            {
+                return NotFound();
+            }
+
+            subSetView = new SubSetViewModel
+            {
+                WorkoutId = Convert.ToInt32(workoutId),
+                Exercises = _combosHelper.GetComboExercises(),
+                SubSetTypes = _combosHelper.GetComboSubSetTypes(),
+            };
+
+            return View(subSetView);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateSet(SubSetViewModel subSetView)
+        {
+            if (ModelState.IsValid)
+            {
+                var workout = await _context.WorkoutRoutines.FirstOrDefaultAsync(w => w.Id == subSetView.WorkoutId);
+
+                if (workout != null)
+                {
+                    var set = new Set
+                    {
+                        WorkoutRoutine = workout,
+                    };
+
+                    await _context.AddAsync(set);
+                    await _context.SaveChangesAsync();
+
+                    var subSet = await _converterHelper.ToSubSetAsync(subSetView);
+                    subSet.Set = set;
+
+                    await _context.AddAsync(subSet);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("EditSet", new { @id = set.Id });
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Ya existe un circuito registrado con ése identificador");
+                    return RedirectToAction($"{nameof(CreateWorkout)}");
+                }
+            }
+            return View(subSetView);
+        }
+
+        public async Task<IActionResult> EditSet(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var set = await _context.Sets
+                .Include(s => s.SubSets)
+                    .ThenInclude(ss => ss.Exercise)
+                        .ThenInclude(e => e.ExerciseType)
+                .Include(s => s.WorkoutRoutine)
+                .FirstOrDefaultAsync(s => s.Id == id);
+
+            if (set == null)
+            {
+                return NotFound();
+            }
+
+            var setVwm = _converterHelper.ToSetViewModel(set);
+            return View(setVwm);
+        }
+
         private async Task<WorkoutRoutine> getWorkoutComplete(int? id)
         {
-               return await _context.WorkoutRoutines
-                .Include(w => w.Goal)
-                .Include(w => w.Sets)
-                    .ThenInclude(s => s.SubSets)
-                        .ThenInclude(x => x.SubSetType)
-                .Include(w => w.Sets)
-                    .ThenInclude(s => s.SubSets)
-                        .ThenInclude(x => x.Exercise)
-                            .ThenInclude(e => e.ExerciseType)
-                .Include(w => w.Customer)
-                .Include(w => w.Trainer)
-                .FirstOrDefaultAsync(w => w.Id == id);
+            return await _context.WorkoutRoutines
+             .Include(w => w.Goal)
+             .Include(w => w.Sets)
+                 .ThenInclude(s => s.SubSets)
+                     .ThenInclude(x => x.SubSetType)
+             .Include(w => w.Sets)
+                 .ThenInclude(s => s.SubSets)
+                     .ThenInclude(x => x.Exercise)
+                         .ThenInclude(e => e.ExerciseType)
+             .Include(w => w.Customer)
+             .Include(w => w.Trainer)
+             .FirstOrDefaultAsync(w => w.Id == id);
         }
     }
 }

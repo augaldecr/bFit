@@ -108,9 +108,9 @@ namespace bFit.Web.Helpers
             };
         }
 
-        public EditSubSetViewModel ToEditSubSetViewModel(SubSet subSet)
+        public SubSetViewModel ToSubSetViewModel(SubSet subSet)
         {
-            return new EditSubSetViewModel
+            return new SubSetViewModel
             {
                 Id = subSet.Id,
                 WorkoutId = subSet.Set.WorkoutRoutine.Id,
@@ -126,21 +126,6 @@ namespace bFit.Web.Helpers
             };
         }
 
-        public async Task<SubSet> ToSubSetAsync(EditSubSetViewModel editSubSetVwm)
-        {
-            return new SubSet
-            {
-                Id = editSubSetVwm.Id,
-                Exercise = await _context.Exercises.FirstOrDefaultAsync(e => e.Id == editSubSetVwm.ExerciseId),
-                PositiveTime = editSubSetVwm.PositiveTime,
-                NegativeTime = editSubSetVwm.NegativeTime,
-                Quantity = editSubSetVwm.Quantity,
-                Remarks = editSubSetVwm.Remarks,
-                Set = await _context.Sets.FirstOrDefaultAsync(s => s.Id == editSubSetVwm.SetId),
-                SubSetType = await _context.SubSetTypes.FirstOrDefaultAsync(s => s.Id == editSubSetVwm.SubSetTypeId),
-            };
-        }
-
         public async Task<WorkoutRoutine> ToWorkoutAsync(WorkoutViewModel workoutView)
         {
             return new WorkoutRoutine
@@ -150,6 +135,57 @@ namespace bFit.Web.Helpers
                 Goal = await _context.Goals.FirstOrDefaultAsync(g => g.Id == workoutView.GoalId),
                 Customer = await _context.Customers.FirstOrDefaultAsync(c => c.Id == workoutView.CustomerId),
                 Trainer = await _context.Trainers.FirstOrDefaultAsync(t => t.Id == workoutView.TrainerId),
+            };
+        }
+
+        public async Task<SubSet> ToSubSetAsync(SubSetViewModel subSetView)
+        {
+            var exercise = await _context.Exercises
+                .Include(e => e.ExerciseType)
+                .FirstOrDefaultAsync(e => e.Id == subSetView.ExerciseId);
+
+            var set = await _context.Sets
+                .Include(s => s.WorkoutRoutine)
+                    .ThenInclude(w => w.Customer)
+                        .ThenInclude(c => c.Gender)
+                .Include(s => s.WorkoutRoutine)
+                    .ThenInclude(w => w.Goal)
+                .Include(s => s.WorkoutRoutine)
+                    .ThenInclude(w => w.Trainer)
+                .FirstOrDefaultAsync(s => s.Id == subSetView.SetId);
+
+            return new SubSet
+            {
+                Id = subSetView.Id,
+                Exercise = exercise,
+                PositiveTime = subSetView.PositiveTime,
+                NegativeTime = subSetView.NegativeTime,
+                Quantity = subSetView.Quantity,
+                Remarks = subSetView.Remarks,
+                SubSetType = await _context.SubSetTypes.FirstOrDefaultAsync(s => s.Id == subSetView.SubSetTypeId),
+                Set = set,
+            };
+        }
+
+        public async Task<Set> ToSetAsync(SetViewModel setView)
+        {
+            return new Set
+            {
+              Id = setView.Id,
+              WorkoutRoutine = await _context.WorkoutRoutines.FirstOrDefaultAsync(w => w.Id == setView.WorkoutId),
+              SubSets = setView.Subsets,
+            };
+        }
+
+        public SetViewModel ToSetViewModel(Set set)
+        {
+            return new SetViewModel
+            {
+                Id = set.Id,
+                WorkoutId = set.WorkoutRoutine.Id,
+                Exercises = _combosHelper.GetComboExercises(),
+                SubSetTypes = _combosHelper.GetComboSubSetTypes(),
+                Subsets = set.SubSets,
             };
         }
     }

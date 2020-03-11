@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace bFit.Web.Models
 {
-    public class EditSubSetViewModel : IEntity
+    public class SubSetViewModel : IEntity
     {
         public int Id { get; set; }
         public int WorkoutId { get; set; }

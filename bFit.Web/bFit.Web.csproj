@@ -33,6 +33,8 @@
     <Compile Remove="Migrations\20200304183329_InitialDb.Designer.cs" />
     <Compile Remove="Migrations\20200306153629_InitialDb.cs" />
     <Compile Remove="Migrations\20200306153629_InitialDb.Designer.cs" />
+    <Compile Remove="Migrations\20200306154523_InitialDb.cs" />
+    <Compile Remove="Migrations\20200306154523_InitialDb.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

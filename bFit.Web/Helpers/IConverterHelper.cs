@@ -10,9 +10,11 @@ namespace bFit.Web.Helpers
         Task<Customer> ToCustomerAsync(CustomerViewModel model);
         Task<CustomerViewModel> ToCustomerViewModelAsync(Customer customer);
         WorkoutViewModel ToWorkoutViewModel(WorkoutRoutine workout);
-        EditSubSetViewModel ToEditSubSetViewModel(SubSet subSet);
-        Task<SubSet> ToSubSetAsync(EditSubSetViewModel editSubSetVwm);
+        SubSetViewModel ToSubSetViewModel(SubSet subSet);
         Task<WorkoutRoutine> ToWorkoutAsync(WorkoutViewModel workoutView);
         EditWorkoutViewModel ToEditWorkoutViewModel(WorkoutRoutine workout);
+        Task<SubSet> ToSubSetAsync(SubSetViewModel subSetView);
+        Task<Set> ToSetAsync(SetViewModel setView);
+        SetViewModel ToSetViewModel(Set set);
     }
 }

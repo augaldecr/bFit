@@ -444,7 +444,7 @@ namespace bFit.Web.Migrations
                     Birthday = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<string>(nullable: false),
                     GenderId = table.Column<int>(nullable: false),
-                    GymId = table.Column<int>(nullable: false)
+                    GymId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -460,13 +460,13 @@ namespace bFit.Web.Migrations
                         column: x => x.GymId,
                         principalTable: "Gyms",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Customers_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -624,7 +624,6 @@ namespace bFit.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 50, nullable: false),
                     WorkoutRoutineId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

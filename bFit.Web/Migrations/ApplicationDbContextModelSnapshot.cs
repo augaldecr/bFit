@@ -408,7 +408,7 @@ namespace bFit.Web.Migrations
                     b.Property<int>("GenderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("GymId")
+                    b.Property<int?>("GymId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -733,11 +733,6 @@ namespace bFit.Web.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
                     b.Property<int>("WorkoutRoutineId")
                         .HasColumnType("int");
 
@@ -960,9 +955,7 @@ namespace bFit.Web.Migrations
 
                     b.HasOne("bFit.Web.Data.Entities.Profiles.LocalGym", "Gym")
                         .WithMany("Customers")
-                        .HasForeignKey("GymId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GymId");
 
                     b.HasOne("bFit.Web.Data.Entities.User", "User")
                         .WithMany()

@@ -31,4 +31,24 @@
     $("#btnYesDelete").click(function () {
         window.location.href = '/Owners/DeletePet/' + item_to_delete;
     });
+
+    //Script to append sets to workout
+    var subSet = $('#subSet').html();
+    $('#btnAddSubset').click((e) => {
+        $($('.subSets')).last().after(subSet);
+    });
+
+    //Script to add Sets to Workout
+    $("#btnAddSet").click(function (e) {
+        e.preventDefault(); 
+        var post_url = $(this).attr("action");
+        var request_method = $(this).attr("method");
+        var form_data = $(this).serialize();
+
+        $.ajax({
+            url: post_url,
+            type: request_method,
+            data: form_data
+        });
+    });
 });

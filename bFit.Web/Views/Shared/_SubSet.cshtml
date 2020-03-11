@@ -1,0 +1,45 @@
+﻿@model bFit.Web.Models.SubSetViewModel
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input type="hidden" asp-for="Id" />
+<input type="hidden" asp-for="SetId" />
+<input type="hidden" asp-for="WorkoutId" />
+
+<div class="form-row">
+    <div class="form-group col-md-6">
+        <label asp-for="ExerciseId" class="control-label"></label>
+        <select asp-for="ExerciseId" asp-items="Model.Exercises" class="form-control"></select>
+        <span asp-validation-for="ExerciseId" class="text-danger"></span>
+    </div>
+    <div class="form-group col-md-6">
+        <label asp-for="Quantity" class="control-label"></label>
+        <input asp-for="Quantity" class="form-control" />
+        <span asp-validation-for="Quantity" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-row">
+    <div class="form-group col-md-6">
+        <label asp-for="PositiveTime" class="control-label"></label>
+        <input asp-for="PositiveTime" class="form-control" />
+        <span asp-validation-for="PositiveTime" class="text-danger"></span>
+    </div>
+
+    <div class="form-group col-md-6">
+        <label asp-for="NegativeTime" class="control-label"></label>
+        <input asp-for="NegativeTime" class="form-control" />
+        <span asp-validation-for="NegativeTime" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-row">
+    <div class="form-group col-md-6">
+        <label asp-for="SubSetTypeId" class="control-label"></label>
+        <select asp-for="SubSetTypeId" asp-items="Model.SubSetTypes" class="form-control"></select>
+        <span asp-validation-for="SubSetTypeId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group col-md-6">
+        <label asp-for="Remarks" class="control-label"></label>
+        <input asp-for="Remarks" class="form-control" />
+        <span asp-validation-for="Remarks" class="text-danger"></span>
+    </div>
+</div>

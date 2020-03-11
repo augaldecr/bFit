@@ -89,12 +89,9 @@ namespace bFit.Web.Data
                 var workOutRoutine = _applicationDbContext.WorkoutRoutines.FirstOrDefault();
                 var customerId = workOutRoutine.Customer.Id;
 
-                var set1 = await CheckSetsAsync($"{customerId}1{DateTime.Now}",
-                    workOutRoutine);
-                var set2 = await CheckSetsAsync($"{customerId}2{DateTime.Now}",
-                    workOutRoutine);
-                var set3 = await CheckSetsAsync($"{customerId}3{DateTime.Now}",
-                    workOutRoutine);
+                var set1 = await CheckSetsAsync(workOutRoutine);
+                var set2 = await CheckSetsAsync(workOutRoutine);
+                var set3 = await CheckSetsAsync(workOutRoutine);
 
                 var exercise1 = _applicationDbContext.Exercises.FirstOrDefault(
                     e => e.Name == "Sentadilla libre");
@@ -173,21 +170,20 @@ namespace bFit.Web.Data
             }
         }
 
-        private async Task<Set> CheckSetsAsync(string name, WorkoutRoutine workoutRoutine)
+        private async Task<Set> CheckSetsAsync(WorkoutRoutine workoutRoutine)
         {
-            var set = _applicationDbContext.Sets.FirstOrDefault(s => s.Name.Equals(name));
+            var set = _applicationDbContext.Sets.FirstOrDefault();
 
             if (set == null)
             {
                 set = new Set
                 {
-                    Name = name,
                     WorkoutRoutine = workoutRoutine
                 };
 
                 await _applicationDbContext.Sets.AddAsync(set);
                 await _applicationDbContext.SaveChangesAsync();
-                return _applicationDbContext.Sets.FirstOrDefault(s => s.Name.Equals(name));
+                return _applicationDbContext.Sets.FirstOrDefault();
             }
 
             return set;
