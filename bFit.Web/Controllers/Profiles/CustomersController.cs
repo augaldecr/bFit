@@ -524,6 +524,17 @@ namespace bFit.Web.Controllers.Profiles
             return View(setVwm);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditSet(SetViewModel setView)
+        {
+            if (ModelState.IsValid)
+            {
+
+            }
+            return View(setView);
+        }
+
         private async Task<WorkoutRoutine> getWorkoutComplete(int? id)
         {
             return await _context.WorkoutRoutines

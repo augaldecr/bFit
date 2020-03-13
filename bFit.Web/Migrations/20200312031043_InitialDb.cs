@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace bFit.Web.Migrations
 {
     public partial class InitialDb : Migration
-    {
+    {                                       
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(

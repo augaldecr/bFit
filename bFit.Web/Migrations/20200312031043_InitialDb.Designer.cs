@@ -10,7 +10,7 @@ using bFit.Web.Data;
 namespace bFit.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200311213607_InitialDb")]
+    [Migration("20200312031043_InitialDb")]
     partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
