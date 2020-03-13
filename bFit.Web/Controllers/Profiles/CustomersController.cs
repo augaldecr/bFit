@@ -530,7 +530,12 @@ namespace bFit.Web.Controllers.Profiles
         {
             if (ModelState.IsValid)
             {
+                var subset = await _converterHelper.ToSubSetAsync(setView);
+                subset.Id = 0;
 
+                await _context.AddAsync(subset);
+                await _context.SaveChangesAsync();
+                return RedirectToAction($"{nameof(EditSet)}", new {@id = setView.SetId});
             }
             return View(setView);
         }
