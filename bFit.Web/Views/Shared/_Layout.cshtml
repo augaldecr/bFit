@@ -4,9 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - bFit</title>
-    <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootswatch.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" />
+    @*<link rel="stylesheet" href="~/lib/dataTables/dataTables.bootstrap4.min.css" />*@
+    <link rel="stylesheet" href="~/lib/dataTables/responsive.bootstrap4.min.css" />
 </head>
 <body>
     <header>
@@ -73,19 +74,19 @@
 
                     </div>
                 }
-            <div class="nav navbar-nav justify-content-end">
-                <ul class="navbar-nav">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <li class="nav-item"><a asp-area="" asp-controller="Account" asp-action="ChangeUser" class="nav-link">@User.Identity.Name</a></li>
-                        <li class="nav-item"><a asp-area="" asp-controller="Account" asp-action="Logout" class="nav-link">Salir</a></li>
-                    }
-                    else
-                    {
-                        <li class="nav-item"><a asp-area="" asp-controller="Account" asp-action="Login" class="nav-link">Ingresar</a></li>
-                    }
-                </ul>
-            </div>
+                <div class="nav navbar-nav justify-content-end">
+                    <ul class="navbar-nav">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item"><a asp-area="" asp-controller="Account" asp-action="ChangeUser" class="nav-link">@User.Identity.Name</a></li>
+                            <li class="nav-item"><a asp-area="" asp-controller="Account" asp-action="Logout" class="nav-link">Salir</a></li>
+                        }
+                        else
+                        {
+                            <li class="nav-item"><a asp-area="" asp-controller="Account" asp-action="Login" class="nav-link">Ingresar</a></li>
+                        }
+                    </ul>
+                </div>
 
             </div>
         </nav>
@@ -104,8 +105,11 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script src="//cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    @*<script src="~/lib/dataTables/jquery.dataTables.min.js"></script>
+    <script src="~/lib/dataTables/dataTables.bootstrap4.min.js"></script>*@
+    <script src="~/lib/dataTables/dataTables.responsive.min.js"></script>
+    <script src="~/lib/dataTables/responsive.bootstrap4.min.js"></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

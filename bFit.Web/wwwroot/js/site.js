@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     $('#data_table').DataTable({
+        responsive: true,
         language: {
             processing: "Procesando...",
             search: "Buscar&nbsp;:",
@@ -30,6 +31,12 @@
     });
     $("#btnYesDelete").click(function () {
         window.location.href = '/Owners/DeletePet/' + item_to_delete;
+    });
+
+    //Script to print
+    $('#btnPrint').click(function () {
+        alert("Hola");
+        window.print();
     });
 
     //Script to append sets to workout

@@ -1,0 +1,125 @@
+﻿@model bFit.Web.Data.Entities.Workouts.WorkoutRoutine
+
+@{
+    ViewData["Title"] = "Rutina de entrenamiento";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item"><h5 class="card-title align-content-center">@ViewData["Title"]</h5></li>
+                    <a asp-action="PrintWorkout" asp-route-id="@Model.Id" class="list-group-item list-group-item-action bg-light" target="_blank">
+                        <h4 class="text-center align-content-center">
+                            Imprimir
+                            <svg class="bi bi-document-text" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M6 3h8a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V5a2 2 0 012-2zm0 1a1 1 0 00-1 1v10a1 1 0 001 1h8a1 1 0 001-1V5a1 1 0 00-1-1H6z" clip-rule="evenodd"></path>
+                                <path fill-rule="evenodd" d="M6.5 14a.5.5 0 01.5-.5h3a.5.5 0 010 1H7a.5.5 0 01-.5-.5zm0-2a.5.5 0 01.5-.5h6a.5.5 0 010 1H7a.5.5 0 01-.5-.5zm0-2a.5.5 0 01.5-.5h6a.5.5 0 010 1H7a.5.5 0 01-.5-.5zm0-2a.5.5 0 01.5-.5h6a.5.5 0 010 1H7a.5.5 0 01-.5-.5zm0-2a.5.5 0 01.5-.5h6a.5.5 0 010 1H7a.5.5 0 01-.5-.5z" clip-rule="evenodd"></path>
+                            </svg>
+                        </h4>
+                    </a>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label asp-for="Begins" class="control-label"></label>
+                        <input readonly asp-for="Begins" class="form-control" />
+                        <span asp-validation-for="Begins" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="Ends" class="control-label"></label>
+                        <input readonly asp-for="Ends" class="form-control" />
+                        <span asp-validation-for="Ends" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label asp-for="Goal" class="control-label"></label>
+                        <input readonly asp-for="Goal.Name" class="form-control" />
+                        <span asp-validation-for="Goal" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="Trainer" class="control-label"></label>
+                        <input readonly asp-for="Trainer.User.FullName" class="form-control" />
+                        <span asp-validation-for="Trainer" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <a asp-action="Details" asp-route-id="@Model.Customer.Id" class="btn btn-block btn-light">Volver al listado</a>
+                    <a asp-action="EditWorkout" asp-route-id="@Model.Id" class="btn btn-block btn-warning">Editar</a>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        @if (Model.Sets != null)
+                        {
+                            @foreach (var item in Model.Sets.Select((value, i) => (value, i)))
+                            {
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Circuito @(item.i + 1)</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-responsive-sm table-striped table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th class="font-weight-bolder">
+                                                        @Html.DisplayNameFor(modelItem => item.value.SubSets.FirstOrDefault().Exercise)
+                                                    </th>
+                                                    <th class="font-weight-bolder">
+                                                        @Html.DisplayNameFor(modelItem => item.value.SubSets.FirstOrDefault().SubSetType)
+                                                    </th>
+                                                    <th class="font-weight-bolder">
+                                                        @Html.DisplayNameFor(modelItem => item.value.SubSets.FirstOrDefault().Quantity)
+                                                    </th>
+                                                    <th class="font-weight-bolder">
+                                                        @Html.DisplayNameFor(modelItem => item.value.SubSets.FirstOrDefault().PositiveTime)
+                                                    </th>
+                                                    <th class="font-weight-bolder">
+                                                        @Html.DisplayNameFor(modelItem => item.value.SubSets.FirstOrDefault().NegativeTime)
+                                                    </th>
+                                                    <th class="font-weight-bolder">
+                                                        @Html.DisplayNameFor(modelItem => item.value.SubSets.FirstOrDefault().Remarks)
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item2 in item.value.SubSets)
+                                                {
+
+                                                    <tr>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item2.Exercise.Name)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item2.SubSetType.Name)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item2.Quantity)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item2.PositiveTime)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item2.NegativeTime)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item2.Remarks)
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,103 @@
+﻿@model bFit.Web.Data.Entities.Workouts.WorkoutRoutine
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Rutina de entrenamiento - @Model.Customer.User.FullName</title>
+    <link rel="stylesheet" href="~/css/print.css" />
+</head>
+<body>
+    <section>
+        <header>
+            <h1>Rutina de entrenamiento - @Model.Customer.User.FullName</h1>
+            <p><a class="subtitle">Inicio:</a> @Model.Begins.ToShortDateString() - <a class="subtitle">Finaliza:</a> @Model.Ends.ToShortDateString() | <a class="subtitle">Objetivo:</a> @Model.Goal.Name </p>
+            <p><a class="subtitle">Gimnasio: </a>@Model.Customer.Gym.Name | <a class="subtitle">Entrenador: </a> @Model.Trainer.User.FullName </p>
+        </header>
+        <article>
+            <table class="table-out">
+                @foreach (var set in Model.Sets.Select((value, i) => (value, i)))
+                {
+                    <thead>
+                        <tr>
+                            <th>
+                                <h3>Circuito @(set.i + 1)</h3>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayNameFor(modelItem => set.value.SubSets.FirstOrDefault().Exercise)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(modelItem => set.value.SubSets.FirstOrDefault().Exercise.ExerciseType)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(modelItem => set.value.SubSets.FirstOrDefault().Quantity)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(modelItem => set.value.SubSets.FirstOrDefault().PositiveTime)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(modelItem => set.value.SubSets.FirstOrDefault().NegativeTime)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(modelItem => set.value.SubSets.FirstOrDefault().Remarks)
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var subset in set.value.SubSets)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => subset.Exercise.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => subset.Exercise.ExerciseType.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => subset.Quantity)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => subset.PositiveTime)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => subset.NegativeTime)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => subset.Remarks)
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                }
+            </table>
+        </article>
+        <footer class="foot">
+            <br />
+            <p><a class="subtitle">bFit</a> - @DateTime.Now.Year | @DateTime.Now.ToLocalTime() <a class="right">augaldecr@gmail.com</a></p>
+        </footer>
+    </section>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            window.print();
+        });
+    </script>
+</body>
+</html>

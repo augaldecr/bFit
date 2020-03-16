@@ -35,62 +35,60 @@
             <div class="card-body">
                 @if (Model.Subsets != null)
                 {
-                    @foreach (var item in Model.Subsets.Select((value, i) => (value, i)))
-                    {
                         <div class="card">
                             <div class="card-header">
-                                <h6 class="card-title">Circuito @(item.i + 1)</h6>
+                                <h6 class="card-title">Ejercicios</h6>
                             </div>
                             <div class="card-body">
                                 <table class="table table-responsive-sm table-striped table-bordered table-hover">
                                     <thead>
                                         <tr>
                                             <th class="font-weight-bolder">
-                                                @Html.DisplayNameFor(modelItem => item.value.Exercise)
+                                                @Html.DisplayNameFor(modelItem => Model.Subsets.FirstOrDefault().Exercise.Name)
                                             </th>
                                             <th class="font-weight-bolder">
-                                                @Html.DisplayNameFor(modelItem => item.value.SubSetType)
+                                                @Html.DisplayNameFor(modelItem => Model.Subsets.FirstOrDefault().Exercise.ExerciseType)
                                             </th>
                                             <th class="font-weight-bolder">
-                                                @Html.DisplayNameFor(modelItem => item.value.Quantity)
+                                                @Html.DisplayNameFor(modelItem => Model.Subsets.FirstOrDefault().Quantity)
                                             </th>
                                             <th class="font-weight-bolder">
-                                                @Html.DisplayNameFor(modelItem => item.value.PositiveTime)
+                                                @Html.DisplayNameFor(modelItem => Model.Subsets.FirstOrDefault().PositiveTime)
                                             </th>
                                             <th class="font-weight-bolder">
-                                                @Html.DisplayNameFor(modelItem => item.value.NegativeTime)
+                                                @Html.DisplayNameFor(modelItem => Model.Subsets.FirstOrDefault().NegativeTime)
                                             </th>
                                             <th class="font-weight-bolder">
-                                                @Html.DisplayNameFor(modelItem => item.value.Remarks)
+                                                @Html.DisplayNameFor(modelItem => Model.Subsets.FirstOrDefault().Remarks)
                                             </th>
                                             <th>Editar</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var item2 in Model.Subsets)
+                                        @foreach (var item in Model.Subsets)
                                         {
 
                                             <tr>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item2.Exercise.Name)
+                                                    @Html.DisplayFor(modelItem => item.Exercise.Name)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item2.SubSetType.Name)
+                                                    @Html.DisplayFor(modelItem => item.SubSetType.Name)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item2.Quantity)
+                                                    @Html.DisplayFor(modelItem => item.Quantity)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item2.PositiveTime)
+                                                    @Html.DisplayFor(modelItem => item.PositiveTime)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item2.NegativeTime)
+                                                    @Html.DisplayFor(modelItem => item.NegativeTime)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item2.Remarks)
+                                                    @Html.DisplayFor(modelItem => item.Remarks)
                                                 </td>
                                                 <td>
-                                                    <partial name="Controls/_BtnEditNoText" view-data="ViewData" model="@item2" />
+                                                    <partial name="Controls/_BtnEditNoText" view-data="ViewData" model="@item" />
                                                 </td>
                                             </tr>
                                         }
@@ -98,7 +96,6 @@
                                 </table>
                             </div>
                         </div>
-                    }
                 }
             </div>
         </div>

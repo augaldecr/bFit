@@ -155,7 +155,7 @@ namespace bFit.Web.Controllers.Profiles
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CustomerViewModel model)
+        public async Task<IActionResult> Create(CreateCustomerViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -226,7 +226,8 @@ namespace bFit.Web.Controllers.Profiles
             {
                 try
                 {
-                    _context.Update(await _converterHelper.ToCustomerAsync(customerVwm));
+                    var customer = await _converterHelper.ToCustomerAsync(customerVwm);
+                    _context.Customers.Update(customer);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -240,7 +241,7 @@ namespace bFit.Web.Controllers.Profiles
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { @id = customerVwm.Id });
             }
             return View(customerVwm);
         }
@@ -284,7 +285,7 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var workout = await getWorkoutComplete(id);
+            var workout = await getWorkoutCompleteAsync(id);
 
             if (workout == null)
             {
@@ -294,6 +295,26 @@ namespace bFit.Web.Controllers.Profiles
             var editWorkoutVwm = _converterHelper.ToEditWorkoutViewModel(workout);
 
             return View(editWorkoutVwm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditWorkout(int? id, EditWorkoutViewModel editWorkoutView)
+        {
+            if (id != editWorkoutView.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var workout = _converterHelper.ToWorkoutAsync(editWorkoutView);
+
+                _context.Update(workout);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(EditWorkout), new { @id, editWorkoutView.Id });
+            }
+            return View(editWorkoutView);
         }
 
         public async Task<IActionResult> EditSubSet(int? id)
@@ -540,7 +561,29 @@ namespace bFit.Web.Controllers.Profiles
             return View(setView);
         }
 
-        private async Task<WorkoutRoutine> getWorkoutComplete(int? id)
+        public async Task<IActionResult> DetailsWorkout(int id)
+        {
+            if (await _context.WorkoutRoutines.AnyAsync(w => w.Id == id))
+            {
+                var workout = await getWorkoutCompleteAsync(id);
+                return View(workout);
+            }
+
+            return NotFound();
+        }
+
+        public async Task<IActionResult> PrintWorkout(int id)
+        {
+            if (await _context.WorkoutRoutines.AnyAsync(w => w.Id == id))
+            {
+                var workout = await getWorkoutCompleteAsync(id);
+                return View(workout);
+            }
+
+            return NotFound();
+        }
+
+        private async Task<WorkoutRoutine> getWorkoutCompleteAsync(int? id)
         {
             return await _context.WorkoutRoutines
              .Include(w => w.Goal)
@@ -552,7 +595,15 @@ namespace bFit.Web.Controllers.Profiles
                      .ThenInclude(x => x.Exercise)
                          .ThenInclude(e => e.ExerciseType)
              .Include(w => w.Customer)
+                .ThenInclude(c => c.User)
+             .Include(w => w.Customer)
+                .ThenInclude(c => c.Gym)
+                    .ThenInclude(g => g.Town)
+             .Include(w => w.Customer)
+                .ThenInclude(c => c.Gym)
+                    .ThenInclude(g => g.Franchise)
              .Include(w => w.Trainer)
+                .ThenInclude(t => t.User)
              .FirstOrDefaultAsync(w => w.Id == id);
         }
     }

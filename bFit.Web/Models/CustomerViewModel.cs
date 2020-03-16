@@ -24,10 +24,6 @@ namespace bFit.Web.Models
         public string LastName2 { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
-        [Display(Name = "Correo electrónico")]
-        public string Email { get; set; }
-
-        [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Teléfono celular")]
         [Phone]
         public string CellPhone { get; set; }

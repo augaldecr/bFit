@@ -25,11 +25,13 @@ namespace bFit.Web.Models
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Fecha de inicio")]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public DateTime Begins { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Fecha de fin")]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public DateTime Ends { get; set; }
 

@@ -1,0 +1,28 @@
+﻿.subtitle {
+    font-size : large;
+    font-weight : bolder;
+}
+
+.foot {
+    position: fixed;
+    width: 100%;
+    bottom: 10px;
+}
+
+.right {
+    position: absolute;
+    right: 1em;
+}
+
+table{
+    border-collapse: collapse;
+    width : 100%;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}

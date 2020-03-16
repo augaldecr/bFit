@@ -34,7 +34,6 @@ namespace bFit.Web.Helpers
                 LastName1 = customer.User.LastName1,
                 LastName2 = customer.User.LastName2,
                 CellPhone = customer.User.PhoneNumber,
-                Email = customer.User.Email,
                 Birthday = customer.Birthday,
                 GenderId = customer.Gender.Id,
                 TownId = customer.User.Town.Id,
@@ -46,7 +45,7 @@ namespace bFit.Web.Helpers
             };
         }
 
-        public async Task<Customer> ToCustomerAsync(CustomerViewModel model)
+        public async Task<Customer> ToCustomerAsync(CreateCustomerViewModel model)
         {
             if (model.GymId == 0)
             {
@@ -56,21 +55,45 @@ namespace bFit.Web.Helpers
             return new Customer
             {
                 Id = model.Id,
-                Gender =await  _context.Genders.FirstOrDefaultAsync(g => g.Id == model.GenderId),
+                Gender = await _context.Genders.FirstOrDefaultAsync(g => g.Id == model.GenderId),
                 Birthday = model.Birthday,
-                
+
                 Gym = await _context.Gyms.FirstOrDefaultAsync(g => g.Id == model.GymId),
-                User = new User {
-                    UserName = model.Email,
-                    Email = model.Email,
+                User = new User
+                {
                     FirstName = model.FirstName,
                     LastName1 = model.LastName1,
                     LastName2 = model.LastName2,
+                    UserName = model.Email,
+                    Email = model.Email,
                     PhoneNumber = model.CellPhone,
                     Town = await _context.Towns.FirstOrDefaultAsync(t => t.Id == model.TownId),
                     Address = model.Address,
                 }
             };
+        }
+
+        public async Task<Customer> ToCustomerAsync(CustomerViewModel model)
+        {
+            var customer = await _context.Customers
+                .Include(c => c.User)
+                    .ThenInclude(u => u.Town)
+                .Include(c => c.Gym)
+                    .ThenInclude(g => g.Franchise)
+                .FirstOrDefaultAsync(c => c.Id == model.Id);
+
+            customer.Birthday = model.Birthday;
+            customer.Gender = await _context.Genders.FirstOrDefaultAsync(g => g.Id == model.GenderId);
+            customer.Gym = await _context.Gyms.FirstOrDefaultAsync(g => g.Id == model.GymId);
+            customer.User.Address = model.Address;
+            customer.User.Address = model.Address;
+            customer.User.FirstName = model.FirstName;
+            customer.User.LastName1 = model.LastName1;
+            customer.User.LastName2 = model.LastName2;
+            customer.User.PhoneNumber = model.CellPhone;
+            customer.User.Town = await _context.Towns.FirstOrDefaultAsync(t => t.Id == model.TownId);
+
+            return customer;
         }
 
         public WorkoutViewModel ToWorkoutViewModel(WorkoutRoutine workout)
@@ -105,6 +128,7 @@ namespace bFit.Web.Helpers
                 Exercises = _combosHelper.GetComboExercises(),
                 SubSetTypes = _combosHelper.GetComboSubSetTypes(),
                 WorkoutId = workout.Id, 
+                Customer = workout.Customer,
             };
         }
 
