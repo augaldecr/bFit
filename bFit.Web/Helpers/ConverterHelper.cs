@@ -212,5 +212,38 @@ namespace bFit.Web.Helpers
                 Subsets = set.SubSets,
             };
         }
+
+        public async Task<Admin> ToAdminAsync(CreateAdminViewModel model)
+        {
+            return new Admin
+            {
+                User = new User
+                {
+                    Address = model.Address,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName1 = model.LastName1,
+                    LastName2 = model.LastName2,
+                    PhoneNumber = model.CellPhone,
+                    UserName = model.Email,
+                    Town = await _context.Towns.FirstOrDefaultAsync(T => T.Id == model.TownId),
+                }
+            };
+        }
+
+        public async Task<AdminViewModel> ToAdminViewModelAsync(Admin admin)
+        {
+            return new AdminViewModel
+            {
+                Id = admin.Id,
+                Address = admin.User.Address,
+                FirstName = admin.User.FirstName,
+                LastName1 = admin.User.LastName1,
+                LastName2 = admin.User.LastName2,
+                CellPhone = admin.User.PhoneNumber,
+                TownId = admin.User.Town.Id,
+                Towns = _combosHelper.GetComboTowns()
+            };
+        }
     }
 }

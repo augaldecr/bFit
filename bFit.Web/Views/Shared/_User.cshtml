@@ -1,12 +1,4 @@
-﻿@model bFit.Web.Models.CustomerViewModel;
-
-<div class="form-group col-md-4">
-    <label asp-for="CellPhone" class="control-label"></label>
-    <input asp-for="CellPhone" class="form-control" />
-    <span asp-validation-for="CellPhone" class="text-danger"></span>
-</div>
-
-    </div>
+﻿@model bFit.Web.Models.UserViewModel;
 
 <div class="form-row">
     <div class="form-group col-md-4">
@@ -27,42 +19,21 @@
 </div>
 
 <div class="form-row">
-    <div class="form-group col-md-6">
-        <label asp-for="Birthday" class="control-label"></label>
-        <input asp-for="Birthday" class="form-control" />
-        <span asp-validation-for="Birthday" class="text-danger"></span>
-    </div>
-
-    <div class="form-group col-md-6">
-        <label asp-for="GenderId" class="control-label"></label>
-        <select asp-for="GenderId" asp-items="@Model.Genders" class="form-control"></select>
-        <span asp-validation-for="GenderId" class="text-danger"></span>
-    </div>
-</div>
-
-<div class="form-row">
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-3">
         <label asp-for="TownId" class="control-label"></label>
         <select asp-for="TownId" asp-items="@Model.Towns" class="form-control"></select>
         <span asp-validation-for="TownId" class="text-danger"></span>
     </div>
 
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-3">
         <label asp-for="Address" class="control-label"></label>
         <input asp-for="Address" class="form-control" />
         <span asp-validation-for="Address" class="text-danger"></span>
     </div>
-    @if (!User.IsInRole("Customer"))
-    {
-        <div class="form-group col-md-4">
-            <label asp-for="GymId" class="control-label"></label>
-            <select asp-for="GymId" asp-items="@Model.Gyms" class="form-control"></select>
-            <span asp-validation-for="GymId" class="text-danger"></span>
-        </div>
-    }
-</div>
 
-<div class="form-group">
-    <partial name="Controls/_BtnSubmit" />
-    <partial name="Controls/_BtnBack" />
+    <div class="form-group col-md-3">
+        <label asp-for="CellPhone" class="control-label"></label>
+        <input asp-for="CellPhone" class="form-control" />
+        <span asp-validation-for="CellPhone" class="text-danger"></span>
+    </div>
 </div>

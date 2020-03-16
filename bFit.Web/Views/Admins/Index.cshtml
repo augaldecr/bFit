@@ -40,9 +40,16 @@
                 @Html.DisplayFor(modelItem => item.User.Town.Name)
             </td>
             <td>
-                <partial name="Controls/_BtnEditNoText" view-data="ViewData" model="item" />
-                <partial name="Controls/_BtnDetails" model="item" />
-                <partial name="Controls/_BtnDelete" model="item" />
+                @if (User.Identity.Name.Equals("augaldecr@gmail.com"))
+                {
+                    <partial name="Controls/_BtnEditNoText" view-data="ViewData" model="item" />
+                    <partial name="Controls/_BtnDetails" model="item" />
+                    <partial name="Controls/_BtnDelete" model="item" />
+                }
+                else
+                {
+                    <partial name="Controls/_BtnDetails" model="item" />
+                }
             </td>
         </tr>
     }

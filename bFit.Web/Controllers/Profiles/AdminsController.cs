@@ -1,5 +1,7 @@
 ﻿using bFit.Web.Data;
 using bFit.Web.Data.Entities.Profiles;
+using bFit.Web.Helpers;
+using bFit.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +14,19 @@ namespace bFit.Web.Controllers.Profiles
     public class AdminsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConverterHelper _converterHelper;
+        private readonly IUserHelper _userHelper;
+        private readonly ICombosHelper _combosHelper;
 
-        public AdminsController(ApplicationDbContext context)
+        public AdminsController(ApplicationDbContext context,
+            IConverterHelper converterHelper,
+            IUserHelper userHelper,
+            ICombosHelper combosHelper)
         {
             _context = context;
+            _converterHelper = converterHelper;
+            _userHelper = userHelper;
+            _combosHelper = combosHelper;
         }
 
         public async Task<IActionResult> Index()
@@ -35,6 +46,8 @@ namespace bFit.Web.Controllers.Profiles
             }
 
             Admin admin = await _context.Admins
+                .Include(a => a.User)
+                    .ThenInclude(u => u.Town)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (admin == null)
             {
@@ -46,20 +59,39 @@ namespace bFit.Web.Controllers.Profiles
 
         public IActionResult Create()
         {
-            return View();
+            var adminVwm = new CreateAdminViewModel
+            {
+                Towns = _combosHelper.GetComboTowns()
+            };
+            return View(adminVwm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id")] Admin admin)
+        public async Task<IActionResult> Create(CreateAdminViewModel adminVwm)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(admin);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var custom = await _userHelper.GetUserByEmailAsync(adminVwm.Email);
+
+                if (custom == null)
+                {
+                    var admin = await _converterHelper.ToAdminAsync(adminVwm);
+
+                    await _userHelper.AddUserAsync(admin.User, "123456");
+                    await _userHelper.AddUserToRoleAsync(admin.User, "Admin");
+
+                    _context.Admins.Add(admin);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Ya existe un usuario registrado con ése correo electrónico");
+                    return RedirectToAction($"{nameof(Create)}");
+                }
             }
-            return View(admin);
+            return View(adminVwm);
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -69,12 +101,15 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            Admin admin = await _context.Admins.FindAsync(id);
+            var admin = await _context.Admins.FindAsync(id);
             if (admin == null)
             {
                 return NotFound();
             }
-            return View(admin);
+
+            var adminVwm = _converterHelper.ToAdminViewModelAsync(admin);
+
+            return View(adminVwm);
         }
 
         [HttpPost]

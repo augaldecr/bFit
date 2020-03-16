@@ -17,5 +17,7 @@ namespace bFit.Web.Helpers
         Task<SubSet> ToSubSetAsync(SubSetViewModel subSetView);
         Task<Set> ToSetAsync(SetViewModel setView);
         SetViewModel ToSetViewModel(Set set);
+        Task<Admin> ToAdminAsync(CreateAdminViewModel model);
+        Task<AdminViewModel> ToAdminViewModelAsync(Admin admin);
     }
 }
