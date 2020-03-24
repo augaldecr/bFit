@@ -1,28 +1,31 @@
-﻿@model bFit.Web.Data.Entities.Profiles.FranchiseAdmin
+﻿@model bFit.Web.Models.FranchiseAdminViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar administrador de franquicia";
+    ViewData["BackAction"] = "Details";
 }
 
-<h1>Edit</h1>
+<partial name="Controls/_Header" />
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
 
-<h4>FranchiseAdmin</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+    <partial name="_User" />
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label asp-for="FranchiseId" class="control-label"></label>
+            <select asp-for="FranchiseId" asp-items="@Model.Franchises" class="form-control"></select>
+            <span asp-validation-for="FranchiseId" class="text-danger"></span>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+        <div class="form-group">
+            <partial name="Controls/_BtnSubmit" />
+            <partial name="Controls/_BtnBackWithID" model="@Model" />
+        </div>
+</form>
+<partial name="Controls/_Footer" />
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

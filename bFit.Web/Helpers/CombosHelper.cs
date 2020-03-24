@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace bFit.Web.Helpers
 {
@@ -92,16 +93,16 @@ namespace bFit.Web.Helpers
             return list;
         }
 
-        public IEnumerable<SelectListItem> GetComboGyms(int? id)
+        public async Task<IEnumerable<SelectListItem>> GetComboGymsAsync(int? id)
         {
             List<SelectListItem> list;
 
             if (id==null)
             {
-                var gyms = _context.Gyms
+                var gyms = await _context.Gyms
                     .Include(g => g.Franchise)
                     .Include(g => g.Town)
-                    .ToList();
+                    .ToListAsync();
 
                 list = new List<SelectListItem>();
 
@@ -215,6 +216,25 @@ namespace bFit.Web.Helpers
                 }
                 list = list.OrderBy(g => g.Text).ToList();
             }
+            return list;
+        }
+
+        public IEnumerable<SelectListItem> GetComboFranchises()
+        {
+            List<SelectListItem> list = _context.Franchises.Select(g => new SelectListItem
+            {
+                Text = g.TradeName,
+                Value = $"{g.Id}"
+            })
+                .OrderBy(g => g.Text)
+                .ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[Seleccione una franquicia]",
+                Value = "0"
+            });
+
             return list;
         }
     }

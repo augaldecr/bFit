@@ -286,13 +286,13 @@ namespace bFit.Web.Data
         {
             if (!_applicationDbContext.Trainers.Any())
             {
-                //var gym = _applicationDbContext.Gyms.FirstOrDefault(t => t.Email.Equals("contacto@irontraining.com"));
-                var franchise = _applicationDbContext.Franchises.FirstOrDefault();
+                var gym = _applicationDbContext.Gyms.FirstOrDefault();
+                //var franchise = _applicationDbContext.Franchises.FirstOrDefault();
 
                 await _applicationDbContext.Trainers.AddAsync(new Trainer
                 {
                     User = user,
-                    Franchise = franchise
+                    LocalGym = gym,
                 });
                 await _applicationDbContext.SaveChangesAsync();
             }

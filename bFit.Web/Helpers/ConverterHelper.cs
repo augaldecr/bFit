@@ -41,7 +41,7 @@ namespace bFit.Web.Helpers
                 Towns = _combosHelper.GetComboTowns(),
                 Address = customer.User.Address,
                 GymId = customer.Gym.Id,
-                Gyms = _combosHelper.GetComboGyms(customer.Gym.Id),
+                Gyms = await _combosHelper.GetComboGymsAsync(customer.Gym.Id),
             };
         }
 
@@ -231,7 +231,24 @@ namespace bFit.Web.Helpers
             };
         }
 
-        public async Task<AdminViewModel> ToAdminViewModelAsync(Admin admin)
+        public async Task<Admin> ToAdminAsync(AdminViewModel model)
+        {
+            var admin = await _context.Admins
+                .Include(a => a.User)
+                    .ThenInclude(u => u.Town)
+                .FirstOrDefaultAsync(a => a.Id == model.Id);
+
+            admin.User.Address = model.Address;
+            admin.User.FirstName = model.FirstName;
+            admin.User.LastName1 = model.LastName1;
+            admin.User.LastName2 = model.LastName2;
+            admin.User.PhoneNumber = model.CellPhone;
+            admin.User.Town = await _context.Towns.FirstOrDefaultAsync(T => T.Id == model.TownId);
+
+            return admin;
+        }
+
+        public AdminViewModel ToAdminViewModelAsync(Admin admin)
         {
             return new AdminViewModel
             {
@@ -243,6 +260,198 @@ namespace bFit.Web.Helpers
                 CellPhone = admin.User.PhoneNumber,
                 TownId = admin.User.Town.Id,
                 Towns = _combosHelper.GetComboTowns()
+            };
+        }
+
+        public async Task<FranchiseAdmin> ToFranchiseAdminAsync(CreateFranchiseAdminViewModel model)
+        {
+            var franchise = await _context.Franchises.FirstOrDefaultAsync(f => f.Id == model.FranchiseId);
+            var town = await _context.Towns.FirstOrDefaultAsync(t => t.Id == model.TownId);
+            return new FranchiseAdmin
+            {
+                 Franchise = franchise,
+                 User = new User
+                 {
+                     Address = model.Address,
+                     Email = model.Email,
+                     UserName = model.Email,
+                     FirstName = model.FirstName,
+                     LastName1 = model.LastName1,
+                     LastName2 = model.LastName2,
+                     PhoneNumber = model.CellPhone,
+                     Town = town,
+                 }
+            };
+        }
+
+        public async Task<FranchiseAdmin> ToFranchiseAdminAsync(FranchiseAdminViewModel model)
+        {
+            var franchiseAdmin = await _context.FranchiseAdmins
+                .Include(f => f.Franchise)
+                .Include(f => f.User)
+                    .ThenInclude(u => u.Town)
+                .FirstOrDefaultAsync(f => f.Id == model.Id);
+
+            var franchise = await _context.Franchises.FirstOrDefaultAsync(f => f.Id == model.FranchiseId);
+            var town = await _context.Towns.FirstOrDefaultAsync(t => t.Id == model.TownId);
+
+            franchiseAdmin.Franchise = franchise;
+            franchiseAdmin.User.Address = model.Address;
+            franchiseAdmin.User.FirstName = model.FirstName;
+            franchiseAdmin.User.LastName1 = model.LastName1;
+            franchiseAdmin.User.LastName2 = model.LastName2;
+            franchiseAdmin.User.PhoneNumber = model.CellPhone;
+            franchiseAdmin.User.Town = town;
+
+            return franchiseAdmin;
+        }
+
+        public FranchiseAdminViewModel ToFranchiseAdminViewModel(FranchiseAdmin franchiseAdmin)
+        {
+            return new FranchiseAdminViewModel
+            {
+                Id = franchiseAdmin.Id,
+                Address = franchiseAdmin.User.Address,
+                FirstName = franchiseAdmin.User.FirstName,
+                LastName1 = franchiseAdmin.User.LastName1,
+                LastName2 = franchiseAdmin.User.LastName2,
+                CellPhone = franchiseAdmin.User.PhoneNumber,
+                TownId = franchiseAdmin.User.Town.Id,
+                Towns = _combosHelper.GetComboTowns(),
+                FranchiseId = franchiseAdmin.Franchise.Id,
+                Franchises = _combosHelper.GetComboFranchises(),
+            };
+        }
+
+        public async Task<GymAdmin> ToGymAdminAsync(CreateGymAdminViewModel gymAdminModel)
+        {
+            var gym = await _context.Gyms.FirstOrDefaultAsync(f => f.Id == gymAdminModel.GymId);
+            var town = await _context.Towns.FirstOrDefaultAsync(t => t.Id == gymAdminModel.TownId);
+            return new GymAdmin
+            {
+                LocalGym = gym,
+                User = new User
+                {
+                    Address = gymAdminModel.Address,
+                    Email = gymAdminModel.Email,
+                    UserName = gymAdminModel.Email,
+                    FirstName = gymAdminModel.FirstName,
+                    LastName1 = gymAdminModel.LastName1,
+                    LastName2 = gymAdminModel.LastName2,
+                    PhoneNumber = gymAdminModel.CellPhone,
+                    Town = town,
+                }
+            };
+        }
+
+        public async Task<GymAdmin> ToGymAdminAsync(GymAdminViewModel model)
+        {
+            var gymAdmin = await _context.GymAdmins
+                .Include(f => f.LocalGym)
+                    .ThenInclude(l => l.Franchise)
+                .Include(f => f.LocalGym)
+                    .ThenInclude(l => l.Town)
+                .Include(f => f.User)
+                    .ThenInclude(u => u.Town)
+                .FirstOrDefaultAsync(f => f.Id == model.Id);
+
+            var gym = await _context.Gyms
+                .Include(g => g.Town)
+                .Include(g => g.Franchise)
+                .FirstOrDefaultAsync(f => f.Id == model.GymId);
+            var town = await _context.Towns.FirstOrDefaultAsync(t => t.Id == model.TownId);
+
+            gymAdmin.LocalGym = gym;
+            gymAdmin.User.Address = model.Address;
+            gymAdmin.User.FirstName = model.FirstName;
+            gymAdmin.User.LastName1 = model.LastName1;
+            gymAdmin.User.LastName2 = model.LastName2;
+            gymAdmin.User.PhoneNumber = model.CellPhone;
+            gymAdmin.User.Town = town;
+
+            return gymAdmin;
+        }
+
+        public async Task<GymAdminViewModel> ToGymAdminViewModelAsync(GymAdmin gymAdmin, int? franchise)
+        {
+            return new GymAdminViewModel
+            {
+                Id = gymAdmin.Id,
+                Address = gymAdmin.User.Address,
+                FirstName = gymAdmin.User.FirstName,
+                LastName1 = gymAdmin.User.LastName1,
+                LastName2 = gymAdmin.User.LastName2,
+                CellPhone = gymAdmin.User.PhoneNumber,
+                TownId = gymAdmin.User.Town.Id,
+                Towns = _combosHelper.GetComboTowns(),
+                GymId = gymAdmin.LocalGym.Id,
+                Gyms = await _combosHelper.GetComboGymsAsync(franchise),
+            };
+        }
+
+        public async Task<Trainer> ToTrainerAsync(CreateTrainerViewModel trainerModel)
+        {
+            var gym = await _context.Gyms.FirstOrDefaultAsync(f => f.Id == trainerModel.GymId);
+            var town = await _context.Towns.FirstOrDefaultAsync(t => t.Id == trainerModel.TownId);
+            return new Trainer
+            {
+                LocalGym = gym,
+                User = new User
+                {
+                    Address = trainerModel.Address,
+                    Email = trainerModel.Email,
+                    UserName = trainerModel.Email,
+                    FirstName = trainerModel.FirstName,
+                    LastName1 = trainerModel.LastName1,
+                    LastName2 = trainerModel.LastName2,
+                    PhoneNumber = trainerModel.CellPhone,
+                    Town = town,
+                }
+            };
+        }
+
+        public async Task<Trainer> ToTrainerAsync(TrainerViewModel model)
+        {
+            var trainer = await _context.Trainers
+                .Include(f => f.LocalGym)
+                    .ThenInclude(l => l.Franchise)
+                .Include(f => f.LocalGym)
+                    .ThenInclude(l => l.Town)
+                .Include(f => f.User)
+                    .ThenInclude(u => u.Town)
+                .FirstOrDefaultAsync(f => f.Id == model.Id);
+
+            var gym = await _context.Gyms
+                .Include(g => g.Town)
+                .Include(g => g.Franchise)
+                .FirstOrDefaultAsync(f => f.Id == model.GymId);
+            var town = await _context.Towns.FirstOrDefaultAsync(t => t.Id == model.TownId);
+
+            trainer.LocalGym = gym;
+            trainer.User.Address = model.Address;
+            trainer.User.FirstName = model.FirstName;
+            trainer.User.LastName1 = model.LastName1;
+            trainer.User.LastName2 = model.LastName2;
+            trainer.User.PhoneNumber = model.CellPhone;
+            trainer.User.Town = town;
+
+            return trainer;
+        }
+
+        public async Task<TrainerViewModel> ToTrainerViewModelAsync(Trainer trainer , int? franchise)
+        {
+            return new TrainerViewModel
+            {
+                Id = trainer.Id,
+                Address = trainer.User.Address,
+                FirstName = trainer.User.FirstName,
+                LastName1 = trainer.User.LastName1,
+                LastName2 = trainer.User.LastName2,
+                CellPhone = trainer.User.PhoneNumber,
+                TownId = trainer.User.Town.Id,
+                Towns = _combosHelper.GetComboTowns(),
+                GymId = trainer.LocalGym.Id,
+                Gyms = await _combosHelper.GetComboGymsAsync(franchise),
             };
         }
     }

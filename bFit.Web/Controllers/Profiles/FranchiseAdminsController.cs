@@ -1,5 +1,7 @@
 ﻿using bFit.Web.Data;
 using bFit.Web.Data.Entities.Profiles;
+using bFit.Web.Helpers;
+using bFit.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,19 +14,31 @@ namespace bFit.Web.Controllers.Profiles
     public class FranchiseAdminsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConverterHelper _converterHelper;
+        private readonly IUserHelper _userHelper;
+        private readonly ICombosHelper _combosHelper;
 
-        public FranchiseAdminsController(ApplicationDbContext context)
+        public FranchiseAdminsController(ApplicationDbContext context,
+            IConverterHelper converterHelper,
+            IUserHelper userHelper,
+            ICombosHelper combosHelper)
         {
             _context = context;
+            _converterHelper = converterHelper;
+            _userHelper = userHelper;
+            _combosHelper = combosHelper;
         }
 
-        // GET: FranchiseAdmins
         public async Task<IActionResult> Index()
         {
-            return View(await _context.FranchiseAdmins.ToListAsync());
+            var franchiseAdmins = await _context.FranchiseAdmins
+                .Include(a => a.Franchise)
+                .Include(a => a.User)
+                    .ThenInclude(u => u.Town)
+                .ToListAsync();
+            return View(franchiseAdmins);
         }
 
-        // GET: FranchiseAdmins/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,6 +47,9 @@ namespace bFit.Web.Controllers.Profiles
             }
 
             FranchiseAdmin franchiseAdmin = await _context.FranchiseAdmins
+                .Include(f => f.Franchise)
+                .Include(f => f.User)
+                    .ThenInclude(u => u.Town)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (franchiseAdmin == null)
             {
@@ -42,29 +59,45 @@ namespace bFit.Web.Controllers.Profiles
             return View(franchiseAdmin);
         }
 
-        // GET: FranchiseAdmins/Create
+
         public IActionResult Create()
         {
-            return View();
+            var adminFranchiseVwm = new CreateFranchiseAdminViewModel
+            {
+                Towns = _combosHelper.GetComboTowns(),
+                Franchises = _combosHelper.GetComboFranchises(),
+            };
+            return View(adminFranchiseVwm);
         }
 
-        // POST: FranchiseAdmins/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id")] FranchiseAdmin franchiseAdmin)
+        public async Task<IActionResult> Create(CreateFranchiseAdminViewModel franchiseAdmin)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(franchiseAdmin);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var custom = await _userHelper.GetUserByEmailAsync(franchiseAdmin.Email);
+
+                if (custom == null)
+                {
+                    var FranAdmin = await _converterHelper.ToFranchiseAdminAsync(franchiseAdmin);
+
+                    await _userHelper.AddUserAsync(FranAdmin.User, "123456");
+                    await _userHelper.AddUserToRoleAsync(FranAdmin.User, "FranchiseAdmin");
+
+                    _context.FranchiseAdmins.Add(FranAdmin);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Ya existe un usuario registrado con ése correo electrónico");
+                    return RedirectToAction($"{nameof(Create)}");
+                }
             }
             return View(franchiseAdmin);
         }
 
-        // GET: FranchiseAdmins/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +105,26 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            FranchiseAdmin franchiseAdmin = await _context.FranchiseAdmins.FindAsync(id);
+            var franchiseAdmin = await _context.FranchiseAdmins
+                .Include(a => a.User)
+                    .ThenInclude(u => u.Town)
+                .Include(a => a.Franchise)
+                .FirstOrDefaultAsync(a => a.Id == id);
             if (franchiseAdmin == null)
             {
                 return NotFound();
             }
-            return View(franchiseAdmin);
+
+            var adminVwm = _converterHelper.ToFranchiseAdminViewModel(franchiseAdmin);
+
+            return View(adminVwm);
         }
 
-        // POST: FranchiseAdmins/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] FranchiseAdmin franchiseAdmin)
+        public async Task<IActionResult> Edit(int id, FranchiseAdminViewModel model)
         {
-            if (id != franchiseAdmin.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -96,12 +133,13 @@ namespace bFit.Web.Controllers.Profiles
             {
                 try
                 {
+                    var franchiseAdmin = await _converterHelper.ToFranchiseAdminAsync(model);
                     _context.Update(franchiseAdmin);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FranchiseAdminExists(franchiseAdmin.Id))
+                    if (!FranchiseAdminExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -112,10 +150,9 @@ namespace bFit.Web.Controllers.Profiles
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(franchiseAdmin);
+            return View(model);
         }
 
-        // GET: FranchiseAdmins/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -133,7 +170,6 @@ namespace bFit.Web.Controllers.Profiles
             return View(franchiseAdmin);
         }
 
-        // POST: FranchiseAdmins/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

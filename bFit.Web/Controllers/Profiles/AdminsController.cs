@@ -101,7 +101,10 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var admin = await _context.Admins.FindAsync(id);
+            var admin = await _context.Admins
+                .Include(a => a.User)
+                    .ThenInclude(u => u.Town)
+                .FirstOrDefaultAsync(a => a.Id == id);
             if (admin == null)
             {
                 return NotFound();
@@ -114,9 +117,9 @@ namespace bFit.Web.Controllers.Profiles
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] Admin admin)
+        public async Task<IActionResult> Edit(int id, AdminViewModel model)
         {
-            if (id != admin.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -125,12 +128,13 @@ namespace bFit.Web.Controllers.Profiles
             {
                 try
                 {
+                    var admin = await _converterHelper.ToAdminAsync(model);
                     _context.Update(admin);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AdminExists(admin.Id))
+                    if (!AdminExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -141,7 +145,7 @@ namespace bFit.Web.Controllers.Profiles
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(admin);
+            return View(model);
         }
 
         public async Task<IActionResult> Delete(int? id)

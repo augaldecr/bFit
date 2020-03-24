@@ -37,41 +37,54 @@ namespace bFit.Web.Controllers.Profiles
             _combosHelper = combosHelper;
         }
 
-        // GET: Customers  alonsougaldecr@gmail.com
         public async Task<IActionResult> Index()
         {
-            var emp = _employeeHelper.EmployeeAsync("alonsougaldecr@gmail.com");
-            var userType = _userHelper.TypeOfUser(emp);
-
             IList<Customer> customers = new List<Customer>();
+            var email = User.Identity.Name;
 
-            if (userType == UserType.FranchiseAdmin)
+            if (User.IsInRole("Admin"))
             {
-                FranchiseAdmin franAdmin = await _context.FranchiseAdmins.FirstOrDefaultAsync(
-                    f => f.User.Email == "alonsougaldecr@gmail.com");
-                Franchise franchise = await _context.Franchises.FirstOrDefaultAsync(
-                    f => f == franAdmin.Franchise);
-                customers = await _context.Customers.Where(
-                    c => c.Gym.Franchise == franchise).ToListAsync();
+                customers = await _context.Customers
+                    .Include(c => c.User)
+                        .ThenInclude(u => u.Town)
+                    .Include(c => c.Gender)
+                    .Include(c => c.Gym)
+                        .ThenInclude(g => g.Town)
+                    .Include(c => c.Gym)
+                        .ThenInclude(g => g.Franchise)
+                    .ToListAsync();
             }
-
-            if (userType == UserType.GymAdmin)
+            else if (User.IsInRole("FranchiseAdmin"))
             {
-                GymAdmin gymAdmin = await _context.GymAdmins.FirstOrDefaultAsync(
-                    g => g.User.Email == "alonsougaldecr@gmail.com");
-                Franchise franchise = await _context.Franchises.FirstOrDefaultAsync(
-                    f => f == gymAdmin.Franchise);
-                customers = await _context.Customers.Where(
-                    c => c.Gym.Franchise == franchise).ToListAsync();
-            }
+                FranchiseAdmin franAdmin = await _context.FranchiseAdmins
+                    .Include(f => f.Franchise)
+                    .FirstOrDefaultAsync(f => f.User.Email == email);
 
-            if (userType == UserType.Trainer)
+                customers = await _context.Customers
+                    .Include(t => t.User)
+                    .Include(c => c.Gym)
+                        .ThenInclude(g => g.Franchise)
+                    .Where(c => c.Gym.Franchise.Id == franAdmin.Franchise.Id).ToListAsync();
+            }
+            else if (User.IsInRole("GymAdmin"))
+            {
+                GymAdmin gymAdmin = await _context.GymAdmins
+                    .Include(t => t.User)
+                    .Include(g => g.LocalGym)
+                        .ThenInclude(l => l.Franchise)
+                    .FirstOrDefaultAsync(f => f.User.Email == email);
+                customers = await _context.Customers
+                    .Include(c => c.Gym)
+                        .ThenInclude(g => g.Franchise)
+                    .Where(c => c.Gym.Id == gymAdmin.LocalGym.Id).ToListAsync();
+            } else
             {
                 Trainer trainer = _context.Trainers
-                    .Include(t => t.Franchise)
-                    .FirstOrDefault();
-                Franchise franchise = _context.Franchises.FirstOrDefault(
-                    f => f.Id == trainer.Franchise.Id);
+                    .Include(t => t.User)
+                    .Include(t => t.LocalGym)
+                        .ThenInclude(l => l.Franchise)
+                    .FirstOrDefault(t => t.User.Email == email );
+
                 customers = await _context.Customers
                     .Include(c => c.Gender)
                     .Include(c => c.User)
@@ -79,7 +92,7 @@ namespace bFit.Web.Controllers.Profiles
                     .Include(c => c.Gym)
                     .ThenInclude(g => g.Franchise)
                     .Where(
-                    c => c.Gym.Franchise.Id == franchise.Id).ToListAsync();
+                    c => c.Gym.Franchise.Id == trainer.Franchise.Id).ToListAsync();
             }
 
             return View(customers);
@@ -148,7 +161,7 @@ namespace bFit.Web.Controllers.Profiles
             var customerVwm = new CustomerViewModel();
             customerVwm.Genders = _combosHelper.GetComboGenders();
             customerVwm.Towns = _combosHelper.GetComboTowns();
-            customerVwm.Gyms = _combosHelper.GetComboGyms(franchise);
+            customerVwm.Gyms = await _combosHelper.GetComboGymsAsync(franchise);
 
             return View(customerVwm);
         }
@@ -605,6 +618,19 @@ namespace bFit.Web.Controllers.Profiles
              .Include(w => w.Trainer)
                 .ThenInclude(t => t.User)
              .FirstOrDefaultAsync(w => w.Id == id);
+        }
+
+        private async Task<IList<Customer>> GetCustomers()
+        {
+            return await _context.Customers
+                    .Include(c => c.Gender)
+                    .Include(c => c.Gym)
+                        .ThenInclude(g => g.Town)
+                    .Include(c => c.Gym)
+                        .ThenInclude(g => g.Franchise)
+                    .Include(c => c.User)
+                        .ThenInclude(u => u.Town)
+                    .ToListAsync();
         }
     }
 }

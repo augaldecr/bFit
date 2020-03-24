@@ -18,6 +18,16 @@ namespace bFit.Web.Helpers
         Task<Set> ToSetAsync(SetViewModel setView);
         SetViewModel ToSetViewModel(Set set);
         Task<Admin> ToAdminAsync(CreateAdminViewModel model);
-        Task<AdminViewModel> ToAdminViewModelAsync(Admin admin);
+        Task<Admin> ToAdminAsync(AdminViewModel model);
+        AdminViewModel ToAdminViewModelAsync(Admin admin);
+        Task<FranchiseAdmin> ToFranchiseAdminAsync(CreateFranchiseAdminViewModel franchiseAdmin);
+        Task<FranchiseAdmin> ToFranchiseAdminAsync(FranchiseAdminViewModel model);
+        FranchiseAdminViewModel ToFranchiseAdminViewModel(FranchiseAdmin franchiseAdmin);
+        Task<GymAdmin> ToGymAdminAsync(CreateGymAdminViewModel gymAdminModel);
+        Task<GymAdmin> ToGymAdminAsync(GymAdminViewModel gymAdminModel);
+        Task<GymAdminViewModel> ToGymAdminViewModelAsync(GymAdmin gymAdmin, int? franchise);
+        Task<Trainer> ToTrainerAsync(CreateTrainerViewModel trainerModel);
+        Task<Trainer> ToTrainerAsync(TrainerViewModel model);
+        Task<TrainerViewModel> ToTrainerViewModelAsync(Trainer trainer, int? franchise);
     }
 }

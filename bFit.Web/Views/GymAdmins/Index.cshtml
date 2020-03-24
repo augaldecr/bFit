@@ -1,29 +1,63 @@
 ﻿@model IEnumerable<bFit.Web.Data.Entities.Profiles.GymAdmin>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Administradores de gimnasio";
+    ViewData["EditAction"] = "Edit";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
+<partial name="Controls/_HeaderTable" />
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.User.FullName)
+        </th>
+        <th>
+            <a>Correo electrónico</a>
+        </th>
+        <th>
+            <a>Número telefónico</a>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.Town)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LocalGym)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.User.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Town.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LocalGym.Name)
+            </td>
+            <td>
+                @if (User.IsInRole("Admin") || User.IsInRole("FranchiseAdmin"))
+                {
+                    <partial name="Controls/_BtnEditNoText" view-data="ViewData" model="item" />
+                    <partial name="Controls/_BtnDetails" model="item" />
+                    <partial name="Controls/_BtnDelete" model="item" />
+                }
+                else
+                {
+                    <partial name="Controls/_BtnDetails" model="item" />
+                }
             </td>
         </tr>
-}
-    </tbody>
-</table>
+    }
+</tbody>
+<partial name="Controls/_FooterTable" />

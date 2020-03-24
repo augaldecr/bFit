@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - bFit</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootswatch.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    @*<link rel="stylesheet" href="~/lib/dataTables/dataTables.bootstrap4.min.css" />*@
+    <link rel="stylesheet" href="~/lib/dataTables/dataTables.bootstrap4.min.css" />
     <link rel="stylesheet" href="~/lib/dataTables/responsive.bootstrap4.min.css" />
 </head>
 <body>
@@ -17,61 +17,47 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                @if (User.Identity.IsAuthenticated)
                 {
                     <div class="nav navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                         <ul class="navbar-nav flex-grow-1">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <partial name="NavBars/_Generals" />
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Generales</a>
-                                <div class="dropdown-menu" style="">
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Countries" asp-action="Index">Países</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="States" asp-action="Index">Provincias</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Counties" asp-action="Index">Cantones</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Districts" asp-action="Index">Distritos</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Towns" asp-action="Index">Ciudades</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Genders" asp-action="Index">Géneros</a>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Perfiles</a>
-                                <div class="dropdown-menu" style="">
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Franchises" asp-action="Index">Franquicias</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="LocalGyms" asp-action="Index">Gimnasios</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Admins" asp-action="Index">Administradores</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="FranchiseAdmins" asp-action="Index">Administradores de franquicia</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="GymAdmins" asp-action="Index">Administradores de gimnasio</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Trainers" asp-action="Index">Entrenadores</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Customers" asp-action="Index">Clientes</a>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Rutinas</a>
-                                <div class="dropdown-menu" style="">
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="ExerciseTypes" asp-action="Index">Tipos de ejercicio</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Exercises" asp-action="Index">Ejercicios</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Goals" asp-action="Index">Metas</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="ObesityLevels" asp-action="Index">Niveles de obesidad</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="SetTypes" asp-action="Index">Tipos de sets</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="SubSets" asp-action="Index">SubSets</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Sets" asp-action="Index">Sets</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="WorkoutRoutines" asp-action="Index">Rutinas de entrenamiento</a>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Historial</a>
-                                <div class="dropdown-menu" style="">
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="DataTakes" asp-action="Index">Listado</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="DataTakes" asp-action="Create">Nueva toma de datos</a>
-                                </div>
-                            </li>
+                                <partial name="NavBars/_Profiles" />
 
+                                <partial name="NavBars/_WorkoutRoutines" />
+
+                                <partial name="NavBars/_DataTakes" />
+                            }
+                            else if (User.IsInRole("FranchiseAdmin"))
+                            {
+                                <partial name="NavBars/_ProfilesFranchisesAdmin" />
+
+                                <partial name="NavBars/_WorkoutRoutines" />
+
+                                <partial name="NavBars/_DataTakes" />
+                            }
+                            else if (User.IsInRole("GymAdmin"))
+                            {
+                                <partial name="NavBars/_ProfilesGymAdmin" />
+
+                                <partial name="NavBars/_WorkoutRoutines" />
+
+                                <partial name="NavBars/_DataTakes" />
+                            }
+                            else if (User.IsInRole("Trainer"))
+                            {
+                                <partial name="NavBars/_WorkoutRoutines" />
+
+                                <partial name="NavBars/_DataTakes" />
+                            }
+                            else
+                            {
+
+                            }
                         </ul>
-
                     </div>
                 }
                 <div class="nav navbar-nav justify-content-end">
@@ -105,8 +91,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @*<script src="~/lib/dataTables/jquery.dataTables.min.js"></script>
-    <script src="~/lib/dataTables/dataTables.bootstrap4.min.js"></script>*@
+    <script src="~/lib/dataTables/jquery.dataTables.min.js"></script>
+    <script src="~/lib/dataTables/dataTables.bootstrap4.min.js"></script>
     <script src="~/lib/dataTables/dataTables.responsive.min.js"></script>
     <script src="~/lib/dataTables/responsive.bootstrap4.min.js"></script>
 

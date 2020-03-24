@@ -1,15 +1,10 @@
 ﻿@model bFit.Web.Data.Entities.Profiles.Franchise
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Franquicia";
 }
 
-<h1>Create</h1>
-
-<h4>Franchise</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+    <partial name="Controls/_Header" />
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -41,12 +36,7 @@
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+        <partial name="Controls/_Footer" />
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

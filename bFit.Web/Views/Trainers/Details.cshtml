@@ -1,18 +1,81 @@
 ﻿@model bFit.Web.Data.Entities.Profiles.Trainer
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.User.FullName;
+    ViewData["BackAction"] = "Index";
+    ViewData["EditAction"] = "Edit";
+    ViewData["DetailsAction"] = "Details";
 }
 
-<h1>Details</h1>
+<partial name="Controls/_Header" />
+
+<div class="row">
+    <div class="input-group mb-3 col-md-4">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="fullname">
+                @Html.DisplayNameFor(model => model.User.FullName):
+            </span>
+        </div>
+        <input type="text" class="form-control" aria-label="fullname" disabled
+               aria-describedby="fullname" value="@Html.DisplayFor(model => model.User.FullName)">
+    </div>
+    <div class="input-group mb-3 col-md-4">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="address">
+                @Html.DisplayNameFor(model => model.User.Address):
+            </span>
+        </div>
+        <input type="text" class="form-control" aria-label="address" disabled
+               aria-describedby="address" value="@Html.DisplayFor(model => model.User.Address)">
+    </div>
+    <div class="input-group mb-3 col-md-4">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="town">
+                @Html.DisplayNameFor(model => model.User.Town):
+            </span>
+        </div>
+        <input type="text" class="form-control" aria-label="town" disabled
+               aria-describedby="town" value="@Html.DisplayFor(model => model.User.Town.Name)">
+    </div>
+</div>
+
+<div class="row">
+    <div class="input-group mb-3 col-md-4">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="email">
+                @Html.DisplayNameFor(model => model.User.Email):
+            </span>
+        </div>
+        <input type="email" class="form-control" aria-label="email" disabled
+               aria-describedby="email" value="@Html.DisplayFor(model => model.User.Email)">
+    </div>
+
+    <div class="input-group mb-3 col-md-4">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="cellphone">
+                @Html.DisplayNameFor(model => model.User.PhoneNumber):
+            </span>
+        </div>
+        <input type="tel" class="form-control" aria-label="cellphone" disabled
+               aria-describedby="cellphone" value="@Html.DisplayFor(model => model.User.PhoneNumber)">
+    </div>
+
+    <div class="input-group mb-3 col-md-4">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="username">
+                @Html.DisplayNameFor(model => model.LocalGym):
+            </span>
+        </div>
+        <input type="text" class="form-control" aria-label="username" disabled
+               aria-describedby="username" value="@Html.DisplayFor(model => model.LocalGym.Name)">
+    </div>
+</div>
 
 <div>
-    <h4>Trainer</h4>
-    <hr />
-    <dl class="row">
-    </dl>
+    @if (User.Identity.Name.Equals("augaldecr@gmail.com"))
+    {
+        <partial name="Controls/_BtnEdit" view-data="ViewData" model="@Model" />
+    }
+    <partial name="Controls/_BtnBack" view-data="ViewData" />
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<partial name="Controls/_Footer" />

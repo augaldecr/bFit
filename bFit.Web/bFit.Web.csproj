@@ -37,6 +37,12 @@
     <Compile Remove="Migrations\20200306154523_InitialDb.Designer.cs" />
     <Compile Remove="Migrations\20200311213607_InitialDb.cs" />
     <Compile Remove="Migrations\20200311213607_InitialDb.Designer.cs" />
+    <Compile Remove="Migrations\20200312031043_InitialDb.cs" />
+    <Compile Remove="Migrations\20200312031043_InitialDb.Designer.cs" />
+    <Compile Remove="Migrations\20200322052038_GymAdmin-fixed.cs" />
+    <Compile Remove="Migrations\20200322052038_GymAdmin-fixed.Designer.cs" />
+    <Compile Remove="Migrations\20200322183614_TrainerUpdated.cs" />
+    <Compile Remove="Migrations\20200322183614_TrainerUpdated.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

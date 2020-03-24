@@ -1,0 +1,21 @@
+﻿@model bFit.Web.Data.Entities.Profiles.Admin
+
+@{
+    ViewData["Title"] = "Borrar";
+}
+
+<h1>Borrar</h1>
+
+<h3>Desea eliminar este administrador?</h3>
+<div>
+    <h4>Administrador</h4>
+    <hr />
+    <dl class="row">
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Borrar" class="btn btn-danger" /> |
+        <a asp-action="Index">Volver del listado</a>
+    </form>
+</div>
