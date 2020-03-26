@@ -1,5 +1,7 @@
 ﻿using bFit.Web.Data;
 using bFit.Web.Data.Entities.Common;
+using bFit.Web.Helpers;
+using bFit.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,19 +14,25 @@ namespace bFit.Web.Controllers.Common
     public class StatesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ICombosHelper _combosHelper;
+        private readonly IConverterHelper _converterHelper;
 
-        public StatesController(ApplicationDbContext context)
+        public StatesController(ApplicationDbContext context,
+            ICombosHelper combosHelper,
+            IConverterHelper converterHelper)
         {
             _context = context;
+            _combosHelper = combosHelper;
+            _converterHelper = converterHelper;
         }
 
-        // GET: States
         public async Task<IActionResult> Index()
         {
-            return View(await _context.States.ToListAsync());
+            return View(await _context.States
+                .Include(s => s.Country)
+                .ToListAsync());
         }
 
-        // GET: States/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,6 +41,7 @@ namespace bFit.Web.Controllers.Common
             }
 
             State state = await _context.States
+                .Include(s => s.Country)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (state == null)
             {
@@ -42,26 +51,26 @@ namespace bFit.Web.Controllers.Common
             return View(state);
         }
 
-        // GET: States/Create
         public IActionResult Create()
         {
-            return View();
+            CreateStateViewModel createState = new CreateStateViewModel {
+                Countries = _combosHelper.GetComboCountries(),
+            };
+            return View(createState);
         }
 
-        // POST: States/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] State state)
+        public async Task<IActionResult> Create(CreateStateViewModel stateVwm)
         {
             if (ModelState.IsValid)
             {
+                var state = await _converterHelper.ToState(stateVwm);
                 _context.Add(state);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(state);
+            return View(stateVwm);
         }
 
         // GET: States/Edit/5
@@ -72,11 +81,16 @@ namespace bFit.Web.Controllers.Common
                 return NotFound();
             }
 
-            State state = await _context.States.FindAsync(id);
+            State state = await _context.States
+                .Include(s => s.Country)
+                .FirstOrDefaultAsync(s => s.Id == id);
+
             if (state == null)
             {
                 return NotFound();
             }
+
+            var stateVwm = _converterHelper.ToState();
             return View(state);
         }
 

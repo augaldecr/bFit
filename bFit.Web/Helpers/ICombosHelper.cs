@@ -14,5 +14,6 @@ namespace bFit.Web.Helpers
         Task<IEnumerable<SelectListItem>> GetComboGymsAsync(int? id);
         IEnumerable<SelectListItem> GetComboTrainers(int? franchiseId);
         IEnumerable<SelectListItem> GetComboFranchises();
+        IEnumerable<SelectListItem> GetComboCountries();
     }
 }

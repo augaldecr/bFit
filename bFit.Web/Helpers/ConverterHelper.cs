@@ -1,5 +1,6 @@
 ﻿using bFit.Web.Data;
 using bFit.Web.Data.Entities;
+using bFit.Web.Data.Entities.Common;
 using bFit.Web.Data.Entities.Profiles;
 using bFit.Web.Data.Entities.Workouts;
 using bFit.Web.Models;
@@ -452,6 +453,64 @@ namespace bFit.Web.Helpers
                 Towns = _combosHelper.GetComboTowns(),
                 GymId = trainer.LocalGym.Id,
                 Gyms = await _combosHelper.GetComboGymsAsync(franchise),
+            };
+        }
+
+        public EditGymViewModel ToEditGymViewModel(LocalGym localGym)
+        {
+            return new EditGymViewModel
+            {
+                Id = localGym.Id,
+                Address = localGym.Address,
+                Email = localGym.Email,
+                PhoneNumber = localGym.PhoneNumber,
+                TownId = localGym.Town.Id,
+                Towns = _combosHelper.GetComboTowns(),
+            };
+        }
+
+        public async Task<LocalGym> ToLocalGymAsync(EditGymViewModel gymView)
+        {
+            var gym = await _context.Gyms
+                .Include(g => g.Franchise)
+                .Include(g => g.Town)
+                .FirstOrDefaultAsync(g => g.Id == gymView.Id);
+
+            gym.Address = gymView.Address;
+            gym.Email = gymView.Email;
+            gym.PhoneNumber = gymView.PhoneNumber;
+            gym.Town = await _context.Towns.FindAsync(gymView.TownId);
+
+            return gym;
+        }
+
+        public async Task<LocalGym> ToLocalGym(CreateGymViewModel gymView)
+        {
+            return new LocalGym
+            {
+                Address = gymView.Address,
+                Email = gymView.Email,
+                PhoneNumber = gymView.PhoneNumber,
+                Town = await _context.Towns.FindAsync(gymView.TownId),
+                Franchise = await _context.Franchises.FirstOrDefaultAsync(f => f.Id == gymView.FranchiseId),
+            };
+        }
+
+        public async Task<State> ToState(CreateStateViewModel stateViewModel)
+        {
+            return new State
+            {
+                Name = stateViewModel.Name,
+                Country = await _context.Countries.FirstOrDefaultAsync(f => f.Id == stateViewModel.CountryId),
+            };
+        }
+
+        public async Task<EditStateViewModel> ToEditStateViewModel (State state)
+        {
+            return new EditStateViewModel
+            {
+                Name = stateViewModel.Name,
+                Country = await _context.Countries.FirstOrDefaultAsync(f => f.Id == state.CountryId),
             };
         }
     }

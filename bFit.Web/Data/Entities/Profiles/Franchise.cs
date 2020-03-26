@@ -32,6 +32,7 @@ namespace bFit.Web.Data.Entities.Profiles
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Correo electrónico")]
         [MaxLength(50, ErrorMessage = "El campo {0} no puede exceder los {1} caracteres.")]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         public ICollection<LocalGym> Locals { get; set; }

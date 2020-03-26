@@ -1,4 +1,5 @@
-﻿using bFit.Web.Data.Entities.Profiles;
+﻿using bFit.Web.Data.Entities.Common;
+using bFit.Web.Data.Entities.Profiles;
 using bFit.Web.Data.Entities.Workouts;
 using bFit.Web.Models;
 using System.Threading.Tasks;
@@ -29,5 +30,9 @@ namespace bFit.Web.Helpers
         Task<Trainer> ToTrainerAsync(CreateTrainerViewModel trainerModel);
         Task<Trainer> ToTrainerAsync(TrainerViewModel model);
         Task<TrainerViewModel> ToTrainerViewModelAsync(Trainer trainer, int? franchise);
+        EditGymViewModel ToEditGymViewModel(LocalGym localGym);
+        Task<LocalGym> ToLocalGym(CreateGymViewModel gymView);
+        Task<LocalGym> ToLocalGymAsync(EditGymViewModel gymView);
+        Task<State> ToState(CreateStateViewModel stateViewModel);
     }
 }

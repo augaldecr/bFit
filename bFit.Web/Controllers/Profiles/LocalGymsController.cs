@@ -1,5 +1,7 @@
 ﻿using bFit.Web.Data;
 using bFit.Web.Data.Entities.Profiles;
+using bFit.Web.Helpers;
+using bFit.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,23 +10,33 @@ using System.Threading.Tasks;
 
 namespace bFit.Web.Controllers.Profiles
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, FranchiseAdmin")]
     public class LocalGymsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConverterHelper _converterHelper;
+        private readonly IUserHelper _userHelper;
+        private readonly ICombosHelper _combosHelper;
 
-        public LocalGymsController(ApplicationDbContext context)
+        public LocalGymsController(ApplicationDbContext context,
+            IConverterHelper converterHelper,
+            IUserHelper userHelper,
+            ICombosHelper combosHelper)
         {
             _context = context;
+            _converterHelper = converterHelper;
+            _userHelper = userHelper;
+            _combosHelper = combosHelper;
         }
 
-        // GET: LocalGyms
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Gyms.ToListAsync());
+            return View(await _context.Gyms
+                .Include(g => g.Franchise)
+                .Include(g => g.Town)
+                .ToListAsync());
         }
 
-        // GET: LocalGyms/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,7 +45,10 @@ namespace bFit.Web.Controllers.Profiles
             }
 
             LocalGym localGym = await _context.Gyms
+                .Include(g => g.Franchise)
+                .Include(g => g.Town)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (localGym == null)
             {
                 return NotFound();
@@ -42,29 +57,40 @@ namespace bFit.Web.Controllers.Profiles
             return View(localGym);
         }
 
-        // GET: LocalGyms/Create
         public IActionResult Create()
         {
-            return View();
+            CreateGymViewModel createGymVwm = new CreateGymViewModel
+            {
+                Towns = _combosHelper.GetComboTowns(),
+                Franchises = _combosHelper.GetComboFranchises(),
+            };
+            return View(createGymVwm);
         }
 
-        // POST: LocalGyms/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PhoneNumber,Email,Address")] LocalGym localGym)
+        public async Task<IActionResult> Create(CreateGymViewModel createGymView)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(localGym);
+                if (User.IsInRole("FranchiseAdmin"))
+                {
+                    var fAdmin = await _context.FranchiseAdmins
+                        .Include(f => f.User)
+                        .FirstOrDefaultAsync(
+                        f => f.User.Email == User.Identity.Name);
+                    createGymView.FranchiseId = fAdmin.Franchise.Id;
+                }
+
+                var gym = await _converterHelper.ToLocalGym(createGymView);
+
+                await _context.AddAsync(gym);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(localGym);
+            return View(createGymView);
         }
 
-        // GET: LocalGyms/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +98,25 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            LocalGym localGym = await _context.Gyms.FindAsync(id);
+            LocalGym localGym = await _context.Gyms
+                .Include(g => g.Franchise)
+                .Include(g => g.Town)
+                .FirstOrDefaultAsync(g => g.Id == id);
             if (localGym == null)
             {
                 return NotFound();
             }
-            return View(localGym);
+
+            var editGymVwm = _converterHelper.ToEditGymViewModel(localGym);
+
+            return View(editGymVwm);
         }
 
-        // POST: LocalGyms/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PhoneNumber,Email,Address")] LocalGym localGym)
+        public async Task<IActionResult> Edit(int id, EditGymViewModel editGymView)
         {
-            if (id != localGym.Id)
+            if (id != editGymView.Id)
             {
                 return NotFound();
             }
@@ -96,12 +125,14 @@ namespace bFit.Web.Controllers.Profiles
             {
                 try
                 {
-                    _context.Update(localGym);
+                    var gym = await _converterHelper.ToLocalGymAsync(editGymView);
+
+                    _context.Update(gym);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LocalGymExists(localGym.Id))
+                    if (!LocalGymExists(editGymView.Id))
                     {
                         return NotFound();
                     }
@@ -112,10 +143,10 @@ namespace bFit.Web.Controllers.Profiles
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(localGym);
+            return View(editGymView
+                );
         }
 
-        // GET: LocalGyms/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -133,7 +164,6 @@ namespace bFit.Web.Controllers.Profiles
             return View(localGym);
         }
 
-        // POST: LocalGyms/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

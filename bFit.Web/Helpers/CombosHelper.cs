@@ -237,5 +237,24 @@ namespace bFit.Web.Helpers
 
             return list;
         }
+
+        public IEnumerable<SelectListItem> GetComboCountries()
+        {
+            List<SelectListItem> list = _context.Countries.Select(g => new SelectListItem
+            {
+                Text = g.Name,
+                Value = $"{g.Id}"
+            })
+                .OrderBy(g => g.Text)
+                .ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[Seleccione una franquicia]",
+                Value = "0"
+            });
+
+            return list;
+        }
     }
 }

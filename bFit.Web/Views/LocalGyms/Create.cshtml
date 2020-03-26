@@ -1,42 +1,47 @@
-﻿@model bFit.Web.Data.Entities.Profiles.LocalGym
+﻿@model bFit.Web.Models.CreateGymViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Gimnasio";
 }
 
-<h1>Create</h1>
+<partial name="Controls/_Header" />
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<h4>LocalGym</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    <partial name="_User" />
+
+    <div class="form-row">
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="form-group col-md-6">
+                <label asp-for="FranchiseId" class="control-label"></label>
+                <select asp-for="FranchiseId" asp-items="@Model.Franchises" class="form-control"></select>
+                <span asp-validation-for="FranchiseId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+            <div class="form-group col-md-6">
+                <label asp-for="TownId" class="control-label"></label>
+                <select asp-for="TownId" asp-items="@Model.Towns" class="form-control"></select>
+                <span asp-validation-for="TownId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
+        }
+        else
+        {
+            <input type="hidden" asp-for="FranchiseId" />
+
+            <div class="form-group col-md-12">
+                <label asp-for="TownId" class="control-label"></label>
+                <select asp-for="TownId" asp-items="@Model.Towns" class="form-control"></select>
+                <span asp-validation-for="TownId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        }
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="form-group">
+        <partial name="Controls/_BtnSubmit" />
+        <partial name="Controls/_BtnBack" />
+    </div>
+</form>
+<partial name="Controls/_Footer" />
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
