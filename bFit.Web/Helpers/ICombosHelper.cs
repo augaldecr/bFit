@@ -6,14 +6,17 @@ namespace bFit.Web.Helpers
 {
     public interface ICombosHelper
     {
-        IEnumerable<SelectListItem> GetComboGoals();
-        IEnumerable<SelectListItem> GetComboExercises();
-        IEnumerable<SelectListItem> GetComboSubSetTypes();
-        IEnumerable<SelectListItem> GetComboGenders();
-        IEnumerable<SelectListItem> GetComboTowns();
+        Task<IEnumerable<SelectListItem>> GetComboGoalsAsync();
+        Task<IEnumerable<SelectListItem>> GetComboExercisesAsync();
+        Task<IEnumerable<SelectListItem>> GetComboSubSetTypesAsync();
+        Task<IEnumerable<SelectListItem>> GetComboGendersAsync();
         Task<IEnumerable<SelectListItem>> GetComboGymsAsync(int? id);
-        IEnumerable<SelectListItem> GetComboTrainers(int? franchiseId);
-        IEnumerable<SelectListItem> GetComboFranchises();
-        IEnumerable<SelectListItem> GetComboCountries();
+        Task<IEnumerable<SelectListItem>> GetComboTrainersAsync(int? franchiseId);
+        Task<IEnumerable<SelectListItem>> GetComboFranchisesAsync();
+        Task<IEnumerable<SelectListItem>> GetComboCountriesAsync();
+        Task<IEnumerable<SelectListItem>> GetComboStatesAsync(int id);
+        Task<IEnumerable<SelectListItem>> GetComboCountiesAsync(int id);
+        Task<IEnumerable<SelectListItem>> GetComboDistrictsAsync(int id);
+        Task<IEnumerable<SelectListItem>> GetComboTownsAsync(int districtId);
     }
 }

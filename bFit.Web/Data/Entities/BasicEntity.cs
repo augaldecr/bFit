@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace bFit.Web.Data.Entities
 {
-    public abstract class BasicEntity
+    public abstract class BasicEntity : IEntity
     {
         [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }

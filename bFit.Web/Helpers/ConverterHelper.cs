@@ -38,8 +38,8 @@ namespace bFit.Web.Helpers
                 Birthday = customer.Birthday,
                 GenderId = customer.Gender.Id,
                 TownId = customer.User.Town.Id,
-                Genders = _combosHelper.GetComboGenders(),
-                Towns = _combosHelper.GetComboTowns(),
+                Genders = await _combosHelper.GetComboGendersAsync(),
+                Countries = await _combosHelper.GetComboCountriesAsync(),
                 Address = customer.User.Address,
                 GymId = customer.Gym.Id,
                 Gyms = await _combosHelper.GetComboGymsAsync(customer.Gym.Id),
@@ -97,7 +97,7 @@ namespace bFit.Web.Helpers
             return customer;
         }
 
-        public WorkoutViewModel ToWorkoutViewModel(WorkoutRoutine workout)
+        public async Task<WorkoutViewModel> ToWorkoutViewModelAsync(WorkoutRoutine workout)
         {
             return new WorkoutViewModel
             {
@@ -107,13 +107,13 @@ namespace bFit.Web.Helpers
                 Sets = workout.Sets,
                 CustomerId = workout.Customer.Id,
                 TrainerId = workout.Trainer.Id,
-                Trainers = _combosHelper.GetComboTrainers(null),
+                Trainers = await _combosHelper.GetComboTrainersAsync(null),
                 GoalId = workout.Goal.Id,
-                Goals = _combosHelper.GetComboGoals(),
+                Goals = await _combosHelper.GetComboGoalsAsync(),
             };
         }
 
-        public EditWorkoutViewModel ToEditWorkoutViewModel(WorkoutRoutine workout)
+        public async Task<EditWorkoutViewModel> ToEditWorkoutViewModelAsync(WorkoutRoutine workout)
         {
             return new EditWorkoutViewModel
             {
@@ -123,17 +123,17 @@ namespace bFit.Web.Helpers
                 Sets = workout.Sets,
                 CustomerId = workout.Customer.Id,
                 TrainerId = workout.Trainer.Id,
-                Trainers = _combosHelper.GetComboTrainers(null),
+                Trainers = await _combosHelper.GetComboTrainersAsync(null),
                 GoalId = workout.Goal.Id,
-                Goals = _combosHelper.GetComboGoals(),
-                Exercises = _combosHelper.GetComboExercises(),
-                SubSetTypes = _combosHelper.GetComboSubSetTypes(),
+                Goals = await _combosHelper.GetComboGoalsAsync(),
+                Exercises = await _combosHelper.GetComboExercisesAsync(),
+                SubSetTypes = await _combosHelper.GetComboSubSetTypesAsync(),
                 WorkoutId = workout.Id, 
                 Customer = workout.Customer,
             };
         }
 
-        public SubSetViewModel ToSubSetViewModel(SubSet subSet)
+        public async Task<SubSetViewModel> ToSubSetViewModelAsync(SubSet subSet)
         {
             return new SubSetViewModel
             {
@@ -141,13 +141,13 @@ namespace bFit.Web.Helpers
                 WorkoutId = subSet.Set.WorkoutRoutine.Id,
                 SetId = subSet.Set.Id,
                 ExerciseId = subSet.Exercise.Id,
-                Exercises = _combosHelper.GetComboExercises(),
+                Exercises = await _combosHelper.GetComboExercisesAsync(),
                 NegativeTime = subSet.NegativeTime,
                 PositiveTime = subSet.PositiveTime,
                 Quantity = subSet.Quantity,
                 Remarks = subSet.Remarks,
                 SubSetTypeId = subSet.SubSetType.Id,
-                SubSetTypes = _combosHelper.GetComboSubSetTypes(),
+                SubSetTypes = await _combosHelper.GetComboSubSetTypesAsync(),
             };
         }
 
@@ -202,14 +202,14 @@ namespace bFit.Web.Helpers
             };
         }
 
-        public SetViewModel ToSetViewModel(Set set)
+        public async Task<SetViewModel> ToSetViewModelAsync(Set set)
         {
             return new SetViewModel
             {
                 Id = set.Id,
                 WorkoutId = set.WorkoutRoutine.Id,
-                Exercises = _combosHelper.GetComboExercises(),
-                SubSetTypes = _combosHelper.GetComboSubSetTypes(),
+                Exercises = await _combosHelper.GetComboExercisesAsync(),
+                SubSetTypes = await _combosHelper.GetComboSubSetTypesAsync(),
                 Subsets = set.SubSets,
             };
         }
@@ -249,7 +249,7 @@ namespace bFit.Web.Helpers
             return admin;
         }
 
-        public AdminViewModel ToAdminViewModelAsync(Admin admin)
+        public async Task<AdminViewModel> ToAdminViewModelAsync(Admin admin)
         {
             return new AdminViewModel
             {
@@ -260,7 +260,7 @@ namespace bFit.Web.Helpers
                 LastName2 = admin.User.LastName2,
                 CellPhone = admin.User.PhoneNumber,
                 TownId = admin.User.Town.Id,
-                Towns = _combosHelper.GetComboTowns()
+                Countries = await _combosHelper.GetComboCountriesAsync()
             };
         }
 
@@ -307,7 +307,7 @@ namespace bFit.Web.Helpers
             return franchiseAdmin;
         }
 
-        public FranchiseAdminViewModel ToFranchiseAdminViewModel(FranchiseAdmin franchiseAdmin)
+        public async Task<FranchiseAdminViewModel> ToFranchiseAdminViewModelAsync(FranchiseAdmin franchiseAdmin)
         {
             return new FranchiseAdminViewModel
             {
@@ -318,9 +318,9 @@ namespace bFit.Web.Helpers
                 LastName2 = franchiseAdmin.User.LastName2,
                 CellPhone = franchiseAdmin.User.PhoneNumber,
                 TownId = franchiseAdmin.User.Town.Id,
-                Towns = _combosHelper.GetComboTowns(),
+                Countries = await _combosHelper.GetComboCountriesAsync(),
                 FranchiseId = franchiseAdmin.Franchise.Id,
-                Franchises = _combosHelper.GetComboFranchises(),
+                Franchises = await _combosHelper.GetComboFranchisesAsync(),
             };
         }
 
@@ -384,7 +384,7 @@ namespace bFit.Web.Helpers
                 LastName2 = gymAdmin.User.LastName2,
                 CellPhone = gymAdmin.User.PhoneNumber,
                 TownId = gymAdmin.User.Town.Id,
-                Towns = _combosHelper.GetComboTowns(),
+                Countries = await _combosHelper.GetComboCountriesAsync(),
                 GymId = gymAdmin.LocalGym.Id,
                 Gyms = await _combosHelper.GetComboGymsAsync(franchise),
             };
@@ -450,13 +450,13 @@ namespace bFit.Web.Helpers
                 LastName2 = trainer.User.LastName2,
                 CellPhone = trainer.User.PhoneNumber,
                 TownId = trainer.User.Town.Id,
-                Towns = _combosHelper.GetComboTowns(),
+                Towns = await _combosHelper.GetComboTownsAsync(trainer.User.Town.District.Id),
                 GymId = trainer.LocalGym.Id,
                 Gyms = await _combosHelper.GetComboGymsAsync(franchise),
             };
         }
 
-        public EditGymViewModel ToEditGymViewModel(LocalGym localGym)
+        public async Task<EditGymViewModel> ToEditGymViewModelAsync(LocalGym localGym)
         {
             return new EditGymViewModel
             {
@@ -465,7 +465,7 @@ namespace bFit.Web.Helpers
                 Email = localGym.Email,
                 PhoneNumber = localGym.PhoneNumber,
                 TownId = localGym.Town.Id,
-                Towns = _combosHelper.GetComboTowns(),
+                Towns = await _combosHelper.GetComboTownsAsync(localGym.Town.District.Id),
             };
         }
 
@@ -484,7 +484,7 @@ namespace bFit.Web.Helpers
             return gym;
         }
 
-        public async Task<LocalGym> ToLocalGym(CreateGymViewModel gymView)
+        public async Task<LocalGym> ToLocalGymAsync(CreateGymViewModel gymView)
         {
             return new LocalGym
             {
@@ -496,7 +496,7 @@ namespace bFit.Web.Helpers
             };
         }
 
-        public async Task<State> ToState(CreateStateViewModel stateViewModel)
+        public async Task<State> ToStateAsync(CreateStateViewModel stateViewModel)
         {
             return new State
             {
@@ -505,12 +505,143 @@ namespace bFit.Web.Helpers
             };
         }
 
-        public async Task<EditStateViewModel> ToEditStateViewModel (State state)
+        public async Task<State> ToStateAsync(EditStateViewModel model)
+        {
+            var state = await _context.States
+                .Include(s => s.Country)
+                .FirstOrDefaultAsync(s => s.Id == model.Id);
+
+            state.Name = model.Name;
+            state.Country = await _context.Countries.FirstOrDefaultAsync(f => f.Id == model.CountryId);
+
+            return state;
+        }
+
+        public async Task<EditStateViewModel> ToEditStateViewModelAsync(State state)
         {
             return new EditStateViewModel
             {
-                Name = stateViewModel.Name,
-                Country = await _context.Countries.FirstOrDefaultAsync(f => f.Id == state.CountryId),
+                Id = state.Id,
+                Name = state.Name,
+                CountryId = state.Country.Id,
+                Countries = await _combosHelper.GetComboCountriesAsync(),
+            };
+        }
+
+        public async Task<CreateStateViewModel> ToCreateStateViewModelAsync(State state)
+        {
+            return new CreateStateViewModel
+            {
+                Countries = await _combosHelper.GetComboCountriesAsync(),
+            };
+        }
+
+        public async Task<County> ToCountyAsync(CreateCountyViewModel model)
+        {
+            return new County
+            {
+                Name = model.Name,
+                State = await _context.States.FirstOrDefaultAsync(s => s.Id == model.StateId),
+            };
+        }
+
+        public async Task<County> ToCountyAsync(EditCountyViewModel model)
+        {
+            var county = await _context.Counties.FirstOrDefaultAsync(c => c.Id == model.Id);
+                county.Name = model.Name;
+                county.State = await _context.States.FirstOrDefaultAsync(s => s.Id == model.StateId);
+            return county;
+        }
+
+        public async Task<EditCountyViewModel> ToEditCountyViewModelAsync(County county)
+        {
+            return new EditCountyViewModel
+            {
+                Id = county.Id,
+                Name = county.Name,
+                StateId = county.State.Id,
+                States = await _combosHelper.GetComboStatesAsync(county.State.Id),
+                CountryId = county.State.Country.Id,
+                Countries = await _combosHelper.GetComboCountriesAsync(),
+            };
+        }
+
+        public async Task<District> ToDistrictAsync(CreateDistrictViewModel model)
+        {
+            return new District
+            {
+                Name = model.Name,
+                County = await _context.Counties.FirstOrDefaultAsync(s => s.Id == model.CountyId),
+            };
+        }
+
+        public async Task<District> ToDistrictAsync(EditDistrictViewModel model)
+        {
+            var district = await _context.Districts.FirstOrDefaultAsync(c => c.Id == model.Id);
+            district.Name = model.Name;
+            district.County = await _context.Counties.FirstOrDefaultAsync(s => s.Id == model.CountyId);
+            return district;
+        }
+
+        public async Task<EditDistrictViewModel> ToEditDistrictViewModelAsync(District district)
+        {
+            var districtVwm = await _context.Districts
+                .Include(d => d.County)
+                    .ThenInclude(c => c.State)
+                        .ThenInclude(s => s.Country)
+                .FirstOrDefaultAsync(d => d.Id == district.Id);
+
+            return new EditDistrictViewModel
+            {
+                Id = districtVwm.Id,
+                Name = districtVwm.Name,
+                CountyId = districtVwm.County.Id,
+                Counties = await _combosHelper.GetComboCountiesAsync(districtVwm.County.State.Id),
+                StateId = districtVwm.County.State.Id,
+                States = await _combosHelper.GetComboStatesAsync(districtVwm.County.State.Id),
+                CountryId = districtVwm.County.State.Country.Id,
+                Countries = await _combosHelper.GetComboCountriesAsync(),
+            };
+        }
+
+        public async Task<Town> ToTownAsync(CreateTownViewModel model)
+        {
+            return new Town
+            {
+                Name = model.Name,
+                District = await _context.Districts.FirstOrDefaultAsync(s => s.Id == model.DistrictId),
+            };
+        }
+
+        public async Task<Town> ToTownAsync(EditTownViewModel model)
+        {
+            var town = await _context.Towns.FirstOrDefaultAsync(c => c.Id == model.Id);
+            town.Name = model.Name;
+            town.District = await _context.Districts.FirstOrDefaultAsync(s => s.Id == model.DistrictId);
+            return town;
+        }
+
+        public async Task<EditTownViewModel> ToEditTownViewModelAsync(Town town)
+        {
+            var townVwm = await _context.Towns
+                .Include(t => t.District)
+                    .ThenInclude(d => d.County)
+                        .ThenInclude(c => c.State)
+                            .ThenInclude(s => s.Country)
+                .FirstOrDefaultAsync(d => d.Id == town.Id);
+
+            return new EditTownViewModel
+            {
+                Id = town.Id,
+                Name = town.Name,
+                DistrictId = town.District.Id,
+                Districts = await _combosHelper.GetComboDistrictsAsync(town.District.County.Id),
+                CountyId = town.District.County.Id,
+                Counties = await _combosHelper.GetComboCountiesAsync(town.District.County.State.Id),
+                StateId = town.District.County.State.Id,
+                States = await _combosHelper.GetComboStatesAsync(town.District.County.State.Country.Id),
+                CountryId = town.District.County.State.Country.Id,
+                Countries = await _combosHelper.GetComboCountriesAsync(),
             };
         }
     }

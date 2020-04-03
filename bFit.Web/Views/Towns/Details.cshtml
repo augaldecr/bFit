@@ -1,24 +1,68 @@
 ﻿@model bFit.Web.Data.Entities.Common.Town
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Ciudad";
+    ViewData["BackAction"] = "Index";
+    ViewData["EditAction"] = "Edit";
+    ViewData["DetailsAction"] = "Details";
 }
 
-<h1>Details</h1>
+<partial name="Controls/_Header" />
 
-<div>
-    <h4>Town</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-    </dl>
+<div class="row">
+    <div class="input-group mb-3 col-md-4">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="country">
+                @Html.DisplayNameFor(model => model.District.County.State.Country):
+            </span>
+        </div>
+        <input type="text" class="form-control" aria-label="country" disabled
+               aria-describedby="country" value="@Html.DisplayFor(model => model.District.County.State.Country.Name)">
+    </div>
+
+    <div class="input-group mb-3 col-md-4">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="state">
+                @Html.DisplayNameFor(model => model.District.County.State):
+            </span>
+        </div>
+        <input type="text" class="form-control" aria-label="state" disabled
+               aria-describedby="state" value="@Html.DisplayFor(model => model.District.County.State.Name)">
+    </div>
+
+    <div class="input-group mb-3 col-md-4">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="county">
+                @Html.DisplayNameFor(model => model.District.County):
+            </span>
+        </div>
+        <input type="text" class="form-control" aria-label="county" disabled
+               aria-describedby="county" value="@Html.DisplayFor(model => model.District.County.Name)">
+    </div>
+ </div>
+<div class="row">
+    <div class="input-group mb-3 col-md-6">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="district">
+                @Html.DisplayNameFor(model => model.District):
+            </span>
+        </div>
+        <input type="text" class="form-control" aria-label="district" disabled
+               aria-describedby="district" value="@Html.DisplayFor(model => model.District.Name)">
+    </div>
+
+    <div class="input-group mb-3 col-md-6">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="name">
+                @Html.DisplayNameFor(model => model.Name):
+            </span>
+        </div>
+        <input type="text" class="form-control" aria-label="name" disabled
+               aria-describedby="name" value="@Html.DisplayFor(model => model.Name)">
+    </div>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <partial name="Controls/_BtnEdit" view-data="ViewData" model="@Model" />
+    <partial name="Controls/_BtnBack" view-data="ViewData" />
 </div>
+<partial name="Controls/_Footer" />

@@ -1,5 +1,7 @@
 ﻿using bFit.Web.Data;
 using bFit.Web.Data.Entities.Common;
+using bFit.Web.Helpers;
+using bFit.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,19 +14,25 @@ namespace bFit.Web.Controllers.Common
     public class TownsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ICombosHelper _combosHelper;
+        private readonly IConverterHelper _converterHelper;
 
-        public TownsController(ApplicationDbContext context)
+        public TownsController(ApplicationDbContext context,
+            ICombosHelper combosHelper,
+            IConverterHelper converterHelper)
         {
             _context = context;
+            _combosHelper = combosHelper;
+            _converterHelper = converterHelper;
         }
 
-        // GET: Towns
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Towns.ToListAsync());
+            return View(await _context.Towns
+                .Include(t => t.District)
+                .ToListAsync());
         }
 
-        // GET: Towns/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,6 +41,10 @@ namespace bFit.Web.Controllers.Common
             }
 
             Town town = await _context.Towns
+                .Include(t => t.District)
+                    .ThenInclude(d => d.County)
+                        .ThenInclude(d => d.State)
+                            .ThenInclude(s => s.Country)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (town == null)
             {
@@ -42,29 +54,29 @@ namespace bFit.Web.Controllers.Common
             return View(town);
         }
 
-        // GET: Towns/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var createTownsViewModel = new CreateTownViewModel
+            {
+                Countries = await _combosHelper.GetComboCountriesAsync(),
+            };
+            return View(createTownsViewModel);
         }
 
-        // POST: Towns/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Town town)
+        public async Task<IActionResult> Create(CreateTownViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(town);
+                var town = await _converterHelper.ToTownAsync(model);
+                await _context.AddAsync(town);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(town);
+            return View(model);
         }
 
-        // GET: Towns/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,17 +89,17 @@ namespace bFit.Web.Controllers.Common
             {
                 return NotFound();
             }
-            return View(town);
+
+            var editTownVwm = await _converterHelper.ToEditTownViewModelAsync(town);
+
+            return View(editTownVwm);
         }
 
-        // POST: Towns/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Town town)
+        public async Task<IActionResult> Edit(int id, EditTownViewModel model)
         {
-            if (id != town.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -96,12 +108,13 @@ namespace bFit.Web.Controllers.Common
             {
                 try
                 {
+                    var town = await _converterHelper.ToTownAsync(model);
                     _context.Update(town);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TownExists(town.Id))
+                    if (!TownExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -112,7 +125,7 @@ namespace bFit.Web.Controllers.Common
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(town);
+            return View(model);
         }
 
         // GET: Towns/Delete/5
@@ -142,6 +155,13 @@ namespace bFit.Web.Controllers.Common
             _context.Towns.Remove(town);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<JsonResult> GetTownsAsync(int id)
+        {
+            var towns = await _combosHelper.GetComboTownsAsync(id);
+
+            return Json(towns);
         }
 
         private bool TownExists(int id)

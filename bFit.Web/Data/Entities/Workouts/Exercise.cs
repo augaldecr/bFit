@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using bFit.Web.Data.Entities.Profiles;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace bFit.Web.Data.Entities.Workouts
@@ -8,11 +10,11 @@ namespace bFit.Web.Data.Entities.Workouts
         [DataType(DataType.ImageUrl)]
         public string ImageUrl { get; set; }
 
-        [Display(Name ="Movimiento")]
+        [Display(Name = "Movimiento")]
         [DataType(DataType.Upload)]
         public byte[] Image { get; set; }
 
-        [Display(Name ="Ilustración (vídeo)")]
+        [Display(Name = "Ilustración (vídeo)")]
         [DataType(DataType.Html)]
         public string VideoUrl { get; set; }
 
@@ -20,6 +22,9 @@ namespace bFit.Web.Data.Entities.Workouts
         [Display(Name = "Tipo de ejercicio")]
         [MaxLength(50, ErrorMessage = "El campo {0} no puede exceder los {1} caracteres.")]
         public ExerciseType ExerciseType { get; set; }
+
+        [HiddenInput(DisplayValue = false)]
+        public Franchise Franchise { get; set; }
 
         public virtual ICollection<SubSet> SubSets { get; set; }
     }

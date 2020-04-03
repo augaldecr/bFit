@@ -28,6 +28,26 @@ namespace bFit.Web.Models
         [Phone]
         public string CellPhone { get; set; }
 
+        [Display(Name = "País")]
+        public int CountryId { get; set; }
+
+        public IEnumerable<SelectListItem> Countries { get; set; }
+
+        [Display(Name = "Provincia")]
+        public int StateId { get; set; }
+
+        public IEnumerable<SelectListItem> States { get; set; }
+
+        [Display(Name = "Cantón")]
+        public int CountyId { get; set; }
+
+        public IEnumerable<SelectListItem> Counties { get; set; }
+
+        [Display(Name = "Distrito")]
+        public int DistrictId { get; set; }
+
+        public IEnumerable<SelectListItem> Districts { get; set; }
+
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Display(Name = "Localidad")]
         [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar un tipo de ejecución")]

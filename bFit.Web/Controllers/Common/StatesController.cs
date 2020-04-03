@@ -4,6 +4,7 @@ using bFit.Web.Helpers;
 using bFit.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
@@ -51,10 +52,11 @@ namespace bFit.Web.Controllers.Common
             return View(state);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            CreateStateViewModel createState = new CreateStateViewModel {
-                Countries = _combosHelper.GetComboCountries(),
+            CreateStateViewModel createState = new CreateStateViewModel
+            {
+                Countries = await _combosHelper.GetComboCountriesAsync(),
             };
             return View(createState);
         }
@@ -65,7 +67,7 @@ namespace bFit.Web.Controllers.Common
         {
             if (ModelState.IsValid)
             {
-                var state = await _converterHelper.ToState(stateVwm);
+                var state = await _converterHelper.ToStateAsync(stateVwm);
                 _context.Add(state);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -73,7 +75,6 @@ namespace bFit.Web.Controllers.Common
             return View(stateVwm);
         }
 
-        // GET: States/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -90,18 +91,15 @@ namespace bFit.Web.Controllers.Common
                 return NotFound();
             }
 
-            var stateVwm = _converterHelper.ToState();
-            return View(state);
+            var stateVwm = _converterHelper.ToEditStateViewModelAsync(state);
+            return View(stateVwm);
         }
 
-        // POST: States/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] State state)
+        public async Task<IActionResult> Edit(int id, EditStateViewModel model)
         {
-            if (id != state.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -110,12 +108,14 @@ namespace bFit.Web.Controllers.Common
             {
                 try
                 {
-                    _context.Update(state);
+                    var state = await _converterHelper.ToStateAsync(model);
+
+                    _context.States.Update(state);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StateExists(state.Id))
+                    if (!StateExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -126,10 +126,9 @@ namespace bFit.Web.Controllers.Common
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(state);
+            return View(model);
         }
 
-        // GET: States/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -147,7 +146,6 @@ namespace bFit.Web.Controllers.Common
             return View(state);
         }
 
-        // POST: States/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -156,6 +154,13 @@ namespace bFit.Web.Controllers.Common
             _context.States.Remove(state);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<JsonResult> GetStatesAsync(int id)
+        {
+            var states = await _combosHelper.GetComboStatesAsync(id);
+
+            return Json(states);
         }
 
         private bool StateExists(int id)

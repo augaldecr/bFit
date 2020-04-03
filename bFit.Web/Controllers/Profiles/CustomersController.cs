@@ -159,8 +159,8 @@ namespace bFit.Web.Controllers.Profiles
             }
 
             var customerVwm = new CustomerViewModel();
-            customerVwm.Genders = _combosHelper.GetComboGenders();
-            customerVwm.Towns = _combosHelper.GetComboTowns();
+            customerVwm.Genders = await _combosHelper.GetComboGendersAsync();
+            customerVwm.Countries = await _combosHelper.GetComboCountriesAsync();
             customerVwm.Gyms = await _combosHelper.GetComboGymsAsync(franchise);
 
             return View(customerVwm);
@@ -305,7 +305,7 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var editWorkoutVwm = _converterHelper.ToEditWorkoutViewModel(workout);
+            var editWorkoutVwm = _converterHelper.ToEditWorkoutViewModelAsync(workout);
 
             return View(editWorkoutVwm);
         }
@@ -350,7 +350,7 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var subSetVwm = _converterHelper.ToSubSetViewModel(subSet);
+            var subSetVwm = _converterHelper.ToSubSetViewModelAsync(subSet);
 
             return View(subSetVwm);
         }
@@ -409,28 +409,28 @@ namespace bFit.Web.Controllers.Profiles
                 {
                     franchise = null;
                     employee = await _context.Trainers.FirstOrDefaultAsync();
-                    comboTrainers = _combosHelper.GetComboTrainers(null);
+                    comboTrainers = await _combosHelper.GetComboTrainersAsync(null);
                 }
                 else if (await _userHelper.IsUserInRoleAsync(user, "FranchiseAdmin"))
                 {
                     employee = await _context.FranchiseAdmins.FirstOrDefaultAsync(
                         a => a.User.Email == user.Email);
                     franchise = employee.Franchise;
-                    comboTrainers = _combosHelper.GetComboTrainers(franchise.Id);
+                    comboTrainers = await _combosHelper.GetComboTrainersAsync(franchise.Id);
                 }
                 else if (await _userHelper.IsUserInRoleAsync(user, "GymAdmin"))
                 {
                     employee = await _context.GymAdmins.FirstOrDefaultAsync(
                         a => a.User.Email == user.Email);
                     franchise = employee.Franchise;
-                    comboTrainers = _combosHelper.GetComboTrainers(franchise.Id);
+                    comboTrainers = await _combosHelper.GetComboTrainersAsync(franchise.Id);
                 }
                 else if (await _userHelper.IsUserInRoleAsync(user, "Trainer"))
                 {
                     employee = await _context.Trainers.FirstOrDefaultAsync(
                        a => a.User.Email == user.Email);
                     franchise = employee.Franchise;
-                    comboTrainers = _combosHelper.GetComboTrainers(franchise.Id);
+                    comboTrainers = await _combosHelper.GetComboTrainersAsync(franchise.Id);
                 }
                 else
                 {
@@ -445,7 +445,7 @@ namespace bFit.Web.Controllers.Profiles
                     CustomerId = customerId,
                     TrainerId = employee.Id,
                     Trainers = comboTrainers,
-                    Goals = _combosHelper.GetComboGoals(),
+                    Goals = await _combosHelper.GetComboGoalsAsync(),
                     Sets = null,
                 };
 
@@ -470,7 +470,7 @@ namespace bFit.Web.Controllers.Profiles
 
                     await _context.SaveChangesAsync();
 
-                    var editWorkout = _converterHelper.ToEditWorkoutViewModel(workoutRoutine);
+                    var editWorkout = _converterHelper.ToEditWorkoutViewModelAsync(workoutRoutine);
 
                     return RedirectToAction("EditWorkout", new { @id = editWorkout.Id });
                 }
@@ -483,7 +483,7 @@ namespace bFit.Web.Controllers.Profiles
             return View(workoutView);
         }
 
-        public IActionResult CreateSet(int? workoutId)
+        public async Task<IActionResult> CreateSetAsync(int? workoutId)
         {
             SubSetViewModel subSetView;
             if (workoutId == null)
@@ -494,8 +494,8 @@ namespace bFit.Web.Controllers.Profiles
             subSetView = new SubSetViewModel
             {
                 WorkoutId = Convert.ToInt32(workoutId),
-                Exercises = _combosHelper.GetComboExercises(),
-                SubSetTypes = _combosHelper.GetComboSubSetTypes(),
+                Exercises = await _combosHelper.GetComboExercisesAsync(),
+                SubSetTypes = await _combosHelper.GetComboSubSetTypesAsync(),
             };
 
             return View(subSetView);
@@ -554,7 +554,7 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var setVwm = _converterHelper.ToSetViewModel(set);
+            var setVwm = _converterHelper.ToSetViewModelAsync(set);
             return View(setVwm);
         }
 

@@ -91,7 +91,7 @@ namespace bFit.Web.Controllers.Profiles
 
             if (User.IsInRole("Admin"))
             {
-                createGymAdminView.Towns = _combosHelper.GetComboTowns();
+                createGymAdminView.Countries = await _combosHelper.GetComboCountriesAsync();
                 createGymAdminView.Gyms = await _combosHelper.GetComboGymsAsync(null);
             }
             else
@@ -100,7 +100,7 @@ namespace bFit.Web.Controllers.Profiles
                     .Include(f => f.Franchise)
                     .FirstOrDefaultAsync(f => f.User.Email == User.Identity.Name);
 
-                createGymAdminView.Towns = _combosHelper.GetComboTowns();
+                createGymAdminView.Countries = await _combosHelper.GetComboCountriesAsync();
                 createGymAdminView.Gyms =
                     await _combosHelper.GetComboGymsAsync(franchiseAdmin.Franchise.Id);
             }

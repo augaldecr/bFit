@@ -108,7 +108,7 @@ namespace bFit.Web.Controllers.Profiles
 
             if (User.IsInRole("Admin"))
             {
-                createTrainerView.Towns = _combosHelper.GetComboTowns();
+                createTrainerView.Countries = await _combosHelper.GetComboCountriesAsync();
                 createTrainerView.Gyms = await _combosHelper.GetComboGymsAsync(null);
             }
             else if (User.IsInRole("FranchiseAdmin"))
@@ -117,7 +117,7 @@ namespace bFit.Web.Controllers.Profiles
                     .Include(f => f.Franchise)
                     .FirstOrDefaultAsync(f => f.User.Email == User.Identity.Name);
 
-                createTrainerView.Towns = _combosHelper.GetComboTowns();
+                createTrainerView.Countries = await _combosHelper.GetComboCountriesAsync();
                 createTrainerView.Gyms =
                     await _combosHelper.GetComboGymsAsync(franchiseAdmin.Franchise.Id);
             }
@@ -127,7 +127,7 @@ namespace bFit.Web.Controllers.Profiles
                     .Include(f => f.LocalGym)
                     .FirstOrDefaultAsync(f => f.User.Email == User.Identity.Name);
 
-                createTrainerView.Towns = _combosHelper.GetComboTowns();
+                createTrainerView.Countries = await _combosHelper.GetComboCountriesAsync();
                 //createTrainerView.Gyms =
                 //    await _combosHelper.GetComboGymsAsync(gymAdmin.Franchise.Id);
                 createTrainerView.GymId = gymAdmin.LocalGym.Id;

@@ -1,35 +1,38 @@
 ﻿@model IEnumerable<bFit.Web.Data.Entities.Common.District>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Distritos";
+    ViewData["EditAction"] = "Edit";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
+<partial name="Controls/_HeaderTable" />
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.County)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.County.Name)
+            </td>
+            <td>
+                <partial name="Controls/_BtnEditNoText" model="item" />
+                <partial name="Controls/_BtnDetails" model="item" />
+                <partial name="Controls/_BtnDelete" model="item" />
             </td>
         </tr>
-}
-    </tbody>
-</table>
+    }
+</tbody>
+<partial name="Controls/_FooterTable" />

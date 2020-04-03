@@ -1,5 +1,4 @@
 ﻿using bFit.Web.Data;
-using bFit.Web.Data.Entities.Profiles;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -17,15 +16,15 @@ namespace bFit.Web.Helpers
             _context = context;
         }
 
-        public IEnumerable<SelectListItem> GetComboGoals()
+        public async Task<IEnumerable<SelectListItem>> GetComboGoalsAsync()
         {
-            List<SelectListItem> list = _context.Goals.Select(g => new SelectListItem
+            List<SelectListItem> list = await _context.Goals.Select(g => new SelectListItem
             {
                 Text = g.Name,
                 Value = $"{g.Id}"
             })
                 .OrderBy(g => g.Text)
-                .ToList();
+                .ToListAsync();
 
             list.Insert(0, new SelectListItem
             {
@@ -36,15 +35,15 @@ namespace bFit.Web.Helpers
             return list;
         }
 
-        public IEnumerable<SelectListItem> GetComboExercises()
+        public async Task<IEnumerable<SelectListItem>> GetComboExercisesAsync()
         {
-            List<SelectListItem> list = _context.Exercises.Select(g => new SelectListItem
+            List<SelectListItem> list = await _context.Exercises.Select(g => new SelectListItem
             {
                 Text = g.Name,
                 Value = $"{g.Id}"
             })
                 .OrderBy(g => g.Text)
-                .ToList();
+                .ToListAsync();
 
             list.Insert(0, new SelectListItem
             {
@@ -55,15 +54,15 @@ namespace bFit.Web.Helpers
             return list;
         }
 
-        public IEnumerable<SelectListItem> GetComboSubSetTypes()
+        public async Task<IEnumerable<SelectListItem>> GetComboSubSetTypesAsync()
         {
-            List<SelectListItem> list = _context.SubSetTypes.Select(g => new SelectListItem
+            List<SelectListItem> list = await _context.SubSetTypes.Select(g => new SelectListItem
             {
                 Text = g.Name,
                 Value = $"{g.Id}"
             })
                 .OrderBy(g => g.Text)
-                .ToList();
+                .ToListAsync();
 
             list.Insert(0, new SelectListItem
             {
@@ -74,15 +73,15 @@ namespace bFit.Web.Helpers
             return list;
         }
 
-        public IEnumerable<SelectListItem> GetComboGenders()
+        public async Task<IEnumerable<SelectListItem>> GetComboGendersAsync()
         {
-            List<SelectListItem> list = _context.Genders.Select(g => new SelectListItem
+            List<SelectListItem> list = await _context.Genders.Select(g => new SelectListItem
             {
                 Text = g.Name,
                 Value = $"{g.Id}"
             })
                 .OrderBy(g => g.Text)
-                .ToList();
+                .ToListAsync();
 
             list.Insert(0, new SelectListItem
             {
@@ -97,7 +96,7 @@ namespace bFit.Web.Helpers
         {
             List<SelectListItem> list;
 
-            if (id==null)
+            if (id == null)
             {
                 var gyms = await _context.Gyms
                     .Include(g => g.Franchise)
@@ -115,7 +114,8 @@ namespace bFit.Web.Helpers
                     });
                 }
                 list = list.OrderBy(g => g.Text).ToList();
-            } else
+            }
+            else
             {
                 var gyms = _context.Gyms
                     .Include(g => g.Franchise)
@@ -151,34 +151,15 @@ namespace bFit.Web.Helpers
             return list;
         }
 
-        public IEnumerable<SelectListItem> GetComboTowns()
-        {
-            List<SelectListItem> list = _context.Towns.Select(g => new SelectListItem
-            {
-                Text = g.Name,
-                Value = $"{g.Id}"
-            })
-                .OrderBy(g => g.Text)
-                .ToList();
-
-            list.Insert(0, new SelectListItem
-            {
-                Text = "[Seleccione una localidad]",
-                Value = "0"
-            });
-
-            return list;
-        }
-
-        public IEnumerable<SelectListItem> GetComboTrainers(int? franchiseId)
+        public async Task<IEnumerable<SelectListItem>> GetComboTrainersAsync(int? franchiseId)
         {
             List<SelectListItem> list;
 
             if (franchiseId == null)
             {
-                var trainers = _context.Trainers
+                var trainers = await _context.Trainers
                     .Include(t => t.User)
-                    .ToList();
+                    .ToListAsync();
 
                 list = new List<SelectListItem>();
 
@@ -191,7 +172,8 @@ namespace bFit.Web.Helpers
                     });
                 }
                 list = list.OrderBy(g => g.Text).ToList();
-            } else
+            }
+            else
             {
                 var trainers = _context.Trainers
                     .Include(t => t.User)
@@ -219,15 +201,15 @@ namespace bFit.Web.Helpers
             return list;
         }
 
-        public IEnumerable<SelectListItem> GetComboFranchises()
+        public async Task<IEnumerable<SelectListItem>> GetComboFranchisesAsync()
         {
-            List<SelectListItem> list = _context.Franchises.Select(g => new SelectListItem
+            List<SelectListItem> list = await _context.Franchises.Select(g => new SelectListItem
             {
                 Text = g.TradeName,
                 Value = $"{g.Id}"
             })
                 .OrderBy(g => g.Text)
-                .ToList();
+                .ToListAsync();
 
             list.Insert(0, new SelectListItem
             {
@@ -238,19 +220,107 @@ namespace bFit.Web.Helpers
             return list;
         }
 
-        public IEnumerable<SelectListItem> GetComboCountries()
+        public async Task<IEnumerable<SelectListItem>> GetComboCountriesAsync()
         {
-            List<SelectListItem> list = _context.Countries.Select(g => new SelectListItem
+            List<SelectListItem> list = await _context.Countries.Select(g => new SelectListItem
             {
                 Text = g.Name,
                 Value = $"{g.Id}"
             })
                 .OrderBy(g => g.Text)
-                .ToList();
+                .ToListAsync();
 
             list.Insert(0, new SelectListItem
             {
-                Text = "[Seleccione una franquicia]",
+                Text = "[Seleccione un país]",
+                Value = "0"
+            });
+
+            return list;
+        }
+
+        public async Task<IEnumerable<SelectListItem>> GetComboStatesAsync(int id)
+        {
+            List<SelectListItem> list = await _context.States
+                .Include(s => s.Country)
+                .Where(s => s.Country.Id == id)
+                .Select(g => new SelectListItem
+                {
+                    Text = g.Name,
+                    Value = $"{g.Id}"
+                })
+          .OrderBy(g => g.Text)
+          .ToListAsync();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[Seleccione una provincia]",
+                Value = "0"
+            });
+
+            return list;
+        }
+
+        public async Task<IEnumerable<SelectListItem>> GetComboCountiesAsync(int id)
+        {
+            List<SelectListItem> list = await _context.Counties
+                .Include(c => c.State)
+                .Where(s => s.State.Id == id)
+                .Select(g => new SelectListItem
+                {
+                    Text = g.Name,
+                    Value = $"{g.Id}"
+                })
+          .OrderBy(g => g.Text)
+          .ToListAsync();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[Seleccione un cantón]",
+                Value = "0"
+            });
+
+            return list;
+        }
+
+        public async Task<IEnumerable<SelectListItem>> GetComboDistrictsAsync(int id)
+        {
+            List<SelectListItem> list = await _context.Districts
+                .Include(s => s.County)
+                .Where(s => s.County.Id == id)
+                .Select(g => new SelectListItem
+                {
+                    Text = g.Name,
+                    Value = $"{g.Id}"
+                })
+                .OrderBy(g => g.Text)
+                .ToListAsync();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[Seleccione un distrito]",
+                Value = "0"
+            });
+
+            return list;
+        }
+
+        public async Task<IEnumerable<SelectListItem>> GetComboTownsAsync(int districtId)
+        {
+            List<SelectListItem> list = await _context.Towns
+                .Include(t => t.District)
+                .Where(t => t.District.Id == districtId)
+                .Select(g => new SelectListItem
+                {
+                    Text = g.Name,
+                    Value = $"{g.Id}"
+                })
+                .OrderBy(g => g.Text)
+                .ToListAsync();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[Seleccione una localidad]",
                 Value = "0"
             });
 

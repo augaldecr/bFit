@@ -57,11 +57,11 @@ namespace bFit.Web.Controllers.Profiles
             return View(admin);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             var adminVwm = new CreateAdminViewModel
             {
-                Towns = _combosHelper.GetComboTowns()
+                Countries = await _combosHelper.GetComboCountriesAsync(),
             };
             return View(adminVwm);
         }

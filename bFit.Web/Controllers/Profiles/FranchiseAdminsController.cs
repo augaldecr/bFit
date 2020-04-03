@@ -60,12 +60,12 @@ namespace bFit.Web.Controllers.Profiles
         }
 
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             var adminFranchiseVwm = new CreateFranchiseAdminViewModel
             {
-                Towns = _combosHelper.GetComboTowns(),
-                Franchises = _combosHelper.GetComboFranchises(),
+                Countries = await _combosHelper.GetComboCountriesAsync(),
+                Franchises = await _combosHelper.GetComboFranchisesAsync(),
             };
             return View(adminFranchiseVwm);
         }
@@ -115,7 +115,7 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var adminVwm = _converterHelper.ToFranchiseAdminViewModel(franchiseAdmin);
+            var adminVwm = _converterHelper.ToFranchiseAdminViewModelAsync(franchiseAdmin);
 
             return View(adminVwm);
         }

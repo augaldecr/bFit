@@ -57,12 +57,12 @@ namespace bFit.Web.Controllers.Profiles
             return View(localGym);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             CreateGymViewModel createGymVwm = new CreateGymViewModel
             {
-                Towns = _combosHelper.GetComboTowns(),
-                Franchises = _combosHelper.GetComboFranchises(),
+                Countries = await _combosHelper.GetComboCountriesAsync(),
+                Franchises = await _combosHelper.GetComboFranchisesAsync(),
             };
             return View(createGymVwm);
         }
@@ -82,7 +82,7 @@ namespace bFit.Web.Controllers.Profiles
                     createGymView.FranchiseId = fAdmin.Franchise.Id;
                 }
 
-                var gym = await _converterHelper.ToLocalGym(createGymView);
+                var gym = await _converterHelper.ToLocalGymAsync(createGymView);
 
                 await _context.AddAsync(gym);
                 await _context.SaveChangesAsync();
@@ -107,7 +107,7 @@ namespace bFit.Web.Controllers.Profiles
                 return NotFound();
             }
 
-            var editGymVwm = _converterHelper.ToEditGymViewModel(localGym);
+            var editGymVwm = _converterHelper.ToEditGymViewModelAsync(localGym);
 
             return View(editGymVwm);
         }

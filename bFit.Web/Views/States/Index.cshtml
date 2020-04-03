@@ -5,20 +5,21 @@
     ViewData["EditAction"] = "Edit";
 }
 
-    <partial name="Controls/_HeaderTable" />
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Country)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
+<partial name="Controls/_HeaderTable" />
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Country)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -32,6 +33,6 @@
                 <partial name="Controls/_BtnDelete" model="item" />
             </td>
         </tr>
-}
-    </tbody>
-    <partial name="Controls/_FooterTable" />
+    }
+</tbody>
+<partial name="Controls/_FooterTable" />
