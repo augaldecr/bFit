@@ -43,6 +43,22 @@
     <Compile Remove="Migrations\20200322052038_GymAdmin-fixed.Designer.cs" />
     <Compile Remove="Migrations\20200322183614_TrainerUpdated.cs" />
     <Compile Remove="Migrations\20200322183614_TrainerUpdated.Designer.cs" />
+    <Compile Remove="Migrations\20200322184433_InitialDb.cs" />
+    <Compile Remove="Migrations\20200322184433_InitialDb.Designer.cs" />
+    <Compile Remove="Migrations\20200405041819_InitialDb.cs" />
+    <Compile Remove="Migrations\20200405041819_InitialDb.Designer.cs" />
+    <Compile Remove="Migrations\20200405050455_InitialDb.cs" />
+    <Compile Remove="Migrations\20200405050455_InitialDb.Designer.cs" />
+    <Compile Remove="Migrations\20200405051736_InitialDb.cs" />
+    <Compile Remove="Migrations\20200405051736_InitialDb.Designer.cs" />
+    <Compile Remove="Migrations\20200405214721_InitialDb.cs" />
+    <Compile Remove="Migrations\20200405214721_InitialDb.Designer.cs" />
+    <Compile Remove="Migrations\20200406015122_InitialDb.cs" />
+    <Compile Remove="Migrations\20200406015122_InitialDb.Designer.cs" />
+    <Compile Remove="Migrations\20200406060021_InitialDb.cs" />
+    <Compile Remove="Migrations\20200406060021_InitialDb.Designer.cs" />
+    <Compile Remove="Migrations\20200406215210_InitialDb.cs" />
+    <Compile Remove="Migrations\20200406215210_InitialDb.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

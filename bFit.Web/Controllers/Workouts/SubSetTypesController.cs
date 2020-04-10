@@ -1,28 +1,29 @@
-﻿using bFit.Web.Data;
-using bFit.Web.Data.Entities.Workouts;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using bFit.Web.Data;
+using bFit.Web.Data.Entities.Workouts;
 
 namespace bFit.Web.Controllers.Workouts
 {
-    public class WorkoutRoutinesController : Controller
+    public class SubSetTypesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public WorkoutRoutinesController(ApplicationDbContext context)
+        public SubSetTypesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: WorkoutRoutines
         public async Task<IActionResult> Index()
         {
-            return View(await _context.WorkoutRoutines.ToListAsync());
+            return View(await _context.SubSetTypes.ToListAsync());
         }
 
-        // GET: WorkoutRoutines/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -30,39 +31,34 @@ namespace bFit.Web.Controllers.Workouts
                 return NotFound();
             }
 
-            var workoutRoutine = await _context.WorkoutRoutines
+            var subSetType = await _context.SubSetTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (workoutRoutine == null)
+            if (subSetType == null)
             {
                 return NotFound();
             }
 
-            return View(workoutRoutine);
+            return View(subSetType);
         }
 
-        // GET: WorkoutRoutines/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: WorkoutRoutines/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Begins,Ends")] WorkoutRoutine workoutRoutine)
+        public async Task<IActionResult> Create([Bind("Id,Name")] SubSetType subSetType)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(workoutRoutine);
+                _context.Add(subSetType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(workoutRoutine);
+            return View(subSetType);
         }
 
-        // GET: WorkoutRoutines/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -70,22 +66,19 @@ namespace bFit.Web.Controllers.Workouts
                 return NotFound();
             }
 
-            var workoutRoutine = await _context.WorkoutRoutines.FindAsync(id);
-            if (workoutRoutine == null)
+            var subSetType = await _context.SubSetTypes.FindAsync(id);
+            if (subSetType == null)
             {
                 return NotFound();
             }
-            return View(workoutRoutine);
+            return View(subSetType);
         }
 
-        // POST: WorkoutRoutines/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Begins,Ends")] WorkoutRoutine workoutRoutine)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] SubSetType subSetType)
         {
-            if (id != workoutRoutine.Id)
+            if (id != subSetType.Id)
             {
                 return NotFound();
             }
@@ -94,12 +87,12 @@ namespace bFit.Web.Controllers.Workouts
             {
                 try
                 {
-                    _context.Update(workoutRoutine);
+                    _context.Update(subSetType);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!WorkoutRoutineExists(workoutRoutine.Id))
+                    if (!SubSetTypeExists(subSetType.Id))
                     {
                         return NotFound();
                     }
@@ -110,10 +103,9 @@ namespace bFit.Web.Controllers.Workouts
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(workoutRoutine);
+            return View(subSetType);
         }
 
-        // GET: WorkoutRoutines/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -121,30 +113,29 @@ namespace bFit.Web.Controllers.Workouts
                 return NotFound();
             }
 
-            var workoutRoutine = await _context.WorkoutRoutines
+            var subSetType = await _context.SubSetTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (workoutRoutine == null)
+            if (subSetType == null)
             {
                 return NotFound();
             }
 
-            return View(workoutRoutine);
+            return View(subSetType);
         }
 
-        // POST: WorkoutRoutines/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var workoutRoutine = await _context.WorkoutRoutines.FindAsync(id);
-            _context.WorkoutRoutines.Remove(workoutRoutine);
+            var subSetType = await _context.SubSetTypes.FindAsync(id);
+            _context.SubSetTypes.Remove(subSetType);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool WorkoutRoutineExists(int id)
+        private bool SubSetTypeExists(int id)
         {
-            return _context.WorkoutRoutines.Any(e => e.Id == id);
+            return _context.SubSetTypes.Any(e => e.Id == id);
         }
     }
 }

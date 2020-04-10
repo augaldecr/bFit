@@ -26,6 +26,13 @@ namespace bFit.Web.Models
 
         public IEnumerable<SelectListItem> Gyms { get; set; }
 
+        [Required(ErrorMessage = "El campo {0} es requerido.")]
+        [Display(Name = "Somatotipo")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar un somatotipo")]
+        public int SomatotypeId { get; set; }
+
+        public IEnumerable<SelectListItem> Somatotypes { get; set; }
+
         [Display(Name = "Nombre completo")]
         public string FullName => $"{LastName1} {LastName2} {FirstName}";
     }

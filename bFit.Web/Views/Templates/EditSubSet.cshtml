@@ -1,0 +1,67 @@
+﻿@model bFit.Web.Models.SubSetTemplateViewModel
+
+@{
+    ViewData["Title"] = "Edición de serie";
+}
+
+<partial name="Controls/_Header" />
+<form asp-action="EditSubSet">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="SetTemplateId" />
+    <input type="hidden" asp-for="TemplateId" />
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label asp-for="ExerciseId" class="control-label"></label>
+            <select asp-for="ExerciseId" asp-items="Model.Exercises" class="form-control"></select>
+            <span asp-validation-for="ExerciseId" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Quantity" class="control-label"></label>
+            <input asp-for="Quantity" class="form-control" />
+            <span asp-validation-for="Quantity" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label asp-for="PositiveTime" class="control-label"></label>
+            <input asp-for="PositiveTime" class="form-control" />
+            <span asp-validation-for="PositiveTime" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label asp-for="NegativeTime" class="control-label"></label>
+            <input asp-for="NegativeTime" class="form-control" />
+            <span asp-validation-for="NegativeTime" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label asp-for="SubSetTypeId" class="control-label"></label>
+            <select asp-for="SubSetTypeId" asp-items="Model.SubSetTypes" class="form-control"></select>
+            <span asp-validation-for="SubSetTypeId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label asp-for="Remarks" class="control-label"></label>
+            <input asp-for="Remarks" class="form-control" />
+            <span asp-validation-for="Remarks" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <input type="submit" value="Guardar" class="btn btn-primary" />
+            <a class="btn btn-light" asp-action="Edit" asp-route-id="@Model.TemplateId">
+                Volver al listado
+                <svg class="bi bi-arrow-left" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M7.854 6.646a.5.5 0 010 .708L5.207 10l2.647 2.646a.5.5 0 01-.708.708l-3-3a.5.5 0 010-.708l3-3a.5.5 0 01.708 0z" clip-rule="evenodd"></path>
+                    <path fill-rule="evenodd" d="M4.5 10a.5.5 0 01.5-.5h10.5a.5.5 0 010 1H5a.5.5 0 01-.5-.5z" clip-rule="evenodd"></path>
+                </svg>
+            </a>
+        </div>
+    </div>
+</form>
+<partial name="Controls/_Footer" />

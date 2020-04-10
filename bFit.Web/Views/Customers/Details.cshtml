@@ -10,7 +10,7 @@
 <partial name="Controls/_Header" />
 
 <div class="row">
-    <div class="input-group mb-3 col-md-6">
+    <div class="input-group mb-3 col-md-4">
         <div class="input-group-prepend">
             <span class="input-group-text" id="fullname">
                 @Html.DisplayNameFor(model => model.User.FullName):
@@ -20,7 +20,7 @@
                aria-describedby="fullname" value="@Html.DisplayFor(model => model.User.FullName)">
     </div>
 
-    <div class="input-group mb-3 col-md-6">
+    <div class="input-group mb-3 col-md-4">
         <div class="input-group-prepend">
             <span class="input-group-text" id="birthday">
                 @Html.DisplayNameFor(model => model.Birthday):
@@ -28,6 +28,16 @@
         </div>
         <input type="text" class="form-control" aria-label="birthday" disabled
                aria-describedby="birthday" value="@Html.DisplayFor(model => model.Birthday)">
+    </div>
+
+    <div class="input-group mb-3 col-md-4">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="birthday">
+                @Html.DisplayNameFor(model => model.Somatotype):
+            </span>
+        </div>
+        <input type="text" class="form-control" aria-label="birthday" disabled
+               aria-describedby="birthday" value="@Html.DisplayFor(model => model.Somatotype.Name)">
     </div>
 </div>
 

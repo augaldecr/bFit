@@ -104,6 +104,45 @@ namespace bFit.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PaymentMethods",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentMethods", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Somatotypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Somatotypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SubSetTypes",
                 columns: table => new
                 {
@@ -167,7 +206,8 @@ namespace bFit.Web.Migrations
                     ImageUrl = table.Column<string>(nullable: true),
                     Image = table.Column<byte[]>(nullable: true),
                     VideoUrl = table.Column<string>(nullable: true),
-                    ExerciseTypeId = table.Column<int>(nullable: false)
+                    ExerciseTypeId = table.Column<int>(nullable: false),
+                    FranchiseId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -178,6 +218,12 @@ namespace bFit.Web.Migrations
                         principalTable: "ExerciseTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Exercises_Franchises_FranchiseId",
+                        column: x => x.FranchiseId,
+                        principalTable: "Franchises",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -410,6 +456,40 @@ namespace bFit.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Birthday = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<string>(nullable: false),
+                    GenderId = table.Column<int>(nullable: false),
+                    SomatotypeId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Customers_Genders_GenderId",
+                        column: x => x.GenderId,
+                        principalTable: "Genders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Customers_Somatotypes_SomatotypeId",
+                        column: x => x.SomatotypeId,
+                        principalTable: "Somatotypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Customers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FranchiseAdmins",
                 columns: table => new
                 {
@@ -436,35 +516,35 @@ namespace bFit.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customers",
+                name: "Templates",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Birthday = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<string>(nullable: false),
-                    GenderId = table.Column<int>(nullable: false),
-                    GymId = table.Column<int>(nullable: true)
+                    GoalId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
+                    FranchiseId = table.Column<int>(nullable: false),
+                    CreatorId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.PrimaryKey("PK_Templates", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Customers_Genders_GenderId",
-                        column: x => x.GenderId,
-                        principalTable: "Genders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Customers_Gyms_GymId",
-                        column: x => x.GymId,
-                        principalTable: "Gyms",
+                        name: "FK_Templates_AspNetUsers_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Customers_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_Templates_Franchises_FranchiseId",
+                        column: x => x.FranchiseId,
+                        principalTable: "Franchises",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Templates_Goals_GoalId",
+                        column: x => x.GoalId,
+                        principalTable: "Goals",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -499,6 +579,52 @@ namespace bFit.Web.Migrations
                         name: "FK_GymAdmins_Gyms_LocalGymId1",
                         column: x => x.LocalGymId1,
                         principalTable: "Gyms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Memberships",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerId = table.Column<int>(nullable: true),
+                    LocalGymId = table.Column<int>(nullable: true),
+                    Active = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Memberships", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Memberships_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Memberships_Gyms_LocalGymId",
+                        column: x => x.LocalGymId,
+                        principalTable: "Gyms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SetTemplates",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TemplateId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SetTemplates", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SetTemplates_Templates_TemplateId",
+                        column: x => x.TemplateId,
+                        principalTable: "Templates",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -557,10 +683,10 @@ namespace bFit.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerId = table.Column<int>(nullable: false),
-                    Begins = table.Column<DateTime>(maxLength: 50, nullable: false),
-                    Ends = table.Column<DateTime>(maxLength: 50, nullable: false),
                     GoalId = table.Column<int>(nullable: false),
+                    Begins = table.Column<DateTime>(nullable: false),
+                    Ends = table.Column<DateTime>(nullable: false),
+                    CustomerId = table.Column<int>(nullable: false),
                     TrainerId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -587,12 +713,85 @@ namespace bFit.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MembershipId = table.Column<int>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false),
+                    PaymentTypeId = table.Column<int>(nullable: false),
+                    Amount = table.Column<float>(nullable: false),
+                    UserId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payments_Memberships_MembershipId",
+                        column: x => x.MembershipId,
+                        principalTable: "Memberships",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Payments_PaymentTypes_PaymentTypeId",
+                        column: x => x.PaymentTypeId,
+                        principalTable: "PaymentTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Payments_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SubSetTemplates",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ExerciseId = table.Column<int>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
+                    PositiveTime = table.Column<int>(nullable: false),
+                    NegativeTime = table.Column<int>(nullable: false),
+                    SubSetTypeId = table.Column<int>(nullable: false),
+                    Remarks = table.Column<string>(nullable: true),
+                    SetTemplateId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubSetTemplates", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SubSetTemplates_Exercises_ExerciseId",
+                        column: x => x.ExerciseId,
+                        principalTable: "Exercises",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SubSetTemplates_SetTemplates_SetTemplateId",
+                        column: x => x.SetTemplateId,
+                        principalTable: "SetTemplates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SubSetTemplates_SubSetTypes_SubSetTypeId",
+                        column: x => x.SubSetTypeId,
+                        principalTable: "SubSetTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Sets",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    WorkoutRoutineId = table.Column<int>(nullable: false)
+                    WorkoutRoutineId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -602,7 +801,7 @@ namespace bFit.Web.Migrations
                         column: x => x.WorkoutRoutineId,
                         principalTable: "WorkoutRoutines",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -702,9 +901,9 @@ namespace bFit.Web.Migrations
                 column: "GenderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customers_GymId",
+                name: "IX_Customers_SomatotypeId",
                 table: "Customers",
-                column: "GymId");
+                column: "SomatotypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customers_UserId",
@@ -720,6 +919,11 @@ namespace bFit.Web.Migrations
                 name: "IX_Exercises_ExerciseTypeId",
                 table: "Exercises",
                 column: "ExerciseTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Exercises_FranchiseId",
+                table: "Exercises",
+                column: "FranchiseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FranchiseAdmins_FranchiseId",
@@ -757,6 +961,31 @@ namespace bFit.Web.Migrations
                 column: "TownId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Memberships_CustomerId",
+                table: "Memberships",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Memberships_LocalGymId",
+                table: "Memberships",
+                column: "LocalGymId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_MembershipId",
+                table: "Payments",
+                column: "MembershipId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_PaymentTypeId",
+                table: "Payments",
+                column: "PaymentTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_UserId",
+                table: "Payments",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PersonalData_ObesityLevelId",
                 table: "PersonalData",
                 column: "ObesityLevelId");
@@ -770,6 +999,11 @@ namespace bFit.Web.Migrations
                 name: "IX_Sets_WorkoutRoutineId",
                 table: "Sets",
                 column: "WorkoutRoutineId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SetTemplates_TemplateId",
+                table: "SetTemplates",
+                column: "TemplateId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_States_CountryId",
@@ -790,6 +1024,36 @@ namespace bFit.Web.Migrations
                 name: "IX_SubSets_SubSetTypeId",
                 table: "SubSets",
                 column: "SubSetTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubSetTemplates_ExerciseId",
+                table: "SubSetTemplates",
+                column: "ExerciseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubSetTemplates_SetTemplateId",
+                table: "SubSetTemplates",
+                column: "SetTemplateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubSetTemplates_SubSetTypeId",
+                table: "SubSetTemplates",
+                column: "SubSetTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Templates_CreatorId",
+                table: "Templates",
+                column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Templates_FranchiseId",
+                table: "Templates",
+                column: "FranchiseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Templates_GoalId",
+                table: "Templates",
+                column: "GoalId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Towns_DistrictId",
@@ -836,43 +1100,67 @@ namespace bFit.Web.Migrations
                 name: "FranchiseAdmins");
 
             migrationBuilder.DropTable(
+                name: "PaymentMethods");
+
+            migrationBuilder.DropTable(
+                name: "Payments");
+
+            migrationBuilder.DropTable(
                 name: "PersonalData");
 
             migrationBuilder.DropTable(
                 name: "SubSets");
 
             migrationBuilder.DropTable(
+                name: "SubSetTemplates");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Memberships");
+
+            migrationBuilder.DropTable(
+                name: "PaymentTypes");
 
             migrationBuilder.DropTable(
                 name: "ObesityLevels");
 
             migrationBuilder.DropTable(
+                name: "Sets");
+
+            migrationBuilder.DropTable(
                 name: "Exercises");
 
             migrationBuilder.DropTable(
-                name: "Sets");
+                name: "SetTemplates");
 
             migrationBuilder.DropTable(
                 name: "SubSetTypes");
 
             migrationBuilder.DropTable(
+                name: "WorkoutRoutines");
+
+            migrationBuilder.DropTable(
                 name: "ExerciseTypes");
 
             migrationBuilder.DropTable(
-                name: "WorkoutRoutines");
+                name: "Templates");
 
             migrationBuilder.DropTable(
                 name: "Customers");
 
             migrationBuilder.DropTable(
-                name: "Goals");
-
-            migrationBuilder.DropTable(
                 name: "GymAdmins");
 
             migrationBuilder.DropTable(
+                name: "Goals");
+
+            migrationBuilder.DropTable(
                 name: "Genders");
+
+            migrationBuilder.DropTable(
+                name: "Somatotypes");
 
             migrationBuilder.DropTable(
                 name: "Gyms");

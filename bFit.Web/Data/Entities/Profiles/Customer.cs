@@ -25,9 +25,11 @@ namespace bFit.Web.Data.Entities.Profiles
         [Display(Name = "Género")]
         public Gender Gender { get; set; }
 
-        [Display(Name = "Gimnasio")]
-        public LocalGym Gym { get; set; }
+        [Required(ErrorMessage = "El campo {0} es requerido.")]
+        [Display(Name = "Somatotipo")]
+        public Somatotype Somatotype { get; set; }
 
-        public ICollection<WorkoutRoutine> WorkOutRoutines { get; set; }
+        public virtual ICollection<Membership> Memberships { get; set; }
+        public virtual ICollection<WorkoutRoutine> WorkOutRoutines { get; set; }
     }
 }

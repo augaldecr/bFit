@@ -1,42 +1,57 @@
 ﻿@model bFit.Web.Data.Entities.Workouts.Exercise
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.Name;
+    ViewData["BackAction"] = "Index";
+    ViewData["EditAction"] = "Edit";
+    ViewData["DetailsAction"] = "Details";
 }
 
-<h1>Details</h1>
+<partial name="Controls/_Header" />
+
+<div class="row">
+    <div class="input-group mb-3 col-md-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="fullname">
+                @Html.DisplayNameFor(model => model.Name):
+            </span>
+        </div>
+        <input type="text" class="form-control" aria-label="fullname" disabled
+               aria-describedby="fullname" value="@Html.DisplayFor(model => model.Name)">
+    </div>
+
+    <div class="input-group mb-3 col-md-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="birthday">
+                @Html.DisplayNameFor(model => model.ExerciseType):
+            </span>
+        </div>
+        <input type="text" class="form-control" aria-label="birthday" disabled
+               aria-describedby="birthday" value="@Html.DisplayFor(model => model.ExerciseType.Name)">
+    </div>
+
+    <div class="input-group mb-3 col-md-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="birthday">
+                @Html.DisplayNameFor(model => model.Image):
+            </span>
+        </div>
+        <input type="text" class="form-control" aria-label="birthday" disabled
+               aria-describedby="birthday" value="@Html.DisplayFor(model => model.Image)">
+    </div>
+    <div class="input-group mb-3 col-md-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="birthday">
+                @Html.DisplayNameFor(model => model.VideoUrl):
+            </span>
+        </div>
+        <input type="text" class="form-control" aria-label="birthday" disabled
+               aria-describedby="birthday" value="@Html.DisplayFor(model => model.VideoUrl)">
+    </div>
+</div>
 
 <div>
-    <h4>Exercise</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageUrl)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.VideoUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.VideoUrl)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-    </dl>
+    <partial name="Controls/_BtnEdit" view-data="ViewData" model="@Model" />
+    <partial name="Controls/_BtnBack" view-data="ViewData" />
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<partial name="Controls/_Footer" />

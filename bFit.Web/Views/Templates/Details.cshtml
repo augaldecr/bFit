@@ -1,0 +1,107 @@
+﻿@model bFit.Web.Data.Entities.Workouts.Template
+
+@{
+    ViewData["Title"] = "Plantilla";
+}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title align-content-center">@ViewData["Title"]</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input readonly asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Goal" class="control-label"></label>
+                            <input readonly asp-for="Goal.Name" class="form-control" />
+                            <span asp-validation-for="Goal" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Creator" class="control-label"></label>
+                            <input readonly asp-for="Creator.FullName" class="form-control" />
+                            <span asp-validation-for="Creator" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <a asp-action="Index" class="btn btn-block btn-light">Volver al listado</a>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-block btn-warning">Editar</a>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            @if (Model.SetTemplates != null)
+                            {
+                                @foreach (var item in Model.SetTemplates.Select((value, i) => (value, i)))
+                                {
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="card-title">Circuito @(item.i + 1)</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-responsive-sm table-striped table-bordered table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="font-weight-bolder">
+                                                            @Html.DisplayNameFor(modelItem => item.value.SubSetTemplates.FirstOrDefault().Exercise)
+                                                        </th>
+                                                        <th class="font-weight-bolder">
+                                                            @Html.DisplayNameFor(modelItem => item.value.SubSetTemplates.FirstOrDefault().SubSetType)
+                                                        </th>
+                                                        <th class="font-weight-bolder">
+                                                            @Html.DisplayNameFor(modelItem => item.value.SubSetTemplates.FirstOrDefault().Quantity)
+                                                        </th>
+                                                        <th class="font-weight-bolder">
+                                                            @Html.DisplayNameFor(modelItem => item.value.SubSetTemplates.FirstOrDefault().PositiveTime)
+                                                        </th>
+                                                        <th class="font-weight-bolder">
+                                                            @Html.DisplayNameFor(modelItem => item.value.SubSetTemplates.FirstOrDefault().NegativeTime)
+                                                        </th>
+                                                        <th class="font-weight-bolder">
+                                                            @Html.DisplayNameFor(modelItem => item.value.SubSetTemplates.FirstOrDefault().Remarks)
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item2 in item.value.SubSetTemplates)
+                                                    {
+
+                                                        <tr>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item2.Exercise.Name)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item2.SubSetType.Name)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item2.Quantity)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item2.PositiveTime)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item2.NegativeTime)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item2.Remarks)
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

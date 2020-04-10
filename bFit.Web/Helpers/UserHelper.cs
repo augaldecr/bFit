@@ -1,7 +1,9 @@
-﻿using bFit.Web.Data.Entities;
+﻿using bFit.Web.Data;
+using bFit.Web.Data.Entities;
 using bFit.Web.Data.Entities.Profiles;
 using bFit.Web.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace bFit.Web.Helpers
@@ -11,15 +13,18 @@ namespace bFit.Web.Helpers
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly ApplicationDbContext _context;
 
         public UserHelper(
             UserManager<User> userManager,
             RoleManager<IdentityRole> roleManager,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         public async Task<IdentityResult> AddUserAsync(User user, string password)
@@ -90,6 +95,59 @@ namespace bFit.Web.Helpers
             else
             {
                 return UserType.Customer;
+            }
+        }
+
+        public async Task<int?> GetFranchise(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (await _userManager.IsInRoleAsync(user, "Admin"))
+            {
+                return null;
+            }
+            else if (await _userManager.IsInRoleAsync(user, "FranchiseAdmin"))
+            {
+                var employee = await _context.FranchiseAdmins.FirstOrDefaultAsync(
+                    a => a.User.Email == user.Email);
+                return employee.Franchise.Id;
+            }
+            else if (await _userManager.IsInRoleAsync(user, "GymAdmin"))
+            {
+                var employee = await _context.GymAdmins.FirstOrDefaultAsync(
+                    a => a.User.Email == user.Email);
+                return employee.Franchise.Id;
+            }
+            else if (await _userManager.IsInRoleAsync(user, "Trainer"))
+            {
+                var employee = await _context.Trainers.FirstOrDefaultAsync(
+                   a => a.User.Email == user.Email);
+                return employee.Franchise.Id;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        public async Task<int?> GetGym(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (await _userManager.IsInRoleAsync(user, "GymAdmin"))
+            {
+                var employee = await _context.GymAdmins.FirstOrDefaultAsync(
+                    a => a.User.Email == user.Email);
+                return employee.LocalGym.Id;
+            }
+            else if (await _userManager.IsInRoleAsync(user, "Trainer"))
+            {
+                var employee = await _context.Trainers.FirstOrDefaultAsync(
+                   a => a.User.Email == user.Email);
+                return employee.LocalGym.Id;
+            } else
+            {
+                return null;
             }
         }
     }

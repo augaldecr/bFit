@@ -17,7 +17,7 @@
         <header>
             <h1>Rutina de entrenamiento - @Model.Customer.User.FullName</h1>
             <p><a class="subtitle">Inicio:</a> @Model.Begins.ToShortDateString() - <a class="subtitle">Finaliza:</a> @Model.Ends.ToShortDateString() | <a class="subtitle">Objetivo:</a> @Model.Goal.Name </p>
-            <p><a class="subtitle">Gimnasio: </a>@Model.Customer.Gym.Name | <a class="subtitle">Entrenador: </a> @Model.Trainer.User.FullName </p>
+            <p><a class="subtitle">Gimnasio: </a>@Model.Trainer.LocalGym.Name | <a class="subtitle">Entrenador: </a> @Model.Trainer.User.FullName </p>
         </header>
         <article>
             <table class="table-out">

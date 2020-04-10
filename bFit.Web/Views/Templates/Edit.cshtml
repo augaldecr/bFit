@@ -1,0 +1,135 @@
+﻿@model bFit.Web.Models.EditTemplateViewModel
+
+@{
+    ViewData["Title"] = "Plantilla de entrenamiento";
+    ViewData["BackAction"] = "Index";
+    ViewData["EditAction"] = "EditSubSet";
+    ViewData["DetailAction"] = "Details";
+}
+
+<partial name="Controls/_Header" />
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="FranchiseId" />
+
+    <div class="form-row">
+
+        <div class="form-group col-md-6">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label asp-for="GoalId" class="control-label"></label>
+            <select asp-for="GoalId" asp-items="Model.Goals" class="form-control"></select>
+            <span asp-validation-for="GoalId" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <partial name="Controls/_BtnSubmit" />
+        <partial name="Controls/_BtnBack" view-data="ViewData" />
+    </div>
+</form>
+<partial name="Controls/_Footer" />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item"><h3 class="card-title">Circuitos</h3></li>
+                    <a asp-action="CreateSet" asp-route-templateId="@Model.TemplateId" class="list-group-item list-group-item-action bg-success">
+                        <h3 class="text-center">
+                            Agregar
+                            <svg class="bi bi-plus" width="1.2em" height="1.2em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M10 5.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H6a.5.5 0 010-1h3.5V6a.5.5 0 01.5-.5z" clip-rule="evenodd"></path>
+                                <path fill-rule="evenodd" d="M9.5 10a.5.5 0 01.5-.5h4a.5.5 0 010 1h-3.5V14a.5.5 0 01-1 0v-4z" clip-rule="evenodd"></path>
+                            </svg>
+                        </h3>
+                    </a>
+                </ul>
+            </div>
+            <div class="card-body">
+                @if (Model.SetTemplates != null)
+                {
+                    @foreach (var item in Model.SetTemplates.Select((value, i) => (value, i)))
+                    {
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title">Circuito @(item.i + 1)</h6>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-responsive-sm table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="font-weight-bolder">
+                                                @Html.DisplayNameFor(modelItem => item.value.SubSetTemplates.FirstOrDefault().Exercise)
+                                            </th>
+                                            <th class="font-weight-bolder">
+                                                @Html.DisplayNameFor(modelItem => item.value.SubSetTemplates.FirstOrDefault().SubSetType)
+                                            </th>
+                                            <th class="font-weight-bolder">
+                                                @Html.DisplayNameFor(modelItem => item.value.SubSetTemplates.FirstOrDefault().Quantity)
+                                            </th>
+                                            <th class="font-weight-bolder">
+                                                @Html.DisplayNameFor(modelItem => item.value.SubSetTemplates.FirstOrDefault().PositiveTime)
+                                            </th>
+                                            <th class="font-weight-bolder">
+                                                @Html.DisplayNameFor(modelItem => item.value.SubSetTemplates.FirstOrDefault().NegativeTime)
+                                            </th>
+                                            <th class="font-weight-bolder">
+                                                @Html.DisplayNameFor(modelItem => item.value.SubSetTemplates.FirstOrDefault().Remarks)
+                                            </th>
+                                            <th>Editar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item2 in item.value.SubSetTemplates)
+                                        {
+
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item2.Exercise.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item2.SubSetType.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item2.Quantity)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item2.PositiveTime)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item2.NegativeTime)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item2.Remarks)
+                                                </td>
+                                                <td>
+                                                    <partial name="Controls/_BtnEditNoText" view-data="ViewData" model="@item2" />
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer">
+                                <a asp-action="EditSet" asp-route-id="@item.value.Id" class="btn btn-success btn-lg btn-block">Añadir ejercicio</a>
+                            </div>
+
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

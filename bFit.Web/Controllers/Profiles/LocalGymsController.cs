@@ -101,13 +101,17 @@ namespace bFit.Web.Controllers.Profiles
             LocalGym localGym = await _context.Gyms
                 .Include(g => g.Franchise)
                 .Include(g => g.Town)
+                    .ThenInclude(t => t.District)
+                        .ThenInclude(d => d.County)
+                            .ThenInclude(c => c.State)
+                                .ThenInclude(s => s.Country)
                 .FirstOrDefaultAsync(g => g.Id == id);
             if (localGym == null)
             {
                 return NotFound();
             }
 
-            var editGymVwm = _converterHelper.ToEditGymViewModelAsync(localGym);
+            var editGymVwm = await _converterHelper.ToEditGymViewModelAsync(localGym);
 
             return View(editGymVwm);
         }

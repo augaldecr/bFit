@@ -7,6 +7,7 @@ using bFit.Web.Data.Entities.Workouts;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 #nullable enable
 
 namespace bFit.Web.Data
@@ -32,6 +33,7 @@ namespace bFit.Web.Data
             await CheckDistrictsAsync();
             await CheckTownsAsync();
             await CheckGendersAsync();
+            await CheckSomatotypesAsync();
             await CheckObesityLevelAsync();
             await CheckFranchisesAsync();
             await CheckGymsAsync();
@@ -401,17 +403,27 @@ namespace bFit.Web.Data
         {
             if (!_applicationDbContext.Customers.Any())
             {
-                var masculino = _applicationDbContext.Genders.FirstOrDefault(t => t.Name.Equals("Masculino"));
-                var gym = _applicationDbContext.Gyms.FirstOrDefault();
+                var masculino = await _applicationDbContext.Genders.FirstOrDefaultAsync(t => t.Name.Equals("Masculino"));
+                var gym = await _applicationDbContext.Gyms.FirstOrDefaultAsync();
                 var birthday = new DateTime(1984, 04, 01);
+                var somatotype = await _applicationDbContext.Somatotypes.FirstOrDefaultAsync();
 
-                await _applicationDbContext.Customers.AddAsync(new Customer
+                var customer = new Customer
                 {
                     User = user,
                     Gender = masculino,
-                    Gym = gym,
-                    Birthday = birthday
+                    Birthday = birthday,
+                    Somatotype = somatotype,
+                };
+
+                await _applicationDbContext.Customers.AddAsync(customer);
+
+                await _applicationDbContext.Memberships.AddAsync(new Membership
+                {
+                    Customer = customer,
+                    LocalGym = gym,
                 });
+
                 await _applicationDbContext.SaveChangesAsync();
             }
         }
@@ -432,6 +444,17 @@ namespace bFit.Web.Data
                 await _applicationDbContext.Genders.AddAsync(new Gender { Name = "Femenino" });
                 await _applicationDbContext.Genders.AddAsync(new Gender { Name = "Masculino" });
                 await _applicationDbContext.Genders.AddAsync(new Gender { Name = "Otro" });
+                await _applicationDbContext.SaveChangesAsync();
+            }
+        }
+
+        private async Task CheckSomatotypesAsync()
+        {
+            if (!_applicationDbContext.Somatotypes.Any())
+            {
+                await _applicationDbContext.Somatotypes.AddAsync(new Somatotype { Name = "Ectomorfo" });
+                await _applicationDbContext.Somatotypes.AddAsync(new Somatotype { Name = "Mesomorfo" });
+                await _applicationDbContext.Somatotypes.AddAsync(new Somatotype { Name = "Endomorfo" });
                 await _applicationDbContext.SaveChangesAsync();
             }
         }
